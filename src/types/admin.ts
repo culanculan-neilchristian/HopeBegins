@@ -7,10 +7,10 @@
  * Most list endpoints return { count, next, previous, results }.
  */
 export interface PaginatedResponse<T> {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: T[];
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }
 
 // ─────────────────────────────────────────────
@@ -18,22 +18,22 @@ export interface PaginatedResponse<T> {
 // ─────────────────────────────────────────────
 
 export type PrayerCategory =
-    | 'GENERAL'
-    | 'ANXIETY_FEAR'
-    | 'HEALTH'
-    | 'FINANCE'
-    | 'RELATIONSHIP'
-    | 'OTHER';
+  | 'GENERAL'
+  | 'ANXIETY_FEAR'
+  | 'HEALTH'
+  | 'FINANCE'
+  | 'RELATIONSHIP'
+  | 'OTHER';
 
 export type PrayerStatus = 'NEW' | 'ASSIGNED' | 'PRAYED' | 'COMPLETED';
 
 export interface PrayerResponse {
-    id: string;
-    prayer: string; // UUID of the parent Prayer
-    content: string;
-    user: string; // UUID of the responding user
-    user_email: string;
-    created_at: string;
+  id: string;
+  prayer: string; // UUID of the parent Prayer
+  content: string;
+  user: string; // UUID of the responding user
+  user_email: string;
+  created_at: string;
 }
 
 /**
@@ -41,26 +41,26 @@ export interface PrayerResponse {
  * The admin gets all fields, including email, status, and assignment info.
  */
 export interface Prayer {
-    id: string;
-    title: string;
-    email: string;
-    content: string;
-    category: PrayerCategory;
-    isAnonymous: boolean;
-    shareFirstName: boolean;
-    wantsFollowUp: boolean;
-    status: PrayerStatus;
-    assigned_to: string | null; // UUID of the assigned carrier user
-    assigned_to_email: string | null;
-    user: string | null; // UUID of the submitting user (if logged in)
-    created_at: string;
-    updated_at: string;
-    responses: PrayerResponse[];
+  id: string;
+  title: string;
+  email: string;
+  content: string;
+  category: PrayerCategory;
+  isAnonymous: boolean;
+  shareFirstName: boolean;
+  wantsFollowUp: boolean;
+  status: PrayerStatus;
+  assigned_to: string | null; // UUID of the assigned carrier user
+  assigned_to_email: string | null;
+  user: string | null; // UUID of the submitting user (if logged in)
+  created_at: string;
+  updated_at: string;
+  responses: PrayerResponse[];
 }
 
 /** Payload for assigning a prayer to a carrier */
 export interface AssignPrayerPayload {
-    carrier_id: string;
+  carrier_id: string;
 }
 
 // ─────────────────────────────────────────────
@@ -68,9 +68,9 @@ export interface AssignPrayerPayload {
 // ─────────────────────────────────────────────
 
 export interface HopecastCategory {
-    id: string;
-    name: string;
-    slug: string;
+  id: string;
+  name: string;
+  slug: string;
 }
 
 /**
@@ -80,20 +80,24 @@ export interface HopecastCategory {
  * `play_times` is the read-only alias for play_count.
  */
 export interface Hopecast {
-    id: string;
-    title: string;
-    mp4_link: string;
-    category_details: HopecastCategory[];
-    play_times: number;
-    created_at: string;
-    updated_at: string;
+  id: string;
+  title: string;
+  name: string;
+  verse: string;
+  mp4_link: string;
+  category_details: HopecastCategory[];
+  play_times: number;
+  created_at: string;
+  updated_at: string;
 }
 
 /** Payload for creating or editing a Hopecast */
 export interface HopecastPayload {
-    title: string;
-    mp4_link: string;
-    categories: string[]; // Array of HopecastCategory UUIDs
+  title: string;
+  name: string;
+  verse: string;
+  mp4_link: string;
+  categories: string[]; // Array of HopecastCategory UUIDs
 }
 
 // ─────────────────────────────────────────────
@@ -101,19 +105,19 @@ export interface HopecastPayload {
 // ─────────────────────────────────────────────
 
 export interface HopeCarrier {
-    id: string;
-    username: string;
-    email: string;
-    role: 'admin' | 'carrier' | 'user';
-    is_approved: boolean;
-    first_name: string;
-    last_name: string;
-    phone: string | null;
-    church_community: string | null;
-    carrier_reason: string | null;
-    agreed_to_guidelines: boolean;
-    date_joined: string;
-    prayer_count: number;
+  id: string;
+  username: string;
+  email: string;
+  role: 'admin' | 'carrier' | 'user';
+  is_approved: boolean;
+  first_name: string;
+  last_name: string;
+  phone: string | null;
+  church_community: string | null;
+  carrier_reason: string | null;
+  agreed_to_guidelines: boolean;
+  date_joined: string;
+  prayer_count: number;
 }
 
 // ─────────────────────────────────────────────
@@ -124,12 +128,12 @@ export interface HopeCarrier {
  * High-level stats shown on the admin overview dashboard.
  */
 export interface AdminStats {
-    total_prayers: number;
-    pending_prayers: number;
-    total_carriers: number;
-    hopecast_plays: number;
-    total_users: number;
-    recent_prayers: Prayer[];
+  total_prayers: number;
+  pending_prayers: number;
+  total_carriers: number;
+  hopecast_plays: number;
+  total_users: number;
+  recent_prayers: Prayer[];
 }
 
 // ─────────────────────────────────────────────
@@ -139,11 +143,10 @@ export interface AdminStats {
 export type DonationType = 'ONE_TIME' | 'MONTHLY';
 
 export interface Donation {
-    id: string;
-    name: string;         // donor display name or 'Anonymous'
-    email?: string;
-    date: string;         // ISO date string
-    type: DonationType;
-    amount: number;       // in dollars
+  id: string;
+  name: string; // donor display name or 'Anonymous'
+  email?: string;
+  date: string; // ISO date string
+  type: DonationType;
+  amount: number; // in dollars
 }
-

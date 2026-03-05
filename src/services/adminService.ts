@@ -7,7 +7,6 @@ import type {
   Hopecast,
   HopecastCategory,
   HopecastPayload,
-  PaginatedResponse,
   HopeCarrier,
   AdminStats,
 } from '@/types/admin';
@@ -76,7 +75,10 @@ export const adminService = {
   /**
    * Update a prayer's status (e.g. mark as PRAYED or COMPLETED).
    */
-  updatePrayerStatus: async (id: string, status: PrayerStatus): Promise<Prayer> => {
+  updatePrayerStatus: async (
+    id: string,
+    status: PrayerStatus
+  ): Promise<Prayer> => {
     return fetchWithAuth(`${config.API_URL}/prayers/requests/${id}/`, {
       method: 'PATCH',
       headers: authHeader(),
@@ -87,7 +89,10 @@ export const adminService = {
   /**
    * Assign a prayer to a carrier by carrier UUID.
    */
-  assignPrayer: async (id: string, payload: AssignPrayerPayload): Promise<Prayer> => {
+  assignPrayer: async (
+    id: string,
+    payload: AssignPrayerPayload
+  ): Promise<Prayer> => {
     return fetchWithAuth(`${config.API_URL}/prayers/requests/${id}/assign/`, {
       method: 'POST',
       headers: authHeader(),
@@ -144,7 +149,10 @@ export const adminService = {
    * Update an existing hopecast. Admin only.
    * Uses PATCH so we only send what changed.
    */
-  updateHopecast: async (id: string, payload: Partial<HopecastPayload>): Promise<Hopecast> => {
+  updateHopecast: async (
+    id: string,
+    payload: Partial<HopecastPayload>
+  ): Promise<Hopecast> => {
     return fetchWithAuth(`${config.API_URL}/hopecasts/${id}/`, {
       method: 'PATCH',
       headers: authHeader(),
@@ -212,6 +220,5 @@ export const adminService = {
     });
   },
 };
-
 
 export default adminService;

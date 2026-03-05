@@ -110,10 +110,11 @@ export default function AdminLayout({
               <Link
                 key={item.label}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 text-sm font-bold tracking-tight rounded-2xl transition-all ${pathname === item.href
+                className={`flex items-center gap-3 px-4 py-3 text-sm font-bold tracking-tight rounded-2xl transition-all ${
+                  pathname === item.href
                     ? 'bg-brand-muted text-brand'
                     : 'text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-brand'
-                  }`}
+                }`}
               >
                 <item.icon className="h-5 w-5" />
                 {item.label}

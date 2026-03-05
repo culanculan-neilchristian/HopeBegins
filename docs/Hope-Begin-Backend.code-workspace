@@ -1,11 +1,11 @@
 {
-	"folders": [
-		{
-			"path": "../../Hope-Begin-Backend"
-		},
-		{
-			"path": ".."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../Hope-Begin-Backend",
+    },
+    {
+      "path": "..",
+    },
+  ],
+  "settings": {},
 }

@@ -11,12 +11,21 @@ import { HopecastTable } from './components/HopecastTable';
 
 export default function ManageHopecastsPage() {
   const {
-    hopecasts, filtered, categories,
-    isLoadingCasts, isErrorCasts, refetch,
-    search, setSearch,
-    deleteTarget, setDeleteTarget,
-    editTarget, setEditTarget,
-    deleteMutation, isSavePending, handleSave,
+    hopecasts,
+    filtered,
+    categories,
+    isLoadingCasts,
+    isErrorCasts,
+    refetch,
+    search,
+    setSearch,
+    deleteTarget,
+    setDeleteTarget,
+    editTarget,
+    setEditTarget,
+    deleteMutation,
+    isSavePending,
+    handleSave,
   } = useManageHopecasts();
 
   if (isErrorCasts) {
@@ -25,9 +34,16 @@ export default function ManageHopecastsPage() {
         <div className="h-16 w-16 rounded-2xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
           <AlertCircle className="h-8 w-8 text-red-500" />
         </div>
-        <h2 className="text-2xl font-black tracking-tight">Failed to load hopecasts</h2>
-        <p className="text-zinc-500 font-medium">Check your connection or try again.</p>
-        <Button onClick={() => refetch()} className="mt-2 h-10 px-6 rounded-xl bg-brand text-brand-foreground font-bold">
+        <h2 className="text-2xl font-black tracking-tight">
+          Failed to load hopecasts
+        </h2>
+        <p className="text-zinc-500 font-medium">
+          Check your connection or try again.
+        </p>
+        <Button
+          onClick={() => refetch()}
+          className="mt-2 h-10 px-6 rounded-xl bg-brand text-brand-foreground font-bold"
+        >
           <RefreshCw className="h-4 w-4 mr-2" /> Retry
         </Button>
       </div>
@@ -65,7 +81,9 @@ export default function ManageHopecastsPage() {
             <p className="text-zinc-500 font-medium text-sm sm:text-base">
               Publish and organise your audio content.
               {!isLoadingCasts && (
-                <span className="ml-2 text-zinc-400">{hopecasts.length} total</span>
+                <span className="ml-2 text-zinc-400">
+                  {hopecasts.length} total
+                </span>
               )}
             </p>
           </div>
@@ -92,16 +110,22 @@ export default function ManageHopecastsPage() {
 
         {/* ── Mobile: card list ── */}
         <div className="md:hidden space-y-3">
-          {isLoadingCasts && [...Array(3)].map((_, i) => (
-            <div key={i} className="h-28 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse" />
-          ))}
+          {isLoadingCasts &&
+            [...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="h-28 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse"
+              />
+            ))}
           {!isLoadingCasts && filtered.length === 0 && (
             <div className="flex flex-col items-center gap-3 py-16">
               <div className="h-12 w-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                 <Radio className="h-5 w-5 text-zinc-400" />
               </div>
               <p className="font-bold text-zinc-500">
-                {search ? 'No hopecasts match your search.' : 'No hopecasts yet.'}
+                {search
+                  ? 'No hopecasts match your search.'
+                  : 'No hopecasts yet.'}
               </p>
               <Button
                 onClick={() => setEditTarget(null)}
@@ -112,14 +136,15 @@ export default function ManageHopecastsPage() {
               </Button>
             </div>
           )}
-          {!isLoadingCasts && filtered.map((cast) => (
-            <MobileCard
-              key={cast.id}
-              cast={cast}
-              onEdit={() => setEditTarget(cast)}
-              onDelete={() => setDeleteTarget(cast)}
-            />
-          ))}
+          {!isLoadingCasts &&
+            filtered.map((cast) => (
+              <MobileCard
+                key={cast.id}
+                cast={cast}
+                onEdit={() => setEditTarget(cast)}
+                onDelete={() => setDeleteTarget(cast)}
+              />
+            ))}
         </div>
 
         {/* ── Desktop: table ── */}

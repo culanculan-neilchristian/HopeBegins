@@ -11,13 +11,24 @@ import type { PrayerStatus } from '@/types/admin';
 
 export default function ManagePrayersPage() {
   const {
-    filtered, prayers, isLoading, isError, refetch,
-    search, setSearch,
+    filtered,
+    prayers,
+    isLoading,
+    isError,
+    refetch,
+    search,
+    setSearch,
     expandedId,
-    deleteTarget, setDeleteTarget,
-    statusFilter, setStatusFilter,
-    deleteMutation, statusMutation,
-    handleToggle, handleMarkPrayed, handleStatusChange, handleSendFollowUp,
+    deleteTarget,
+    setDeleteTarget,
+    statusFilter,
+    setStatusFilter,
+    deleteMutation,
+    statusMutation,
+    handleToggle,
+    handleMarkPrayed,
+    handleStatusChange,
+    handleSendFollowUp,
   } = useManagePrayers();
 
   if (isError) {
@@ -26,9 +37,16 @@ export default function ManagePrayersPage() {
         <div className="h-16 w-16 rounded-2xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
           <AlertCircle className="h-8 w-8 text-red-500" />
         </div>
-        <h2 className="text-2xl font-black tracking-tight">Failed to load prayers</h2>
-        <p className="text-zinc-500 font-medium">Check your connection or try again.</p>
-        <Button onClick={() => refetch()} className="mt-2 h-10 px-6 rounded-xl bg-brand text-brand-foreground font-bold">
+        <h2 className="text-2xl font-black tracking-tight">
+          Failed to load prayers
+        </h2>
+        <p className="text-zinc-500 font-medium">
+          Check your connection or try again.
+        </p>
+        <Button
+          onClick={() => refetch()}
+          className="mt-2 h-10 px-6 rounded-xl bg-brand text-brand-foreground font-bold"
+        >
           <RefreshCw className="h-4 w-4 mr-2" /> Retry
         </Button>
       </div>
@@ -56,14 +74,18 @@ export default function ManagePrayersPage() {
             <p className="text-zinc-500 font-medium text-sm sm:text-base">
               Review, moderate, and organize community requests.
               {!isLoading && (
-                <span className="ml-2 text-zinc-400">{prayers.length} total</span>
+                <span className="ml-2 text-zinc-400">
+                  {prayers.length} total
+                </span>
               )}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-shrink-0">
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as PrayerStatus | 'ALL')}
+              onChange={(e) =>
+                setStatusFilter(e.target.value as PrayerStatus | 'ALL')
+              }
               className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 h-10 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/30 w-full sm:w-auto"
             >
               <option value="ALL">All Statuses</option>
@@ -86,32 +108,42 @@ export default function ManagePrayersPage() {
 
         {/* ── Mobile: Card list ── */}
         <div className="md:hidden space-y-3">
-          {isLoading && [...Array(4)].map((_, i) => (
-            <div key={i} className="h-24 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse" />
-          ))}
+          {isLoading &&
+            [...Array(4)].map((_, i) => (
+              <div
+                key={i}
+                className="h-24 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse"
+              />
+            ))}
           {!isLoading && filtered.length === 0 && (
             <div className="flex flex-col items-center gap-3 py-16">
               <div className="h-12 w-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                 <AlertCircle className="h-5 w-5 text-zinc-400" />
               </div>
               <p className="font-bold text-zinc-500">
-                {search || statusFilter !== 'ALL' ? 'No prayers match your filters.' : 'No prayer requests yet.'}
+                {search || statusFilter !== 'ALL'
+                  ? 'No prayers match your filters.'
+                  : 'No prayer requests yet.'}
               </p>
             </div>
           )}
-          {!isLoading && filtered.map((prayer) => (
-            <MobileCard
-              key={prayer.id}
-              prayer={prayer}
-              isExpanded={expandedId === prayer.id}
-              isUpdating={statusMutation.isPending && statusMutation.variables?.id === prayer.id}
-              onToggle={() => handleToggle(prayer.id)}
-              onMarkPrayed={() => handleMarkPrayed(prayer)}
-              onStatusChange={(status) => handleStatusChange(prayer, status)}
-              onSendFollowUp={() => handleSendFollowUp(prayer)}
-              onDelete={() => setDeleteTarget(prayer)}
-            />
-          ))}
+          {!isLoading &&
+            filtered.map((prayer) => (
+              <MobileCard
+                key={prayer.id}
+                prayer={prayer}
+                isExpanded={expandedId === prayer.id}
+                isUpdating={
+                  statusMutation.isPending &&
+                  statusMutation.variables?.id === prayer.id
+                }
+                onToggle={() => handleToggle(prayer.id)}
+                onMarkPrayed={() => handleMarkPrayed(prayer)}
+                onStatusChange={(status) => handleStatusChange(prayer, status)}
+                onSendFollowUp={() => handleSendFollowUp(prayer)}
+                onDelete={() => setDeleteTarget(prayer)}
+              />
+            ))}
         </div>
 
         {/* ── Desktop: Table ── */}
