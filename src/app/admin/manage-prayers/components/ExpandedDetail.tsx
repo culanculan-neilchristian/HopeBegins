@@ -6,6 +6,7 @@ interface ExpandedDetailProps {
   prayer: Prayer;
   onMarkPrayed: () => void;
   onStatusChange: (status: PrayerStatus) => void;
+  onAssign: () => void;
   onSendFollowUp: () => void;
   isPending: boolean;
 }
@@ -14,6 +15,7 @@ export function ExpandedDetail({
   prayer,
   onMarkPrayed,
   onStatusChange,
+  onAssign,
   onSendFollowUp,
   isPending,
 }: ExpandedDetailProps) {
@@ -40,12 +42,12 @@ export function ExpandedDetail({
         {prayer.status === 'NEW' && (
           <Button
             variant="ghost"
-            onClick={() => onStatusChange('ASSIGNED')}
+            onClick={onAssign}
             disabled={isPending}
             className="h-8 sm:h-9 px-3 sm:px-5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs uppercase tracking-widest border-0"
           >
             <UserCheck className="h-3 w-3 mr-1.5" />
-            Mark as Assigned
+            Assign to Carrier
           </Button>
         )}
 

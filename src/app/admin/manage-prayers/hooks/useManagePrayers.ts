@@ -10,12 +10,24 @@ export function useManagePrayers() {
   const [search, setSearch] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Prayer | null>(null);
+  const [assignTarget, setAssignTarget] = useState<Prayer | null>(null);
   const [statusFilter, setStatusFilter] = useState<PrayerStatus | 'ALL'>('ALL');
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin', 'prayers'],
     queryFn: () => adminService.getPrayers(),
   });
+
+  const { data: carriersData } = useQuery({
+    queryKey: ['admin', 'carriers'],
+    queryFn: () => adminService.getCarriers(),
+  });
+
+  const carriers = useMemo(() => {
+    return Array.isArray(carriersData)
+      ? carriersData
+      : ((carriersData as any)?.results ?? []);
+  }, [carriersData]);
 
   const prayers: Prayer[] = useMemo(() => {
     return Array.isArray(data) ? data : ((data as any)?.results ?? []);
@@ -55,6 +67,17 @@ export function useManagePrayers() {
     onError: () => notify.error('Failed to update prayer status.'),
   });
 
+  const assignMutation = useMutation({
+    mutationFn: ({ id, carrierId }: { id: string; carrierId: string }) =>
+      adminService.assignPrayer(id, { carrier_id: carrierId }),
+    onSuccess: () => {
+      notify.success('Prayer assigned successfully.');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'prayers'] });
+      setAssignTarget(null);
+    },
+    onError: () => notify.error('Failed to assign prayer.'),
+  });
+
   const handleToggle = useCallback(
     (id: string) => setExpandedId((prev) => (prev === id ? null : id)),
     []
@@ -81,6 +104,7 @@ export function useManagePrayers() {
   return {
     // data
     prayers,
+    carriers,
     filtered,
     isLoading,
     isError,
@@ -91,11 +115,14 @@ export function useManagePrayers() {
     expandedId,
     deleteTarget,
     setDeleteTarget,
+    assignTarget,
+    setAssignTarget,
     statusFilter,
     setStatusFilter,
     // mutations
     deleteMutation,
     statusMutation,
+    assignMutation,
     // handlers
     handleToggle,
     handleMarkPrayed,

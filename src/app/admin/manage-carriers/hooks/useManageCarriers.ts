@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
 import { notify } from '@/lib/notifications';
 import type { HopeCarrier } from '@/types/admin';
+
+export type SortOption = 'recent' | 'oldest' | 'name' | 'prayers';
 
 export function useManageCarriers() {
   const queryClient = useQueryClient();
@@ -10,6 +12,7 @@ export function useManageCarriers() {
   const [filterStatus, setFilterStatus] = useState<
     'ALL' | 'PENDING' | 'ACTIVE'
   >('ALL');
+  const [sortBy, setSortBy] = useState<SortOption>('recent');
   const [selectedCarrier, setSelectedCarrier] = useState<HopeCarrier | null>(
     null
   );
@@ -33,19 +36,38 @@ export function useManageCarriers() {
     },
   });
 
-  const filteredCarriers = carriers.filter((carrier) => {
-    const matchesSearch =
-      carrier.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      carrier.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      carrier.email.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredCarriers = useMemo(() => {
+    const filtered = carriers.filter((carrier) => {
+      const matchesSearch =
+        carrier.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        carrier.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        carrier.email.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesStatus =
-      filterStatus === 'ALL' ||
-      (filterStatus === 'PENDING' && !carrier.is_approved) ||
-      (filterStatus === 'ACTIVE' && carrier.is_approved);
+      const matchesStatus =
+        filterStatus === 'ALL' ||
+        (filterStatus === 'PENDING' && !carrier.is_approved) ||
+        (filterStatus === 'ACTIVE' && carrier.is_approved);
 
-    return matchesSearch && matchesStatus;
-  });
+      return matchesSearch && matchesStatus;
+    });
+
+    return [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case 'recent':
+          return new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime();
+        case 'oldest':
+          return new Date(a.date_joined).getTime() - new Date(b.date_joined).getTime();
+        case 'name':
+          return `${a.first_name} ${a.last_name}`.localeCompare(
+            `${b.first_name} ${b.last_name}`
+          );
+        case 'prayers':
+          return b.prayer_count - a.prayer_count;
+        default:
+          return 0;
+      }
+    });
+  }, [carriers, searchQuery, filterStatus, sortBy]);
 
   const handleApprove = (
     e: React.MouseEvent | React.FocusEvent,
@@ -63,6 +85,8 @@ export function useManageCarriers() {
     setSearchQuery,
     filterStatus,
     setFilterStatus,
+    sortBy,
+    setSortBy,
     selectedCarrier,
     setSelectedCarrier,
     approveMutation,
