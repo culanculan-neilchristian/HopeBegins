@@ -10,9 +10,8 @@ import {
   Download,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useDonations, CHART_DATA } from './hooks/useDonations';
+import { useDonations } from './hooks/useDonations';
 import { DonationTable } from './components/DonationTable';
-import { RevenueChart } from './components/RevenueChart';
 
 export default function DonationsPage() {
   const {
@@ -111,9 +110,6 @@ export default function DonationsPage() {
           </motion.div>
         ))}
       </div>
-
-      {/* ── Chart ── */}
-      <RevenueChart data={CHART_DATA} />
 
       {/* ── Table ── */}
       <DonationTable
