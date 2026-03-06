@@ -41,6 +41,7 @@ interface PrayerTableRowProps {
   onToggle: () => void;
   onMarkPrayed: () => void;
   onStatusChange: (status: PrayerStatus) => void;
+  onAssign: () => void;
   onSendFollowUp: () => void;
   onDelete: () => void;
 }
@@ -52,6 +53,7 @@ function PrayerTableRow({
   onToggle,
   onMarkPrayed,
   onStatusChange,
+  onAssign,
   onSendFollowUp,
   onDelete,
 }: PrayerTableRowProps) {
@@ -123,6 +125,7 @@ function PrayerTableRow({
                 prayer={prayer}
                 onMarkPrayed={onMarkPrayed}
                 onStatusChange={onStatusChange}
+                onAssign={onAssign}
                 onSendFollowUp={onSendFollowUp}
                 isPending={isUpdating}
               />
@@ -146,6 +149,7 @@ interface PrayerTableProps {
   onToggle: (id: string) => void;
   onMarkPrayed: (p: Prayer) => void;
   onStatusChange: (p: Prayer, s: PrayerStatus) => void;
+  onAssign: (p: Prayer) => void;
   onSendFollowUp: (p: Prayer) => void;
   onDelete: (p: Prayer) => void;
 }
@@ -161,6 +165,7 @@ export function PrayerTable({
   onToggle,
   onMarkPrayed,
   onStatusChange,
+  onAssign,
   onSendFollowUp,
   onDelete,
 }: PrayerTableProps) {
@@ -216,6 +221,7 @@ export function PrayerTable({
                 onToggle={() => onToggle(prayer.id)}
                 onMarkPrayed={() => onMarkPrayed(prayer)}
                 onStatusChange={(status) => onStatusChange(prayer, status)}
+                onAssign={() => onAssign(prayer)}
                 onSendFollowUp={() => onSendFollowUp(prayer)}
                 onDelete={() => onDelete(prayer)}
               />

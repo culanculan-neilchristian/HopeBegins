@@ -15,6 +15,8 @@ export default function ManageCarriersPage() {
     setSearchQuery,
     filterStatus,
     setFilterStatus,
+    sortBy,
+    setSortBy,
     selectedCarrier,
     setSelectedCarrier,
     approveMutation,
@@ -68,6 +70,18 @@ export default function ManageCarriersPage() {
               </button>
             ))}
           </div>
+
+          {/* Sort Dropdown */}
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 h-10 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/30 w-full sm:w-auto"
+          >
+            <option value="recent">Recent</option>
+            <option value="oldest">Oldest</option>
+            <option value="name">Name (A–Z)</option>
+            <option value="prayers">Most Prayers</option>
+          </select>
 
           {/* Search Bar */}
           <div className="relative flex-1 sm:w-64">
