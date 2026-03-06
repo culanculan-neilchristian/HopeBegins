@@ -38,7 +38,7 @@ export function AssignCarrierModal({
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onCancel}
       />
-      <div className="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 w-full max-w-md shadow-2xl shadow-black/20 flex flex-col max-h-[90vh]">
+      <div className="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 w-full max-w-lg shadow-2xl shadow-black/20 flex flex-col max-h-[90vh]">
         <button
           onClick={onCancel}
           className="absolute top-5 right-5 h-8 w-8 flex items-center justify-center rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
