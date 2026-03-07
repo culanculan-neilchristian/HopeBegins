@@ -1,89 +1,51 @@
+'use client';
+
 import { useState, useMemo } from 'react';
-
-export const CHART_DATA = [
-  { name: 'Jan', amount: 4000 },
-  { name: 'Feb', amount: 3000 },
-  { name: 'Mar', amount: 6000 },
-  { name: 'Apr', amount: 8000 },
-  { name: 'May', amount: 5000 },
-  { name: 'Jun', amount: 9000 },
-  { name: 'Jul', amount: 12000 },
-];
-
-export const DONATIONS = [
-  {
-    id: '1',
-    name: 'Grace L.',
-    date: '2026-02-19',
-    type: 'ONE_TIME',
-    amount: 100,
-  },
-  {
-    id: '2',
-    name: 'Anonymous',
-    date: '2026-02-18',
-    type: 'MONTHLY',
-    amount: 25,
-  },
-  {
-    id: '3',
-    name: 'Mark S.',
-    date: '2026-02-17',
-    type: 'ONE_TIME',
-    amount: 50,
-  },
-  {
-    id: '4',
-    name: 'Michael Chen',
-    date: '2026-02-15',
-    type: 'ONE_TIME',
-    amount: 200,
-  },
-  {
-    id: '5',
-    name: 'Emma Watson',
-    date: '2026-02-14',
-    type: 'MONTHLY',
-    amount: 40,
-  },
-  {
-    id: '6',
-    name: 'David Miller',
-    date: '2026-02-12',
-    type: 'ONE_TIME',
-    amount: 75,
-  },
-  {
-    id: '7',
-    name: 'Anonymous',
-    date: '2026-02-10',
-    type: 'MONTHLY',
-    amount: 100,
-  },
-  {
-    id: '8',
-    name: 'Sarah Johnson',
-    date: '2026-02-08',
-    type: 'ONE_TIME',
-    amount: 500,
-  },
-];
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from '@tanstack/react-query';
+import { adminService } from '@/services/adminService';
+import { notify } from '@/lib/notifications';
+import { Donation } from '@/types/admin';
 
 export function useDonations() {
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState<'ALL' | 'ONE_TIME' | 'MONTHLY'>(
     'ALL'
   );
   const [sortBy, setSortBy] = useState<'date' | 'amount'>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
-  const totalRaised = DONATIONS.reduce((s, d) => s + d.amount, 0);
-  const totalDonors = DONATIONS.length;
-  const monthlyTotal = DONATIONS.filter((d) => d.type === 'MONTHLY').reduce(
-    (s, d) => s + d.amount,
-    0
+  // undefined = closed, null = create, Donation = edit
+  const [editTarget, setEditTarget] = useState<Donation | null | undefined>(
+    undefined
   );
-  const avgDonation = Math.round(totalRaised / DONATIONS.length);
+  const [deleteTarget, setDeleteTarget] = useState<Donation | null>(null);
+
+  const {
+    data: paginatedDonations,
+    isLoading: isLoadingList,
+    isFetching: isFetchingList,
+    refetch: refetchList,
+  } = useQuery({
+    queryKey: ['admin', 'donations', page, search, typeFilter],
+    queryFn: () => adminService.getDonations(page, search, typeFilter),
+    placeholderData: keepPreviousData,
+  });
+
+  const {
+    data: stats,
+    isLoading: isLoadingStats,
+    refetch: refetchStats,
+  } = useQuery({
+    queryKey: ['admin', 'donations', 'overview'],
+    queryFn: () => adminService.getDonationOverview(),
+  });
 
   const handleSort = (field: 'date' | 'amount') => {
     if (sortBy === field) setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
@@ -93,38 +55,102 @@ export function useDonations() {
     }
   };
 
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase();
-    return [...DONATIONS]
-      .filter((d) => {
-        const matchSearch = d.name.toLowerCase().includes(q);
-        const matchType = typeFilter === 'ALL' || d.type === typeFilter;
-        return matchSearch && matchType;
-      })
-      .sort((a, b) => {
-        const mul = sortDir === 'asc' ? 1 : -1;
-        if (sortBy === 'date')
-          return (
-            mul * (new Date(a.date).getTime() - new Date(b.date).getTime())
-          );
-        return mul * (a.amount - b.amount);
-      });
-  }, [search, typeFilter, sortBy, sortDir]);
+  const createMutation = useMutation({
+    mutationFn: (payload: Omit<Donation, 'id'>) =>
+      adminService.createDonation(payload),
+    onSuccess: () => {
+      notify.success('Donation recorded successfully.');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'donations'] });
+      setEditTarget(undefined);
+    },
+    onError: (err: any) =>
+      notify.error(err.message || 'Failed to record donation.'),
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: Partial<Donation> }) =>
+      adminService.updateDonation(id, payload),
+    onSuccess: () => {
+      notify.success('Donation updated successfully.');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'donations'] });
+      setEditTarget(undefined);
+    },
+    onError: (err: any) =>
+      notify.error(err.message || 'Failed to update donation.'),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => adminService.deleteDonation(id),
+    onSuccess: () => {
+      notify.success('Donation record deleted.');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'donations'] });
+      setDeleteTarget(null);
+    },
+    onError: (err: any) =>
+      notify.error(err.message || 'Failed to delete donation.'),
+  });
+
+  const sortedResults = useMemo(() => {
+    const raw = paginatedDonations?.results ?? [];
+    return [...raw].sort((a, b) => {
+      const mul = sortDir === 'asc' ? 1 : -1;
+      if (sortBy === 'date') {
+        return mul * (new Date(a.date).getTime() - new Date(b.date).getTime());
+      }
+      return mul * (a.amount - b.amount);
+    });
+  }, [paginatedDonations, sortBy, sortDir]);
 
   return {
+    // Data
+    filtered: sortedResults,
+    stats: stats || {
+      totalRaised: 0,
+      totalDonors: 0,
+      monthlyTotal: 0,
+      avgDonation: 0,
+    },
+    isLoading: isLoadingList || isLoadingStats,
+    isFetching: isFetchingList,
+    totalCount: paginatedDonations?.count ?? 0,
+    totalPages: Math.ceil((paginatedDonations?.count ?? 0) / 10),
+
+    // State
     search,
-    setSearch,
+    setSearch: (val: string) => {
+      setSearch(val);
+      setPage(1);
+    },
+    page,
+    setPage,
     typeFilter,
-    setTypeFilter,
+    setTypeFilter: (val: 'ALL' | 'ONE_TIME' | 'MONTHLY') => {
+      setTypeFilter(val);
+      setPage(1);
+    },
     sortBy,
     sortDir,
     handleSort,
-    filtered,
-    stats: {
-      totalRaised,
-      totalDonors,
-      monthlyTotal,
-      avgDonation,
+
+    // Modals
+    editTarget,
+    setEditTarget,
+    deleteTarget,
+    setDeleteTarget,
+
+    // Mutations
+    createMutation,
+    updateMutation,
+    deleteMutation,
+    isPending:
+      createMutation.isPending ||
+      updateMutation.isPending ||
+      deleteMutation.isPending,
+
+    // Utils
+    refetchAll: () => {
+      refetchList();
+      refetchStats();
     },
   };
 }

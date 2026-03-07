@@ -1,14 +1,22 @@
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
-
-interface Donation {
-  id: string;
-  name: string;
-  date: string;
-  type: string;
-  amount: number;
-}
+import { Button } from '@/components/ui/button';
+import {
+  Search,
+  ChevronUp,
+  ChevronDown,
+  ChevronsUpDown,
+  Edit2,
+  Trash2,
+  MoreHorizontal,
+} from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Donation } from '@/types/admin';
 
 function TypeBadge({ type }: { type: string }) {
   const isMonthly = type === 'MONTHLY';
@@ -60,6 +68,8 @@ interface DonationTableProps {
   sortBy: 'date' | 'amount';
   sortDir: 'asc' | 'desc';
   onSort: (field: 'date' | 'amount') => void;
+  onEdit: (d: Donation) => void;
+  onDelete: (d: Donation) => void;
 }
 
 export function DonationTable({
@@ -71,6 +81,8 @@ export function DonationTable({
   sortBy,
   sortDir,
   onSort,
+  onEdit,
+  onDelete,
 }: DonationTableProps) {
   return (
     <Card className="border border-zinc-100 dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-900">
@@ -120,7 +132,7 @@ export function DonationTable({
       </CardHeader>
 
       <div className="overflow-x-auto">
-        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 px-6 py-3 bg-zinc-50 dark:bg-zinc-800/50">
+        <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-4 px-6 py-3 bg-zinc-50 dark:bg-zinc-800/50">
           <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
             Donor
           </span>
@@ -139,6 +151,7 @@ export function DonationTable({
           >
             Amount <SortIcon field="amount" sortBy={sortBy} dir={sortDir} />
           </button>
+          <span className="w-10"></span>
         </div>
 
         <div className="divide-y divide-zinc-50 dark:divide-zinc-800/50">
@@ -152,7 +165,7 @@ export function DonationTable({
             filtered.map((d) => (
               <div
                 key={d.id}
-                className="grid grid-cols-[1fr_auto_auto_auto] gap-4 items-center px-6 py-4 hover:bg-zinc-50/60 dark:hover:bg-zinc-800/20 transition-colors"
+                className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-4 items-center px-6 py-4 hover:bg-zinc-50/60 dark:hover:bg-zinc-800/20 transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="h-8 w-8 rounded-xl bg-brand/5 dark:bg-brand/10 flex items-center justify-center text-brand font-black text-xs flex-shrink-0">
@@ -165,11 +178,41 @@ export function DonationTable({
                 <p className="text-xs font-medium text-zinc-400 whitespace-nowrap">
                   {formatDate(d.date)}
                 </p>
-                <TypeBadge type={d.type} />
+                <div className="flex justify-center">
+                  <TypeBadge type={d.donation_type} />
+                </div>
                 <p className="font-black text-sm text-zinc-900 dark:text-zinc-100 tabular-nums text-right whitespace-nowrap">
                   ${d.amount}
-                  {d.type === 'MONTHLY' ? '/mo' : ''}
+                  {d.donation_type === 'MONTHLY' ? '/mo' : ''}
                 </p>
+
+                <div className="flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 rounded-xl"
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="rounded-xl">
+                      <DropdownMenuItem
+                        onClick={() => onEdit(d)}
+                        className="gap-2 font-bold cursor-pointer"
+                      >
+                        <Edit2 className="h-3.5 w-3.5" /> Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => onDelete(d)}
+                        className="gap-2 font-bold text-red-500 focus:text-red-600 focus:bg-red-50 cursor-pointer"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" /> Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             ))
           )}

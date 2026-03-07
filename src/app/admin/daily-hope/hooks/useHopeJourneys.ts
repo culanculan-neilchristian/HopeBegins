@@ -34,12 +34,7 @@ export function useHopeJourneys() {
     isError,
     refetch,
   } = useQuery({
-    queryKey: [
-      'admin',
-      'daily-hope-journeys',
-      page,
-      debouncedSearch,
-    ],
+    queryKey: ['admin', 'daily-hope-journeys', page, debouncedSearch],
     queryFn: () => adminService.getJourneys(page, debouncedSearch),
     placeholderData: keepPreviousData,
   });

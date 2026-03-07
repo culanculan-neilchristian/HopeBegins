@@ -144,11 +144,17 @@ export type DonationType = 'ONE_TIME' | 'MONTHLY';
 
 export interface Donation {
   id: string;
-  name: string; // donor display name or 'Anonymous'
-  email?: string;
-  date: string; // ISO date string
-  type: DonationType;
-  amount: number; // in dollars
+  name: string;
+  amount: number;
+  donation_type: DonationType;
+  date: string;
+}
+
+export interface DonationStats {
+  totalRaised: number;
+  totalDonors: number;
+  monthlyTotal: number;
+  avgDonation: number;
 }
 // ─────────────────────────────────────────────
 // Daily Hope / Journey Types

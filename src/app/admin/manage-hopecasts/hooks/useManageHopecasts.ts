@@ -16,11 +16,18 @@ import type {
 export function useManageHopecasts() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState<Hopecast | null>(null);
   // undefined = modal closed, null = create mode, Hopecast = edit mode
   const [editTarget, setEditTarget] = useState<Hopecast | null | undefined>(
     undefined
   );
+
+  // Reset to page 1 when search change
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
 
   const {
     data: rawHopecasts,
@@ -29,8 +36,8 @@ export function useManageHopecasts() {
     isError: isErrorCasts,
     refetch,
   } = useQuery({
-    queryKey: ['admin', 'hopecasts'],
-    queryFn: () => adminService.getHopecasts(),
+    queryKey: ['admin', 'hopecasts', page, search],
+    queryFn: () => adminService.getHopecasts(page, search),
     placeholderData: keepPreviousData,
   });
 
@@ -40,10 +47,16 @@ export function useManageHopecasts() {
   });
 
   const hopecasts: Hopecast[] = useMemo(() => {
-    return Array.isArray(rawHopecasts)
-      ? rawHopecasts
-      : ((rawHopecasts as any)?.results ?? []);
+    return rawHopecasts?.results ?? [];
   }, [rawHopecasts]);
+
+  const totalCount = useMemo(() => {
+    return rawHopecasts?.count ?? 0;
+  }, [rawHopecasts]);
+
+  const totalPages = useMemo(() => {
+    return Math.max(1, Math.ceil(totalCount / 10)); // HopecastPagination has page_size = 10
+  }, [totalCount]);
 
   const categories: HopecastCategory[] = useMemo(() => {
     return Array.isArray(rawCategories)
@@ -51,16 +64,7 @@ export function useManageHopecasts() {
       : ((rawCategories as any)?.results ?? []);
   }, [rawCategories]);
 
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase();
-    return hopecasts.filter(
-      (c) =>
-        c.title.toLowerCase().includes(q) ||
-        (c.name && c.name.toLowerCase().includes(q)) ||
-        (c.verse && c.verse.toLowerCase().includes(q)) ||
-        c.category_details?.some((cat) => cat.name.toLowerCase().includes(q))
-    );
-  }, [hopecasts, search]);
+  const filtered = hopecasts; // server side filtering now
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => adminService.deleteHopecast(id),
@@ -121,11 +125,15 @@ export function useManageHopecasts() {
     refetch,
     // state
     search,
-    setSearch,
+    setSearch: handleSearchChange,
     deleteTarget,
     setDeleteTarget,
     editTarget,
     setEditTarget,
+    page,
+    setPage,
+    totalCount,
+    totalPages,
     // mutations
     deleteMutation,
     isSavePending: createMutation.isPending || updateMutation.isPending,

@@ -11,6 +11,8 @@ import type {
   AdminStats,
   HopeJourney,
   PaginatedResponse,
+  Donation,
+  DonationStats,
 } from '@/types/admin';
 
 // ─────────────────────────────────────────────
@@ -126,10 +128,16 @@ export const adminService = {
   // ─────────────────────────────────────────────
 
   /**
-   * Fetch all hopecasts.
+   * Fetch all hopecasts - paginated with filtering.
    */
-  getHopecasts: async (): Promise<Hopecast[]> => {
-    return fetchWithAuth(`${config.API_URL}/hopecasts/`, {
+  getHopecasts: async (
+    page = 1,
+    search = ''
+  ): Promise<PaginatedResponse<Hopecast>> => {
+    let url = `${config.API_URL}/hopecasts/?page=${page}`;
+    if (search) url += `&search=${search}`;
+
+    return fetchWithAuth(url, {
       headers: authHeader(),
     });
   },
@@ -233,6 +241,71 @@ export const adminService = {
    */
   deleteCarrier: async (id: string): Promise<null> => {
     return fetchWithAuth(`${config.API_URL}/users/${id}/`, {
+      method: 'DELETE',
+      headers: authHeader(),
+    });
+  },
+
+  // ─────────────────────────────────────────────
+  // Donations
+  // ─────────────────────────────────────────────
+
+  /**
+   * Fetch all donations - paginated.
+   */
+  getDonations: async (
+    page = 1,
+    search = '',
+    type: 'ALL' | 'ONE_TIME' | 'MONTHLY' = 'ALL'
+  ): Promise<PaginatedResponse<Donation>> => {
+    let url = `${config.API_URL}/donations/?page=${page}`;
+    if (search) url += `&search=${search}`;
+    if (type !== 'ALL') url += `&donation_type=${type}`;
+
+    return fetchWithAuth(url, {
+      headers: authHeader(),
+    });
+  },
+
+  /**
+   * Get overall donation stats (total raised, donor count, etc.).
+   */
+  getDonationOverview: async (): Promise<DonationStats> => {
+    return fetchWithAuth(`${config.API_URL}/donations/overview/`, {
+      headers: authHeader(),
+    });
+  },
+
+  /**
+   * Manually record a new donation.
+   */
+  createDonation: async (payload: Omit<Donation, 'id'>): Promise<Donation> => {
+    return fetchWithAuth(`${config.API_URL}/donations/`, {
+      method: 'POST',
+      headers: authHeader(),
+      body: JSON.stringify(payload),
+    });
+  },
+
+  /**
+   * Update an existing donation record.
+   */
+  updateDonation: async (
+    id: string,
+    payload: Partial<Donation>
+  ): Promise<Donation> => {
+    return fetchWithAuth(`${config.API_URL}/donations/${id}/`, {
+      method: 'PATCH',
+      headers: authHeader(),
+      body: JSON.stringify(payload),
+    });
+  },
+
+  /**
+   * Delete a donation record.
+   */
+  deleteDonation: async (id: string): Promise<null> => {
+    return fetchWithAuth(`${config.API_URL}/donations/${id}/`, {
       method: 'DELETE',
       headers: authHeader(),
     });

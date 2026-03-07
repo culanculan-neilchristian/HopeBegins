@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Heart,
@@ -9,6 +8,7 @@ import {
   Mail,
   HelpCircle,
   ArrowRight,
+  HandHeart,
 } from 'lucide-react';
 
 // Import the logo directly to ensure Next.js handles the path correctly
@@ -55,6 +55,13 @@ export default function LandingPage() {
       href: '/get-started',
       color: 'bg-rose-50 text-rose-600 dark:bg-rose-900/20 dark:text-rose-400',
     },
+    {
+      title: 'I Want To Give Hope',
+      description: 'Plant a Hope Seed — support the mission',
+      icon: HandHeart,
+      href: '/give-hope',
+      color: 'bg-teal-50 text-teal-600 dark:bg-teal-900/20 dark:text-teal-400',
+    },
   ];
 
   return (
@@ -87,31 +94,12 @@ export default function LandingPage() {
             Your journey to overcoming anxiety, depression, and hopelessness
             starts here. You are not alone.
           </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/get-started">
-              <Button className="bg-[#6b634d] hover:bg-[#5a5341] text-white font-poppins font-bold uppercase tracking-widest text-xs h-12 px-8 rounded-full group">
-                Start Your Journey
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Button
-              variant="outline"
-              className="border-zinc-200 dark:border-zinc-800 font-poppins font-bold uppercase tracking-widest text-xs h-12 px-8 rounded-full"
-            >
-              Watch Our Story
-            </Button>
-          </div>
         </div>
       </section>
 
       {/* Action Cards Section */}
       <section className="px-6 pb-32">
         <div className="max-w-5xl mx-auto space-y-4">
-          <h2 className="text-center text-[11px] font-bold uppercase tracking-[0.3em] text-[#6b634d] mb-10 font-poppins">
-            How can we help you today?
-          </h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {mainActions.map((action, idx) => (
               <Link
