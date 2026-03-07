@@ -6,10 +6,14 @@ export function TestimonialCard() {
         style={{ backgroundColor: '#eff3e8' }}
       >
         <blockquote className="text-zinc-600 dark:text-zinc-300 text-lg font-medium italic leading-relaxed mb-4">
-          &ldquo;I submitted a prayer request at my lowest. Within hours, I received a
-          message that someone had prayed for me. That moment changed everything.&rdquo;
+          &ldquo;I submitted a prayer request at my lowest. Within hours, I
+          received a message that someone had prayed for me. That moment changed
+          everything.&rdquo;
         </blockquote>
-        <cite className="text-sm font-bold not-italic" style={{ color: '#acc487' }}>
+        <cite
+          className="text-sm font-bold not-italic"
+          style={{ color: '#acc487' }}
+        >
           — A HopeBegins Community Member
         </cite>
       </div>

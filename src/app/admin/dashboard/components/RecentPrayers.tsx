@@ -43,11 +43,13 @@ export function RecentPrayers({ prayers }: RecentPrayersProps) {
                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
                   prayer.status === 'NEW'
                     ? 'bg-amber-50 text-amber-600 dark:bg-amber-900/20'
-                    : prayer.status === 'PRAYED'
+                    : prayer.status === 'COMPLETED'
                       ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20'
                       : prayer.status === 'ASSIGNED'
                         ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20'
-                        : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800'
+                        : prayer.status === 'ON_PROGRESS'
+                          ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20'
+                          : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800'
                 }`}
               >
                 {prayer.status}

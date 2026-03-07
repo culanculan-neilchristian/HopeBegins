@@ -1,8 +1,24 @@
 const ALLOCATIONS = [
-  { percent: '40%', label: 'Technology & Platform', description: 'Keeping HopeBegins accessible and free for everyone' },
-  { percent: '30%', label: 'Content Creation', description: 'Producing HopeCasts, devotionals, and Daily Hope Drops' },
-  { percent: '20%', label: 'Outreach & Growth', description: 'Reaching more people who need hope' },
-  { percent: '10%', label: 'Operations', description: 'Supporting the team and volunteers behind HopeBegins' },
+  {
+    percent: '40%',
+    label: 'Technology & Platform',
+    description: 'Keeping HopeBegins accessible and free for everyone',
+  },
+  {
+    percent: '30%',
+    label: 'Content Creation',
+    description: 'Producing HopeCasts, devotionals, and Daily Hope Drops',
+  },
+  {
+    percent: '20%',
+    label: 'Outreach & Growth',
+    description: 'Reaching more people who need hope',
+  },
+  {
+    percent: '10%',
+    label: 'Operations',
+    description: 'Supporting the team and volunteers behind HopeBegins',
+  },
 ];
 
 export function AllocationBreakdown() {
@@ -22,8 +38,12 @@ export function AllocationBreakdown() {
                 {item.percent}
               </div>
               <div>
-                <p className="font-bold text-zinc-700 dark:text-zinc-200 text-sm">{item.label}</p>
-                <p className="text-xs text-zinc-400 leading-relaxed mt-0.5">{item.description}</p>
+                <p className="font-bold text-zinc-700 dark:text-zinc-200 text-sm">
+                  {item.label}
+                </p>
+                <p className="text-xs text-zinc-400 leading-relaxed mt-0.5">
+                  {item.description}
+                </p>
               </div>
             </div>
           ))}

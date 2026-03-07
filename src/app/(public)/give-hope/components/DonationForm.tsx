@@ -52,7 +52,10 @@ export function DonationForm() {
             className="h-4 w-4 rounded border-zinc-300 focus:ring-2"
             style={{ accentColor: '#acc487' }}
           />
-          <label htmlFor="isMonthly" className="text-sm text-zinc-500 font-medium cursor-pointer">
+          <label
+            htmlFor="isMonthly"
+            className="text-sm text-zinc-500 font-medium cursor-pointer"
+          >
             Make this a monthly Hope Seed
           </label>
         </div>

@@ -1,11 +1,20 @@
-import { Heart, Shield, Headphones, Mail, Globe, MessageSquare, Users, Sparkles } from 'lucide-react';
+import {
+  Heart,
+  Shield,
+  Headphones,
+  Mail,
+  Globe,
+  MessageSquare,
+  Users,
+} from 'lucide-react';
 
 const STATS = [
   {
     icon: Heart,
     value: '2,847',
     label: 'Prayers Lifted',
-    description: 'Individual prayer requests received and prayed over by our Hope Carriers',
+    description:
+      'Individual prayer requests received and prayed over by our Hope Carriers',
   },
   {
     icon: Shield,
@@ -23,25 +32,29 @@ const STATS = [
     icon: Mail,
     value: '1,263',
     label: 'Daily Hope Drops Subscribers',
-    description: 'Individuals on the 21-day journey receiving hope in their inbox',
+    description:
+      'Individuals on the 21-day journey receiving hope in their inbox',
   },
   {
     icon: Heart,
     value: '847',
     label: 'Hopeful Beginning Journeys',
-    description: "People who started their journey from 'I don't have hope' to finding it",
+    description:
+      "People who started their journey from 'I don't have hope' to finding it",
   },
   {
     icon: Globe,
     value: '23',
     label: 'Countries Reached',
-    description: 'Hope knows no borders — people from around the world are finding hope',
+    description:
+      'Hope knows no borders — people from around the world are finding hope',
   },
   {
     icon: MessageSquare,
     value: '5,312',
     label: 'Hope AI Conversations',
-    description: 'Faith-filled conversations with Hope AI for encouragement and support',
+    description:
+      'Faith-filled conversations with Hope AI for encouragement and support',
   },
   {
     icon: Users,
@@ -59,7 +72,8 @@ export function ImpactStats() {
           Your Impact
         </h2>
         <p className="text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed max-w-md mx-auto">
-          Every Hope Seed you plant helps us reach more people. Here&apos;s what we&apos;ve accomplished together.
+          Every Hope Seed you plant helps us reach more people. Here&apos;s what
+          we&apos;ve accomplished together.
         </p>
       </div>
 
@@ -70,15 +84,22 @@ export function ImpactStats() {
             className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow duration-300"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 rounded-xl" style={{ backgroundColor: '#eff3e8' }}>
+              <div
+                className="p-2 rounded-xl"
+                style={{ backgroundColor: '#eff3e8' }}
+              >
                 <stat.icon className="h-4 w-4" style={{ color: '#acc487' }} />
               </div>
               <span className="text-2xl font-bold text-zinc-800 dark:text-zinc-100 font-poppins">
                 {stat.value}
               </span>
             </div>
-            <p className="text-sm font-bold text-zinc-700 dark:text-zinc-200 mb-1">{stat.label}</p>
-            <p className="text-xs text-zinc-400 leading-relaxed">{stat.description}</p>
+            <p className="text-sm font-bold text-zinc-700 dark:text-zinc-200 mb-1">
+              {stat.label}
+            </p>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              {stat.description}
+            </p>
           </div>
         ))}
       </div>

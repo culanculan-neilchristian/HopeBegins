@@ -61,8 +61,19 @@ export function useManageCarriers() {
     }
   }, [sortBy]);
 
-  const { data: paginatedData, isLoading, isFetching } = useQuery({
-    queryKey: ['admin', 'carriers', page, debouncedSearch, filterStatus, backendOrdering],
+  const {
+    data: paginatedData,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: [
+      'admin',
+      'carriers',
+      page,
+      debouncedSearch,
+      filterStatus,
+      backendOrdering,
+    ],
     queryFn: () =>
       adminService.getCarriers(
         page,

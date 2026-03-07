@@ -5,7 +5,10 @@ interface SuggestedRepliesProps {
   disabled: boolean;
 }
 
-export function SuggestedReplies({ onSelect, disabled }: SuggestedRepliesProps) {
+export function SuggestedReplies({
+  onSelect,
+  disabled,
+}: SuggestedRepliesProps) {
   return (
     <div className="flex flex-wrap gap-2 px-4 py-3 border-t border-zinc-100 dark:border-zinc-800">
       {SUGGESTED_REPLIES.map((reply) => (

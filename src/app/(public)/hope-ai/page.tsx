@@ -9,7 +9,14 @@ import { TypingIndicator } from './components/TypingIndicator';
 import { SuggestedReplies } from './components/SuggestedReplies';
 
 export default function HopeAIPage() {
-  const { messages, input, setInput, isTyping, sendMessage, messagesContainerRef } = useHopeAI();
+  const {
+    messages,
+    input,
+    setInput,
+    isTyping,
+    sendMessage,
+    messagesContainerRef,
+  } = useHopeAI();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -29,7 +36,6 @@ export default function HopeAIPage() {
       {/* ── Chat Window ── */}
       <section className="flex-1 px-6 pb-4 max-w-2xl w-full mx-auto flex flex-col">
         <div className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-3xl shadow-sm overflow-hidden flex flex-col">
-
           {/* Messages area */}
           <div
             ref={messagesContainerRef}

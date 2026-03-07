@@ -17,7 +17,8 @@ export default function BeCarrierPage() {
               Apply to Be a Hope Carrier
             </h1>
             <p className="text-lg text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
-              Join our community of believers dedicated to lifting others up through prayer.
+              Join our community of believers dedicated to lifting others up
+              through prayer.
             </p>
           </div>
         </section>

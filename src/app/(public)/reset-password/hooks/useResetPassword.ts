@@ -8,13 +8,15 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { userService } from '@/services/userService';
 import { notify } from '@/lib/notifications';
 
-const resetPasswordSchema = z.object({
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  confirm_password: z.string(),
-}).refine((data) => data.password === data.confirm_password, {
-  message: "Passwords don't match",
-  path: ["confirm_password"],
-});
+const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+    confirm_password: z.string(),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: "Passwords don't match",
+    path: ['confirm_password'],
+  });
 
 type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 

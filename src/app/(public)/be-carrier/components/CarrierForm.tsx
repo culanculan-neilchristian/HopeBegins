@@ -164,7 +164,8 @@ export function CarrierForm() {
                         htmlFor="agreedToGuidelines"
                         className="text-sm text-zinc-500 font-medium cursor-pointer"
                       >
-                        I agree to the Hope Carrier guidelines and code of conduct
+                        I agree to the Hope Carrier guidelines and code of
+                        conduct
                       </label>
                     </div>
                     <FormMessage />

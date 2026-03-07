@@ -7,7 +7,10 @@ export function TypingIndicator() {
         style={{ backgroundColor: '#eff3e8' }}
       >
         <div className="flex items-center gap-1.5">
-          <span className="text-xs font-medium mr-1" style={{ color: '#acc487' }}>
+          <span
+            className="text-xs font-medium mr-1"
+            style={{ color: '#acc487' }}
+          >
             Hope is typing
           </span>
           <span

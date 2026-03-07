@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Modal } from '@/components/ui/modal';
-import { Radio, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { categoryStyle } from '../constants';
 import type {
   Hopecast,

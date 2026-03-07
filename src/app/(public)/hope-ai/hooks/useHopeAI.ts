@@ -37,12 +37,16 @@ export function useHopeAI() {
       setInput('');
       setIsTyping(true);
 
-      const responseText = HOPE_RESPONSES[responseIndex % HOPE_RESPONSES.length];
+      const responseText =
+        HOPE_RESPONSES[responseIndex % HOPE_RESPONSES.length];
       responseIndex += 1;
 
       const delay = 1800 + Math.random() * 400;
       setTimeout(() => {
-        setMessages((prev) => [...prev, { role: 'bot', content: responseText }]);
+        setMessages((prev) => [
+          ...prev,
+          { role: 'bot', content: responseText },
+        ]);
         setIsTyping(false);
       }, delay);
     },
