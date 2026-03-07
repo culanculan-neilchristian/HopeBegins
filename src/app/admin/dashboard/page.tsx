@@ -44,14 +44,6 @@ export default function AdminDashboard() {
             System-wide overview and live performance data.
           </p>
         </div>
-        <div className="flex gap-3 flex-shrink-0">
-          <button className="px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-zinc-50 transition-all">
-            Download Report
-          </button>
-          <button className="px-4 py-2 bg-brand text-brand-foreground rounded-xl text-xs font-black uppercase tracking-widest hover:bg-brand-hover transition-all">
-            System Status: OK
-          </button>
-        </div>
       </header>
 
       {/* ── Stat Cards ── */}
@@ -62,21 +54,6 @@ export default function AdminDashboard() {
 
       {/* ── Recent Prayers ── */}
       <RecentPrayers prayers={stats?.recent_prayers} />
-
-      {/* ── Support Banner ── */}
-      <div className="bg-brand rounded-3xl p-8 sm:p-12 text-brand-foreground flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-black italic tracking-tight">
-            Need Immediate Assistance?
-          </h2>
-          <p className="opacity-80 font-medium text-sm">
-            Contact the technical support team or review active platform alerts.
-          </p>
-        </div>
-        <button className="px-8 py-3 bg-brand-foreground text-brand rounded-full font-black uppercase tracking-widest text-sm hover:scale-105 transition-all flex-shrink-0">
-          Open Support Ticket
-        </button>
-      </div>
     </div>
   );
 }

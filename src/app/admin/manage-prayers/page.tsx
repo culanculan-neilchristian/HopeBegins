@@ -22,9 +22,9 @@ const statusOptions = [
 export default function ManagePrayersPage() {
   const {
     filtered,
-    prayers,
     carriers,
     isLoading,
+    isFetching,
     isError,
     refetch,
     search,
@@ -36,6 +36,10 @@ export default function ManagePrayersPage() {
     setAssignTarget,
     statusFilter,
     setStatusFilter,
+    page,
+    setPage,
+    totalPages,
+    totalCount,
     deleteMutation,
     statusMutation,
     assignMutation,
@@ -100,8 +104,11 @@ export default function ManagePrayersPage() {
             <p className="text-zinc-500 font-medium text-sm sm:text-base">
               Review, moderate, and organize community requests.
               {!isLoading && (
-                <span className="ml-2 text-zinc-400">
-                  {prayers.length} total
+                <span className="ml-2 text-zinc-400 flex items-center gap-2">
+                  {totalCount} total
+                  {isFetching && (
+                    <RefreshCw className="h-3 w-3 animate-spin text-brand" />
+                  )}
                 </span>
               )}
             </p>
@@ -133,14 +140,14 @@ export default function ManagePrayersPage() {
 
         {/* ── Mobile: Card list ── */}
         <div className="md:hidden space-y-3">
-          {isLoading &&
+          {(isLoading || isFetching) &&
             [...Array(4)].map((_, i) => (
               <div
                 key={i}
                 className="h-24 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse"
               />
             ))}
-          {!isLoading && filtered.length === 0 && (
+          {!isLoading && !isFetching && filtered.length === 0 && (
             <div className="flex flex-col items-center gap-3 py-16">
               <div className="h-12 w-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                 <AlertCircle className="h-5 w-5 text-zinc-400" />
@@ -153,6 +160,7 @@ export default function ManagePrayersPage() {
             </div>
           )}
           {!isLoading &&
+            !isFetching &&
             filtered.map((prayer) => (
               <MobileCard
                 key={prayer.id}
@@ -175,25 +183,65 @@ export default function ManagePrayersPage() {
         </div>
 
         {/* ── Desktop: Table ── */}
-        <PrayerTable
-          filtered={filtered}
-          isLoading={isLoading}
-          expandedId={expandedId}
-          statusMutationPending={
-            statusMutation.isPending || assignMutation.isPending
-          }
-          statusMutationVariableId={
-            statusMutation.variables?.id || assignMutation.variables?.id
-          }
-          search={search}
-          statusFilter={statusFilter}
-          onToggle={handleToggle}
-          onMarkPrayed={handleMarkPrayed}
-          onStatusChange={handleStatusChange}
-          onAssign={(p) => setAssignTarget(p)}
-          onSendFollowUp={handleSendFollowUp}
-          onDelete={(p) => setDeleteTarget(p)}
-        />
+        <div className="hidden md:block">
+          <PrayerTable
+            filtered={filtered}
+            isLoading={isLoading || isFetching}
+            expandedId={expandedId}
+            statusMutationPending={
+              statusMutation.isPending || assignMutation.isPending
+            }
+            statusMutationVariableId={
+              statusMutation.variables?.id || assignMutation.variables?.id
+            }
+            search={search}
+            statusFilter={statusFilter}
+            onToggle={handleToggle}
+            onMarkPrayed={handleMarkPrayed}
+            onStatusChange={handleStatusChange}
+            onAssign={(p) => setAssignTarget(p)}
+            onSendFollowUp={handleSendFollowUp}
+            onDelete={(p) => setDeleteTarget(p)}
+          />
+        </div>
+
+        {/* ── Pagination ── */}
+        {!isLoading && totalPages > 1 && (
+          <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
+            <p className="text-sm text-zinc-500 font-medium">
+              Page{' '}
+              <span className="text-zinc-900 dark:text-zinc-100 font-bold">
+                {page}
+              </span>{' '}
+              of{' '}
+              <span className="text-zinc-900 dark:text-zinc-100 font-bold">
+                {totalPages}
+              </span>
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p: number) => Math.max(1, p - 1))}
+                disabled={page === 1 || isFetching}
+                className="rounded-xl h-9 px-4 font-bold"
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPage((p: number) => Math.min(totalPages, p + 1))
+                }
+                disabled={page === totalPages || isFetching}
+                className="rounded-xl h-9 px-4 font-bold"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

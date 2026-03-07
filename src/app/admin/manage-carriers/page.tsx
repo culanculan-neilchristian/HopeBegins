@@ -18,6 +18,7 @@ export default function ManageCarriersPage() {
     hasNext,
     hasPrev,
     isLoading,
+    isFetching,
     searchQuery,
     setSearchQuery,
     filterStatus,
@@ -36,7 +37,7 @@ export default function ManageCarriersPage() {
   const PAGE_SIZE = 10;
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
-  if (isLoading && page === 1 && !searchQuery) {
+  if ((isLoading || isFetching) && page === 1 && !searchQuery) {
     return (
       <div className="p-8 space-y-4">
         <div className="h-10 w-64 bg-zinc-200 dark:bg-zinc-800 animate-pulse rounded-lg" />
@@ -125,15 +126,15 @@ export default function ManageCarriersPage() {
 
       {/* ── List ── */}
       <div className="space-y-4">
-        {isLoading && page > 1 && (
+        {(isLoading || isFetching) && page > 1 && (
           <div className="flex items-center justify-center py-4">
             <div className="h-4 bg-zinc-100 dark:bg-zinc-800 w-24 animate-pulse rounded-full" />
           </div>
         )}
 
         <AnimatePresence mode="popLayout">
-          {filteredCarriers.length > 0
-            ? filteredCarriers.map((carrier) => (
+          {!isLoading && !isFetching && filteredCarriers.length > 0
+            ? filteredCarriers.map((carrier: any) => (
                 <CarrierCard
                   key={carrier.id}
                   carrier={carrier}
@@ -150,7 +151,8 @@ export default function ManageCarriersPage() {
                   }
                 />
               ))
-            : !isLoading && (
+            : !isLoading &&
+              !isFetching && (
                 <div className="py-20 text-center space-y-4">
                   <div className="h-20 w-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Search className="h-10 w-10 text-zinc-300" />
@@ -186,7 +188,7 @@ export default function ManageCarriersPage() {
             <Button
               variant="outline"
               size="sm"
-              disabled={!hasPrev || isLoading}
+              disabled={!hasPrev || isLoading || isFetching}
               onClick={() => {
                 setPage(page - 1);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -203,7 +205,7 @@ export default function ManageCarriersPage() {
             <Button
               variant="outline"
               size="sm"
-              disabled={!hasNext || isLoading}
+              disabled={!hasNext || isLoading || isFetching}
               onClick={() => {
                 setPage(page + 1);
                 window.scrollTo({ top: 0, behavior: 'smooth' });

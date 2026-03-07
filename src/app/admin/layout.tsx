@@ -10,7 +10,10 @@ import {
   LogOut,
   Heart,
   Users,
+  Menu,
+  X,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
 import { useUserStore } from '@/store/useUserStore';
@@ -25,7 +28,17 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { logout: clearUserStore } = useUserStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isLoginPage = pathname === '/admin/login';
+
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isMobileMenuOpen]);
 
   const logoutMutation = useMutation({
     mutationFn: () => {
@@ -110,12 +123,38 @@ export default function AdminLayout({
   return (
     <AdminAuthGuard>
       <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-dm-sans">
-        <aside className="w-72 border-r bg-white dark:bg-zinc-900 flex flex-col sticky top-0 h-screen">
-          <nav className="flex-1 px-4 space-y-2 mt-8">
+        {/* ── Desktop Sidebar Overlay (Mobile) ── */}
+        {isMobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+
+        {/* ── Sidebar ── */}
+        <aside
+          className={`fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-zinc-900 border-r flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static lg:h-screen ${
+            isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          <div className="p-6 flex items-center justify-between lg:justify-start gap-3">
+            <h2 className="text-xl font-black italic tracking-tighter text-brand">
+              Hope Admin
+            </h2>
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="lg:hidden p-2 rounded-xl text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <nav className="flex-1 px-4 space-y-2">
             {MENU_ITEMS.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 text-sm font-bold tracking-tight rounded-2xl transition-all ${
                   pathname === item.href
                     ? 'bg-brand-muted text-brand'
@@ -156,7 +195,22 @@ export default function AdminLayout({
             </button>
           </div>
         </aside>
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
+          {/* ── Mobile Header ── */}
+          <header className="lg:hidden h-16 border-b bg-white dark:bg-zinc-900 px-4 flex items-center justify-between sticky top-0 z-30">
+            <h2 className="text-lg font-black italic tracking-tighter text-brand">
+              Hope Admin
+            </h2>
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-2 rounded-xl text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-100 dark:border-zinc-800"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </header>
+
+          <div className="flex-1 overflow-y-auto w-full">{children}</div>
+        </main>
       </div>
     </AdminAuthGuard>
   );

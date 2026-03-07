@@ -22,7 +22,6 @@ export function MobileCard({
   isUpdating,
   onToggle,
   onMarkPrayed,
-  onStatusChange,
   onAssign,
   onSendFollowUp,
   onDelete,
@@ -77,7 +76,6 @@ export function MobileCard({
           <ExpandedDetail
             prayer={prayer}
             onMarkPrayed={onMarkPrayed}
-            onStatusChange={onStatusChange}
             onAssign={onAssign}
             onSendFollowUp={onSendFollowUp}
             isPending={isUpdating}

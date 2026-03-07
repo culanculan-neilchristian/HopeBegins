@@ -52,7 +52,6 @@ function PrayerTableRow({
   isUpdating,
   onToggle,
   onMarkPrayed,
-  onStatusChange,
   onAssign,
   onSendFollowUp,
   onDelete,
@@ -126,7 +125,6 @@ function PrayerTableRow({
               <ExpandedDetail
                 prayer={prayer}
                 onMarkPrayed={onMarkPrayed}
-                onStatusChange={onStatusChange}
                 onAssign={onAssign}
                 onSendFollowUp={onSendFollowUp}
                 isPending={isUpdating}

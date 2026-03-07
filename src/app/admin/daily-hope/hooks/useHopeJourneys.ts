@@ -1,7 +1,12 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
 import { notify } from '@/lib/notifications';
 import type { HopeJourney } from '@/types/admin';
@@ -25,16 +30,13 @@ export function useHopeJourneys() {
   const {
     data: paginatedData,
     isLoading,
+    isFetching,
     isError,
     refetch,
   } = useQuery({
-    queryKey: [
-      'admin',
-      'daily-hope-journeys',
-      page,
-      debouncedSearch,
-    ],
+    queryKey: ['admin', 'daily-hope-journeys', page, debouncedSearch],
     queryFn: () => adminService.getJourneys(page, debouncedSearch),
+    placeholderData: keepPreviousData,
   });
 
   const journeys: HopeJourney[] = useMemo(() => {
@@ -59,6 +61,7 @@ export function useHopeJourneys() {
     hasNext: !!paginatedData?.next,
     hasPrev: !!paginatedData?.previous,
     isLoading,
+    isFetching,
     isError,
     refetch,
     search,

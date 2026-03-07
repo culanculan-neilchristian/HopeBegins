@@ -26,6 +26,7 @@ export default function DailyHopeAdminPage() {
     hasNext,
     hasPrev,
     isLoading,
+    isFetching,
     isError,
     refetch,
     search,
@@ -89,6 +90,9 @@ export default function DailyHopeAdminPage() {
               {!isLoading && (
                 <span className="flex items-center gap-1.5 px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-black uppercase tracking-widest text-zinc-400">
                   {totalCount} total
+                  {isFetching && (
+                    <RefreshCw className="h-3 w-3 animate-spin text-brand" />
+                  )}
                 </span>
               )}
             </p>
@@ -109,7 +113,7 @@ export default function DailyHopeAdminPage() {
 
         {/* ── Mobile Layout (Cards) ── */}
         <div className="md:hidden grid grid-cols-1 gap-4">
-          {isLoading &&
+          {(isLoading || isFetching) &&
             [...Array(3)].map((_, i) => (
               <div
                 key={i}
@@ -117,7 +121,7 @@ export default function DailyHopeAdminPage() {
               />
             ))}
 
-          {!isLoading && journeys.length === 0 && (
+          {!isLoading && !isFetching && journeys.length === 0 && (
             <div className="py-20 flex flex-col items-center gap-4 text-center">
               <div className="h-16 w-16 bg-zinc-50 dark:bg-zinc-800/50 rounded-3xl flex items-center justify-center border border-dashed border-zinc-200 dark:border-zinc-700">
                 <Search className="h-6 w-6 text-zinc-300" />
@@ -129,6 +133,7 @@ export default function DailyHopeAdminPage() {
           )}
 
           {!isLoading &&
+            !isFetching &&
             journeys.map((journey) => (
               <div
                 key={journey.id}
@@ -190,7 +195,7 @@ export default function DailyHopeAdminPage() {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={!hasPrev || isLoading}
+                disabled={!hasPrev || isLoading || isFetching}
                 onClick={() => setPage(page - 1)}
                 className="h-10 rounded-xl font-bold border-zinc-200 flex-1 mr-2"
               >
@@ -202,7 +207,7 @@ export default function DailyHopeAdminPage() {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={!hasNext || isLoading}
+                disabled={!hasNext || isLoading || isFetching}
                 onClick={() => setPage(page + 1)}
                 className="h-10 rounded-xl font-bold border-zinc-200 flex-1 ml-2"
               >
@@ -216,7 +221,7 @@ export default function DailyHopeAdminPage() {
         <div className="hidden md:block">
           <JourneyTable
             filtered={journeys}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             search={search}
             onDelete={setDeleteTarget}
             page={page}

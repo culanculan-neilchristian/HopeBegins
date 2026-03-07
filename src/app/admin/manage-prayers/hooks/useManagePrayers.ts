@@ -1,5 +1,10 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
 import { notify } from '@/lib/notifications';
 import { STATUS_CONFIG } from '../constants';
@@ -8,14 +13,27 @@ import type { Prayer, PrayerStatus } from '@/types/admin';
 export function useManagePrayers() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Prayer | null>(null);
   const [assignTarget, setAssignTarget] = useState<Prayer | null>(null);
   const [statusFilter, setStatusFilter] = useState<PrayerStatus | 'ALL'>('ALL');
 
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ['admin', 'prayers'],
-    queryFn: () => adminService.getPrayers(),
+  // Reset to page 1 when filters change
+  const handleStatusFilterChange = (status: PrayerStatus | 'ALL') => {
+    setStatusFilter(status);
+    setPage(1);
+  };
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
+
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+    queryKey: ['admin', 'prayers', page, search, statusFilter],
+    queryFn: () => adminService.getPrayers(page, search, statusFilter),
+    placeholderData: keepPreviousData,
   });
 
   const { data: carriersData } = useQuery({
@@ -30,20 +48,19 @@ export function useManagePrayers() {
   }, [carriersData]);
 
   const prayers: Prayer[] = useMemo(() => {
-    return Array.isArray(data) ? data : ((data as any)?.results ?? []);
+    return data?.results ?? [];
   }, [data]);
 
-  const filtered = useMemo(() => {
-    return prayers.filter((p) => {
-      const q = search.toLowerCase();
-      const matchesSearch =
-        p.title.toLowerCase().includes(q) ||
-        p.email.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q);
-      const matchesStatus = statusFilter === 'ALL' || p.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  }, [prayers, search, statusFilter]);
+  const totalCount = useMemo(() => {
+    return data?.count ?? 0;
+  }, [data]);
+
+  const totalPages = useMemo(() => {
+    return Math.max(1, Math.ceil(totalCount / 10)); // StandardResultsSetPagination has page_size = 10
+  }, [totalCount]);
+
+  // No longer need client-side filtering as it's done on the backend
+  const filtered = prayers;
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => adminService.deletePrayer(id),
@@ -107,18 +124,23 @@ export function useManagePrayers() {
     carriers,
     filtered,
     isLoading,
+    isFetching,
     isError,
     refetch,
     // state
     search,
-    setSearch,
+    setSearch: handleSearchChange,
     expandedId,
     deleteTarget,
     setDeleteTarget,
     assignTarget,
     setAssignTarget,
     statusFilter,
-    setStatusFilter,
+    setStatusFilter: handleStatusFilterChange,
+    page,
+    setPage,
+    totalPages,
+    totalCount,
     // mutations
     deleteMutation,
     statusMutation,

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCarrierAuth } from '@/hooks/useCarrierAuth';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -77,9 +78,17 @@ export function CarrierLoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 ml-1">
-                    Security Key
-                  </FormLabel>
+                  <div className="flex items-center justify-between ml-1 mb-1">
+                    <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
+                      Security Key
+                    </FormLabel>
+                    <Link
+                      href="/forgot-password"
+                      className="text-[10px] font-black uppercase tracking-widest text-[#b4c392] hover:text-[#a3b281] transition-colors"
+                    >
+                      Forgot?
+                    </Link>
+                  </div>
                   <FormControl>
                     <div className="relative group">
                       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-[#b4c392] transition-colors" />

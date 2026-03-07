@@ -11,10 +11,10 @@ import { HopecastTable } from './components/HopecastTable';
 
 export default function ManageHopecastsPage() {
   const {
-    hopecasts,
     filtered,
     categories,
     isLoadingCasts,
+    isFetchingCasts,
     isErrorCasts,
     refetch,
     search,
@@ -23,6 +23,10 @@ export default function ManageHopecastsPage() {
     setDeleteTarget,
     editTarget,
     setEditTarget,
+    page,
+    setPage,
+    totalCount,
+    totalPages,
     deleteMutation,
     isSavePending,
     handleSave,
@@ -81,9 +85,7 @@ export default function ManageHopecastsPage() {
             <p className="text-zinc-500 font-medium text-sm sm:text-base">
               Publish and organise your audio content.
               {!isLoadingCasts && (
-                <span className="ml-2 text-zinc-400">
-                  {hopecasts.length} total
-                </span>
+                <span className="ml-2 text-zinc-400">{totalCount} total</span>
               )}
             </p>
           </div>
@@ -110,14 +112,14 @@ export default function ManageHopecastsPage() {
 
         {/* ── Mobile: card list ── */}
         <div className="md:hidden space-y-3">
-          {isLoadingCasts &&
+          {(isLoadingCasts || isFetchingCasts) &&
             [...Array(3)].map((_, i) => (
               <div
                 key={i}
                 className="h-28 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse"
               />
             ))}
-          {!isLoadingCasts && filtered.length === 0 && (
+          {!isLoadingCasts && !isFetchingCasts && filtered.length === 0 && (
             <div className="flex flex-col items-center gap-3 py-16">
               <div className="h-12 w-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                 <Radio className="h-5 w-5 text-zinc-400" />
@@ -137,7 +139,8 @@ export default function ManageHopecastsPage() {
             </div>
           )}
           {!isLoadingCasts &&
-            filtered.map((cast) => (
+            !isFetchingCasts &&
+            filtered.map((cast: any) => (
               <MobileCard
                 key={cast.id}
                 cast={cast}
@@ -150,12 +153,50 @@ export default function ManageHopecastsPage() {
         {/* ── Desktop: table ── */}
         <HopecastTable
           filtered={filtered}
-          isLoading={isLoadingCasts}
+          isLoading={isLoadingCasts || isFetchingCasts}
           search={search}
           onEdit={(cast) => setEditTarget(cast)}
           onDelete={(cast) => setDeleteTarget(cast)}
           onCreateFirst={() => setEditTarget(null)}
         />
+
+        {/* ── Pagination ── */}
+        {!isLoadingCasts && totalPages > 1 && (
+          <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
+            <p className="text-sm text-zinc-500 font-medium">
+              Page{' '}
+              <span className="text-zinc-900 dark:text-zinc-100 font-bold">
+                {page}
+              </span>{' '}
+              of{' '}
+              <span className="text-zinc-900 dark:text-zinc-100 font-bold">
+                {totalPages}
+              </span>
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p: number) => Math.max(1, p - 1))}
+                disabled={page === 1 || isFetchingCasts}
+                className="rounded-xl h-9 px-4 font-bold"
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPage((p: number) => Math.min(totalPages, p + 1))
+                }
+                disabled={page === totalPages || isFetchingCasts}
+                className="rounded-xl h-9 px-4 font-bold"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

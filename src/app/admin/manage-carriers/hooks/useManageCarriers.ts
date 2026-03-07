@@ -1,5 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
 import { notify } from '@/lib/notifications';
 import type { HopeCarrier } from '@/types/admin';
@@ -56,15 +61,8 @@ export function useManageCarriers() {
     }
   }, [sortBy]);
 
-  const { data: paginatedData, isLoading } = useQuery({
-    queryKey: [
-      'admin',
-      'carriers',
-      page,
-      debouncedSearch,
-      filterStatus,
-      backendOrdering,
-    ],
+  const { data: paginatedData, isLoading, isFetching } = useQuery({
+    queryKey: ['admin', 'carriers', page, debouncedSearch, filterStatus, backendOrdering],
     queryFn: () =>
       adminService.getCarriers(
         page,
@@ -72,6 +70,7 @@ export function useManageCarriers() {
         filterStatus,
         backendOrdering
       ),
+    placeholderData: keepPreviousData,
   });
 
   const carriers = useMemo(() => paginatedData?.results ?? [], [paginatedData]);
@@ -110,8 +109,6 @@ export function useManageCarriers() {
     },
   });
 
-
-
   return {
     carriers,
     filteredCarriers: carriers, // Now filtered on the backend
@@ -119,6 +116,7 @@ export function useManageCarriers() {
     hasNext: !!paginatedData?.next,
     hasPrev: !!paginatedData?.previous,
     isLoading,
+    isFetching,
     searchQuery,
     setSearchQuery,
     page,
