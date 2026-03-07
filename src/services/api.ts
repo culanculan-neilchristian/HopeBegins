@@ -27,12 +27,27 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   }
 
   if (!response.ok) {
-    const errorMessage =
+    let errorMessage =
       data?.message ||
       data?.detail ||
-      data?.data?.message ||
-      (typeof text === 'string' && text) ||
+      (typeof data?.data === 'string' ? data.data : null) ||
       'Something went wrong';
+
+    // If message is generic and there are field-specific errors in data.data
+    if (
+      (errorMessage === 'error' || errorMessage === 'Bad Request') &&
+      data?.data &&
+      typeof data.data === 'object'
+    ) {
+      const firstField = Object.keys(data.data)[0];
+      const fieldError = data.data[firstField];
+      if (Array.isArray(fieldError)) {
+        errorMessage = fieldError[0];
+      } else if (typeof fieldError === 'string') {
+        errorMessage = fieldError;
+      }
+    }
+
     throw new Error(errorMessage);
   }
 

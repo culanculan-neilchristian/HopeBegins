@@ -91,7 +91,7 @@ export function useManagePrayers() {
 
   const handleMarkPrayed = useCallback(
     (prayer: Prayer) =>
-      statusMutation.mutate({ id: prayer.id, status: 'PRAYED' }),
+      statusMutation.mutate({ id: prayer.id, status: 'COMPLETED' }),
     [statusMutation]
   );
 

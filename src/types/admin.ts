@@ -25,7 +25,7 @@ export type PrayerCategory =
   | 'RELATIONSHIP'
   | 'OTHER';
 
-export type PrayerStatus = 'NEW' | 'ASSIGNED' | 'PRAYED' | 'COMPLETED';
+export type PrayerStatus = 'NEW' | 'ASSIGNED' | 'ON_PROGRESS' | 'COMPLETED';
 
 export interface PrayerResponse {
   id: string;
@@ -149,4 +149,19 @@ export interface Donation {
   date: string; // ISO date string
   type: DonationType;
   amount: number; // in dollars
+}
+// ─────────────────────────────────────────────
+// Daily Hope / Journey Types
+// ─────────────────────────────────────────────
+
+export interface HopeJourney {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  current_day: number;
+  is_active: boolean;
+  finished_at: string | null;
+  created_at: string;
+  updated_at: string;
 }

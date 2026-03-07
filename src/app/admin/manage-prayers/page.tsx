@@ -15,7 +15,7 @@ const statusOptions = [
   { label: 'All Statuses', value: 'ALL' },
   { label: 'New', value: 'NEW' },
   { label: 'Assigned', value: 'ASSIGNED' },
-  { label: 'Prayed', value: 'PRAYED' },
+  { label: 'On Going', value: 'ON_PROGRESS' },
   { label: 'Completed', value: 'COMPLETED' },
 ] as const;
 

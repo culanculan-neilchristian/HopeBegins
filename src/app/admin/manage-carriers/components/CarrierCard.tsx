@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Eye, User as UserIcon } from 'lucide-react';
+import { Eye, User as UserIcon, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import type { HopeCarrier } from '@/types/admin';
 
@@ -11,6 +11,8 @@ interface CarrierCardProps {
   onSelect: (carrier: HopeCarrier) => void;
   onApprove: (e: React.MouseEvent, id: string) => void;
   isApproving: boolean;
+  onDelete: () => void;
+  isDeleting: boolean;
 }
 
 export function CarrierCard({
@@ -18,6 +20,8 @@ export function CarrierCard({
   onSelect,
   onApprove,
   isApproving,
+  onDelete,
+  isDeleting,
 }: CarrierCardProps) {
   return (
     <motion.div
@@ -84,6 +88,21 @@ export function CarrierCard({
             <div className="h-8 w-8 rounded-xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 group-hover:bg-brand-muted/30 group-hover:text-brand transition-colors duration-300">
               <Eye className="h-4 w-4" />
             </div>
+            <Button
+              variant="ghost"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              disabled={isDeleting}
+              className="h-8 w-8 p-0 rounded-xl text-zinc-400 hover:bg-rose-50 hover:text-rose-600 transition-colors duration-300"
+            >
+              {isDeleting ? (
+                <div className="h-4 w-4 border-2 border-rose-500/30 border-t-rose-500 rounded-full animate-spin" />
+              ) : (
+                <Trash2 className="h-4 w-4" />
+              )}
+            </Button>
           </div>
         </div>
       </Card>

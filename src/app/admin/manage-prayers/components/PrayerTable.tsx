@@ -78,7 +78,9 @@ function PrayerTableRow({
           <p
             className={`font-bold ${isExpanded ? 'text-brand' : 'text-zinc-900 dark:text-zinc-100'}`}
           >
-            {prayer.title}
+            {prayer.isAnonymous || !prayer.shareFirstName
+              ? 'Anonymous'
+              : prayer.title}
           </p>
           <p className="text-xs text-zinc-400 font-medium mt-0.5">
             {prayer.isAnonymous ? 'Anonymous' : prayer.email}

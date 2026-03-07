@@ -9,6 +9,8 @@ import type {
   HopecastPayload,
   HopeCarrier,
   AdminStats,
+  HopeJourney,
+  PaginatedResponse,
 } from '@/types/admin';
 
 // ─────────────────────────────────────────────
@@ -188,11 +190,22 @@ export const adminService = {
   // ─────────────────────────────────────────────
 
   /**
-   * Fetch all Hope Carriers.
+   * Fetch all Hope Carriers - paginated with filtering.
    */
-  getCarriers: async (): Promise<HopeCarrier[]> => {
-    // Filter by role=carrier to only getcarriers
-    return fetchWithAuth(`${config.API_URL}/users/?role=carrier`, {
+  getCarriers: async (
+    page = 1,
+    search = '',
+    status: 'ALL' | 'PENDING' | 'ACTIVE' = 'ALL',
+    ordering = '-date_joined'
+  ): Promise<PaginatedResponse<HopeCarrier>> => {
+    let url = `${config.API_URL}/users/?role=carrier&page=${page}`;
+    if (search) url += `&search=${search}`;
+    if (ordering) url += `&ordering=${ordering}`;
+
+    if (status === 'PENDING') url += '&is_approved=0';
+    if (status === 'ACTIVE') url += '&is_approved=1';
+
+    return fetchWithAuth(url, {
       headers: authHeader(),
     });
   },
@@ -203,6 +216,44 @@ export const adminService = {
   approveCarrier: async (id: string): Promise<HopeCarrier> => {
     return fetchWithAuth(`${config.API_URL}/users/${id}/approve/`, {
       method: 'POST',
+      headers: authHeader(),
+    });
+  },
+
+  /**
+   * Delete a Hope Carrier.
+   */
+  deleteCarrier: async (id: string): Promise<null> => {
+    return fetchWithAuth(`${config.API_URL}/users/${id}/`, {
+      method: 'DELETE',
+      headers: authHeader(),
+    });
+  },
+
+  // ─────────────────────────────────────────────
+  // Daily Hope Journeys
+  // ─────────────────────────────────────────────
+
+  /**
+   * Fetch all Daily Hope journeys (subscribers) - paginated.
+   */
+  getJourneys: async (
+    page = 1,
+    search = ''
+  ): Promise<PaginatedResponse<HopeJourney>> => {
+    let url = `${config.API_URL}/daily-hope/journeys/?page=${page}`;
+    if (search) url += `&search=${search}`;
+    return fetchWithAuth(url, {
+      headers: authHeader(),
+    });
+  },
+
+  /**
+   * Permanently delete a Daily Hope journey.
+   */
+  deleteJourney: async (id: string): Promise<null> => {
+    return fetchWithAuth(`${config.API_URL}/daily-hope/journeys/${id}/`, {
+      method: 'DELETE',
       headers: authHeader(),
     });
   },

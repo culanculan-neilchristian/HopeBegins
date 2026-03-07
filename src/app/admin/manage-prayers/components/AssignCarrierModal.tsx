@@ -56,7 +56,11 @@ export function AssignCarrierModal({
         <p className="text-zinc-500 font-medium mb-4 shrink-0">
           Choose a carrier to handle:{' '}
           <span className="text-zinc-900 dark:text-zinc-100 font-bold ml-1">
-            &ldquo;{prayer.title}&rdquo;
+            &ldquo;
+            {prayer.isAnonymous || !prayer.shareFirstName
+              ? 'Anonymous'
+              : prayer.title}
+            &rdquo;
           </span>
         </p>
 
@@ -128,7 +132,9 @@ export function AssignCarrierModal({
                   </div>
                   <div
                     className={`transition-all ml-1 ${
-                      isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                      isSelected
+                        ? 'opacity-100'
+                        : 'opacity-0 group-hover:opacity-100'
                     }`}
                   >
                     <UserCheck
