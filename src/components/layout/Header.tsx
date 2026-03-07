@@ -26,10 +26,9 @@ export function Header() {
               <Image
                 src={headerLogo}
                 alt="HopeBegins Logo"
-                width={120}
-                height={44}
+                width={170}
+                height={62}
                 style={{ height: 'auto' }}
-                className="w-24 md:w-32"
               />
             </Link>
           </div>

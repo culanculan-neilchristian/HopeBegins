@@ -4,10 +4,18 @@ import { AnimatePresence } from 'framer-motion';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useManageCarriers } from './hooks/useManageCarriers';
+import { CustomSelect } from '@/components/ui/custom-select';
+import { useManageCarriers, type SortOption } from './hooks/useManageCarriers';
 import { CarrierCard } from './components/CarrierCard';
 import { CarrierDetailModal } from './components/CarrierDetailModal';
 import { DeleteCarrierModal } from './components/DeleteCarrierModal';
+
+const sortOptions = [
+  { label: 'Recent', value: 'recent' },
+  { label: 'Oldest', value: 'oldest' },
+  { label: 'Name (A–Z)', value: 'name' },
+  { label: 'Most Prayers', value: 'prayers' },
+];
 
 export default function ManageCarriersPage() {
   const {
@@ -100,16 +108,18 @@ export default function ManageCarriersPage() {
           </div>
 
           {/* Sort Dropdown */}
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
-            className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 h-10 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/30 w-full sm:w-auto"
-          >
-            <option value="recent">Recent</option>
-            <option value="oldest">Oldest</option>
-            <option value="name">Name (A–Z)</option>
-            <option value="prayers">Most Prayers</option>
-          </select>
+          <CustomSelect
+            value={sortOptions.find((opt) => opt.value === sortBy)}
+            onChange={(newValue) => {
+              if (newValue) {
+                setSortBy(newValue.value as SortOption);
+              }
+            }}
+            options={sortOptions}
+            containerClassName="w-full sm:w-48"
+            placeholder="Sort by"
+            isSearchable={false}
+          />
 
           {/* Search Bar */}
           <div className="relative flex-1 sm:w-64">
@@ -123,7 +133,6 @@ export default function ManageCarriersPage() {
           </div>
         </div>
       </header>
-
       {/* ── List ── */}
       <div className="space-y-4">
         {(isLoading || isFetching) && page > 1 && (

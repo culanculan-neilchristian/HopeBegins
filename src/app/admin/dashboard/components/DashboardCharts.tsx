@@ -14,9 +14,31 @@ import {
 
 interface DashboardChartsProps {
   data: any[];
+  isLoading?: boolean;
 }
 
-export function DashboardCharts({ data }: DashboardChartsProps) {
+export function DashboardCharts({ data, isLoading }: DashboardChartsProps) {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="border-none shadow-2xl bg-white dark:bg-zinc-900 p-6">
+          <CardHeader className="px-0 pt-0 pb-8">
+            <div className="h-6 w-48 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-1.5" />
+            <div className="h-3 w-32 bg-zinc-100 dark:bg-zinc-800/50 rounded animate-pulse" />
+          </CardHeader>
+          <div className="h-[240px] w-full bg-zinc-50 dark:bg-zinc-800/20 rounded-xl animate-pulse" />
+        </Card>
+        <Card className="border-none shadow-2xl bg-white dark:bg-zinc-900 p-6">
+          <CardHeader className="px-0 pt-0 pb-8">
+            <div className="h-6 w-48 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-1.5" />
+            <div className="h-3 w-32 bg-zinc-100 dark:bg-zinc-800/50 rounded animate-pulse" />
+          </CardHeader>
+          <div className="h-[240px] w-full bg-zinc-50 dark:bg-zinc-800/20 rounded-xl animate-pulse" />
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card className="border-none shadow-2xl bg-white dark:bg-zinc-900 p-6">

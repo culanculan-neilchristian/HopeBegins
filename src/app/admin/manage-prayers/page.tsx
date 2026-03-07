@@ -46,7 +46,6 @@ export default function ManagePrayersPage() {
     handleToggle,
     handleMarkPrayed,
     handleStatusChange,
-    handleSendFollowUp,
   } = useManagePrayers();
 
   if (isError) {
@@ -176,7 +175,6 @@ export default function ManagePrayersPage() {
                 onMarkPrayed={() => handleMarkPrayed(prayer)}
                 onStatusChange={(status) => handleStatusChange(prayer, status)}
                 onAssign={() => setAssignTarget(prayer)}
-                onSendFollowUp={() => handleSendFollowUp(prayer)}
                 onDelete={() => setDeleteTarget(prayer)}
               />
             ))}
@@ -200,7 +198,6 @@ export default function ManagePrayersPage() {
             onMarkPrayed={handleMarkPrayed}
             onStatusChange={handleStatusChange}
             onAssign={(p) => setAssignTarget(p)}
-            onSendFollowUp={handleSendFollowUp}
             onDelete={(p) => setDeleteTarget(p)}
           />
         </div>

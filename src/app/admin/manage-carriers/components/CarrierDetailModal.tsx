@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Mail, Phone, User as UserIcon, X, Loader2 } from 'lucide-react';
+import { Modal } from '@/components/ui/modal';
+import { Mail, Phone, User as UserIcon, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 import type { HopeCarrier } from '@/types/admin';
 
@@ -18,32 +19,15 @@ export function CarrierDetailModal({
   isApproving,
 }: CarrierDetailModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Modal — same structure as AssignCarrierModal */}
-      <div className="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 w-full max-w-lg shadow-2xl shadow-black/20 flex flex-col max-h-[90vh] overflow-y-auto">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-5 h-8 w-8 flex items-center justify-center rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-        >
-          <X className="h-4 w-4 text-zinc-500" />
-        </button>
-
-        {/* Icon */}
-        <div className="flex items-center justify-center h-14 w-14 rounded-2xl bg-brand-muted dark:bg-brand/10 mb-6 shrink-0">
-          <UserIcon className="h-6 w-6 text-brand" />
-        </div>
-
-        {/* Name + badges */}
-        <h2 className="text-2xl font-black tracking-tight mb-2 shrink-0">
-          {carrier.first_name} {carrier.last_name}
-        </h2>
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      title={`${carrier.first_name} ${carrier.last_name}`}
+      icon={<UserIcon className="h-6 w-6 text-brand" />}
+      description=""
+    >
+      <div className="space-y-6">
+        {/* badges */}
         <div className="flex items-center gap-2 mb-6 shrink-0 flex-wrap">
           <Badge className="bg-brand text-white border-none rounded-full px-3 text-[10px] font-black uppercase tracking-[0.2em] h-5">
             Hope Carrier
@@ -146,6 +130,6 @@ export function CarrierDetailModal({
           </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }

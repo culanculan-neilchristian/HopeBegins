@@ -95,14 +95,14 @@ export default function GetStartedPage() {
         </div>
 
         {/* Progress Bar */}
-        <div className="flex justify-between items-center mb-16 relative">
-          <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-zinc-100 dark:bg-zinc-800 -translate-y-1/2 -z-10" />
+        <div className="flex justify-between items-start mb-16 relative">
+          <div className="absolute top-5 left-0 right-0 h-0.5 bg-zinc-100 dark:bg-zinc-800 -z-10" />
           {steps.map((step) => {
             const status = getStepStatus(step.id);
             return (
               <div
                 key={step.id}
-                className="flex flex-col items-center gap-2 group relative cursor-pointer"
+                className="flex flex-col items-center gap-2 group relative cursor-pointer flex-1"
                 onClick={() => {
                   // Only allow jumping to completed or active steps
                   const stepOrder: Step[] = [
@@ -121,7 +121,7 @@ export default function GetStartedPage() {
               >
                 <div
                   className={cn(
-                    'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2',
+                    'w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2',
                     status === 'completed'
                       ? 'bg-[#a3b18a] border-[#a3b18a] text-white'
                       : status === 'active'
@@ -129,11 +129,11 @@ export default function GetStartedPage() {
                         : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-300 dark:text-zinc-600'
                   )}
                 >
-                  <step.icon className="w-5 h-5" />
+                  <step.icon className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
                 <span
                   className={cn(
-                    'text-[10px] md:text-xs font-bold uppercase tracking-wider font-poppins transition-colors',
+                    'text-[7px] min-[400px]:text-[8px] md:text-xs font-bold uppercase tracking-wider font-poppins transition-colors text-center px-0.5 leading-tight',
                     status === 'upcoming'
                       ? 'text-zinc-300 dark:text-zinc-700'
                       : 'text-zinc-500 dark:text-zinc-400'
@@ -244,15 +244,15 @@ function PrayerStep({
       </div>
 
       <Card className="border-zinc-100 dark:border-zinc-800 shadow-sm bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm">
-        <CardContent className="p-12 text-center space-y-8">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-[#a3b18a] flex items-center justify-center mx-auto text-lg font-bold">
+        <CardContent className="p-6 md:p-12 text-center space-y-6 md:space-y-8">
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-[#a3b18a] flex items-center justify-center mx-auto text-base md:text-lg font-bold">
             {current.id}
           </div>
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-[#a3b18a] font-poppins">
+            <h3 className="text-lg md:text-xl font-bold text-[#a3b18a] font-poppins">
               {current.title}
             </h3>
-            <p className="text-zinc-600 dark:text-zinc-300 text-lg leading-relaxed max-w-lg mx-auto italic">
+            <p className="text-zinc-600 dark:text-zinc-300 text-base md:text-lg leading-relaxed max-w-lg mx-auto italic">
               &quot;{current.text}&quot;
             </p>
           </div>
@@ -286,12 +286,12 @@ function DevotionalStep({
   onBack: () => void;
 }) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-4 sm:px-0">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-[#6b634d] dark:text-zinc-200 font-poppins">
+        <h2 className="text-2xl font-bold text-[#6b634d] dark:text-zinc-200 font-poppins italic">
           What is Hope?
         </h2>
-        <p className="text-zinc-500 dark:text-zinc-400 text-sm">
+        <p className="text-zinc-500 dark:text-zinc-400 text-sm italic">
           A short devotional to anchor your heart.
         </p>
       </div>
@@ -355,16 +355,16 @@ function DevotionalStep({
         </Card>
       </div>
 
-      <div className="flex gap-4 max-w-md mx-auto pt-8">
+      <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto pt-8">
         <Button
           variant="outline"
-          className="flex-1 py-6 rounded-xl border-zinc-200"
+          className="flex-1 py-6 rounded-xl border-zinc-200 font-bold"
           onClick={onBack}
         >
           Previous
         </Button>
         <Button
-          className="flex-1 py-6 rounded-xl bg-[#a3b18a] hover:bg-[#a3b18a]/90 text-white shadow-lg shadow-[#a3b18a]/20"
+          className="flex-1 py-6 rounded-xl bg-[#a3b18a] hover:bg-[#a3b18a]/90 text-white shadow-lg shadow-[#a3b18a]/20 font-bold"
           onClick={onNext}
         >
           Continue
@@ -417,7 +417,7 @@ function NextStepsStep() {
         </p>
       </div>
 
-      <div className="space-y-3 max-w-md mx-auto pt-8">
+      <div className="space-y-3 max-w-md mx-auto pt-8 px-4 sm:px-0">
         {actions.map((action, idx) => (
           <Link key={idx} href={action.href}>
             <Card className="group border-zinc-100 dark:border-zinc-800/50 hover:border-[#a3b18a]/50 dark:hover:border-[#a3b18a]/30 transition-all duration-300 hover:shadow-md cursor-pointer mb-3">
@@ -425,7 +425,7 @@ function NextStepsStep() {
                 <div className="w-10 h-10 rounded-lg bg-[#a3b18a]/10 dark:bg-emerald-900/20 flex items-center justify-center text-[#a3b18a] group-hover:scale-110 transition-transform">
                   <action.icon className="w-5 h-5" />
                 </div>
-                <span className="flex-1 font-bold text-zinc-700 dark:text-zinc-200 group-hover:text-[#6b634d] dark:group-hover:text-[#a3b18a] transition-colors">
+                <span className="flex-1 font-bold text-sm md:text-base text-zinc-700 dark:text-zinc-200 group-hover:text-[#6b634d] dark:group-hover:text-[#a3b18a] transition-colors">
                   {action.title}
                 </span>
                 <ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-[#a3b18a] transition-colors" />
@@ -436,10 +436,10 @@ function NextStepsStep() {
       </div>
 
       {/* Crisis Footer */}
-      <div className="max-w-md mx-auto mt-12">
+      <div className="max-w-md mx-auto mt-12 px-4 sm:px-0">
         <Card className="bg-[#fff9f2] dark:bg-orange-900/10 border-[#ffe4c4] dark:border-orange-900/20">
           <CardContent className="p-6 text-center space-y-4">
-            <p className="font-bold text-[#8b4513] dark:text-orange-300 text-sm">
+            <p className="font-bold text-[#8b4513] dark:text-orange-300 text-xs md:text-sm">
               If you&apos;re in crisis, please reach out:
             </p>
             <div className="space-y-3">
@@ -494,18 +494,18 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
   ];
 
   return (
-    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex justify-center">
-        <div className="w-20 h-20 rounded-full bg-[#a3b18a]/10 flex items-center justify-center text-[#a3b18a]">
-          <Anchor className="w-10 h-10" />
+        <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#a3b18a]/10 flex items-center justify-center text-[#a3b18a]">
+          <Anchor className="w-8 h-8 md:w-10 md:h-10" />
         </div>
       </div>
 
-      <div className="text-center space-y-4">
-        <h2 className="text-4xl font-bold text-[#6b634d] dark:text-zinc-200 font-poppins">
+      <div className="text-center space-y-3 md:space-y-4">
+        <h2 className="text-2xl min-[400px]:text-3xl md:text-4xl font-bold text-[#6b634d] dark:text-zinc-200 font-poppins px-2">
           Your Hopeful Beginning
         </h2>
-        <p className="text-zinc-500 dark:text-zinc-400 text-lg max-w-xl mx-auto leading-relaxed">
+        <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg max-w-xl mx-auto leading-relaxed px-4">
           It&apos;s okay to feel this way. You&apos;re not broken &mdash;
           you&apos;re here, and that matters.
           <br />
@@ -513,18 +513,18 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
         </p>
       </div>
 
-      <Card className="border-zinc-100/50 dark:border-zinc-800 shadow-sm bg-[#f1f5e9]/50 dark:bg-emerald-900/10 max-w-xl mx-auto">
-        <CardContent className="p-8 space-y-6">
-          <h3 className="font-bold text-[#6b634d] dark:text-zinc-300">
+      <Card className="border-zinc-100/50 dark:border-zinc-800 shadow-sm bg-[#f1f5e9]/50 dark:bg-emerald-900/10 max-w-xl mx-auto mx-4 sm:mx-auto">
+        <CardContent className="p-6 md:p-8 space-y-6">
+          <h3 className="font-bold text-[#6b634d] dark:text-zinc-300 text-sm md:text-base">
             What to expect:
           </h3>
           <div className="space-y-4">
             {expectations.map((item, idx) => (
               <div key={idx} className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-full bg-[#a3b18a]/20 text-[#a3b18a] flex items-center justify-center text-sm font-bold">
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-[#a3b18a]/20 text-[#a3b18a] flex items-center justify-center text-xs md:text-sm font-bold">
                   {idx + 1}
                 </div>
-                <p className="text-zinc-600 dark:text-zinc-400 font-medium">
+                <p className="text-zinc-600 dark:text-zinc-400 font-medium text-sm md:text-base">
                   {item}
                 </p>
               </div>
@@ -533,9 +533,9 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
         </CardContent>
       </Card>
 
-      <div className="max-w-xl mx-auto pt-4">
+      <div className="max-w-xl mx-auto pt-4 px-4 sm:px-0">
         <Button
-          className="w-full py-7 rounded-xl bg-[#a3b18a] hover:bg-[#a3b18a]/90 text-white text-lg font-bold shadow-lg shadow-[#a3b18a]/20"
+          className="w-full py-6 md:py-7 rounded-xl bg-[#a3b18a] hover:bg-[#a3b18a]/90 text-white text-base md:text-lg font-bold shadow-lg shadow-[#a3b18a]/20"
           onClick={onNext}
         >
           Continue
@@ -553,12 +553,12 @@ function WordStep({
   onBack: () => void;
 }) {
   return (
-    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="text-center space-y-4">
-        <h2 className="text-3xl font-bold text-[#6b634d] dark:text-zinc-200 font-poppins">
+    <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="text-center space-y-3 md:space-y-4 px-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#6b634d] dark:text-zinc-200 font-poppins">
           A Word for You
         </h2>
-        <p className="text-zinc-500 dark:text-zinc-400 text-lg">
+        <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg">
           Before anything else, we want you to hear this.
         </p>
       </div>
@@ -590,16 +590,16 @@ function WordStep({
         </CardContent>
       </Card>
 
-      <div className="flex gap-4 max-w-xl mx-auto pt-4">
+      <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto pt-4 px-4 sm:px-0">
         <Button
           variant="outline"
-          className="flex-1 py-7 rounded-xl border-zinc-200 text-lg font-bold"
+          className="flex-1 py-6 md:py-7 rounded-xl border-zinc-200 text-base md:text-lg font-bold"
           onClick={onBack}
         >
           Previous
         </Button>
         <Button
-          className="flex-1 py-7 rounded-xl bg-[#a3b18a] hover:bg-[#a3b18a]/90 text-white text-lg font-bold shadow-lg shadow-[#a3b18a]/20"
+          className="flex-1 py-6 md:py-7 rounded-xl bg-[#a3b18a] hover:bg-[#a3b18a]/90 text-white text-base md:text-lg font-bold shadow-lg shadow-[#a3b18a]/20"
           onClick={onNext}
         >
           Continue

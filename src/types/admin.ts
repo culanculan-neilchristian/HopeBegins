@@ -127,6 +127,11 @@ export interface HopeCarrier {
 /**
  * High-level stats shown on the admin overview dashboard.
  */
+export interface TrendData {
+  day: string;
+  count: number;
+}
+
 export interface AdminStats {
   total_prayers: number;
   pending_prayers: number;
@@ -134,6 +139,8 @@ export interface AdminStats {
   hopecast_plays: number;
   total_users: number;
   recent_prayers: Prayer[];
+  prayer_trend?: TrendData[];
+  hopecast_trend?: TrendData[];
 }
 
 // ─────────────────────────────────────────────

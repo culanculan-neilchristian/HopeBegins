@@ -100,12 +100,6 @@ export function useManagePrayers() {
     []
   );
 
-  const handleSendFollowUp = useCallback((prayer: Prayer) => {
-    notify.success(
-      `Follow-up email queued for ${prayer.isAnonymous ? 'anonymous submitter' : prayer.email}.`
-    );
-  }, []);
-
   const handleMarkPrayed = useCallback(
     (prayer: Prayer) =>
       statusMutation.mutate({ id: prayer.id, status: 'COMPLETED' }),
@@ -149,6 +143,5 @@ export function useManagePrayers() {
     handleToggle,
     handleMarkPrayed,
     handleStatusChange,
-    handleSendFollowUp,
   };
 }

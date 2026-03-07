@@ -12,7 +12,6 @@ interface MobileCardProps {
   onMarkPrayed: () => void;
   onStatusChange: (status: PrayerStatus) => void;
   onAssign: () => void;
-  onSendFollowUp: () => void;
   onDelete: () => void;
 }
 
@@ -23,7 +22,6 @@ export function MobileCard({
   onToggle,
   onMarkPrayed,
   onAssign,
-  onSendFollowUp,
   onDelete,
 }: MobileCardProps) {
   return (
@@ -77,7 +75,6 @@ export function MobileCard({
             prayer={prayer}
             onMarkPrayed={onMarkPrayed}
             onAssign={onAssign}
-            onSendFollowUp={onSendFollowUp}
             isPending={isUpdating}
           />
         </div>

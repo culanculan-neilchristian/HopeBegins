@@ -35,8 +35,11 @@ export function useCarrierDashboard() {
     router.replace(`/carrier/dashboard?${params.toString()}`);
   };
 
-  // One central query to fetch everything at once
-  const { data: dashboardData, isLoading } = useQuery({
+  const {
+    data: dashboardData,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ['carrier', 'dashboard', user?.id],
     queryFn: () => carrierService.getCarrierDashboardData(user?.id),
     refetchInterval: 30000,
@@ -79,6 +82,7 @@ export function useCarrierDashboard() {
     currentTab,
     setTab,
     isLoading,
+    isFetching,
     completeMutation,
     startMutation: useMutation({
       mutationFn: (id: string) => carrierService.startPraying(id),

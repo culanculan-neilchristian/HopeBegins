@@ -18,14 +18,7 @@ export function Footer() {
             asChild
             className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-lg px-6 font-poppins font-bold uppercase tracking-widest text-[10px]"
           >
-            <Link href="/give-hope">I Want to Give Hope</Link>
-          </Button>
-          <Button
-            variant="outline"
-            asChild
-            className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-lg px-6 font-poppins font-bold uppercase tracking-widest text-[10px]"
-          >
-            <Link href="/our-story">Our Story</Link>
+            <Link href="/login/carrier">Carrier Login</Link>
           </Button>
         </div>
 

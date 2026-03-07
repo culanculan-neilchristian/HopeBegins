@@ -1,12 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { CheckCircle, UserCheck, MailCheck, Loader2 } from 'lucide-react';
+import { CheckCircle, UserCheck, Loader2 } from 'lucide-react';
 import type { Prayer } from '@/types/admin';
 
 interface ExpandedDetailProps {
   prayer: Prayer;
   onMarkPrayed: () => void;
   onAssign: () => void;
-  onSendFollowUp: () => void;
   isPending: boolean;
 }
 
@@ -14,7 +13,6 @@ export function ExpandedDetail({
   prayer,
   onMarkPrayed,
   onAssign,
-  onSendFollowUp,
   isPending,
 }: ExpandedDetailProps) {
   return (
@@ -63,17 +61,6 @@ export function ExpandedDetail({
                 Mark as Prayed
               </>
             )}
-          </Button>
-        )}
-
-        {prayer.wantsFollowUp && (
-          <Button
-            variant="ghost"
-            onClick={onSendFollowUp}
-            className="h-8 sm:h-9 px-3 sm:px-5 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 font-bold text-xs uppercase tracking-widest hover:bg-zinc-100 dark:hover:bg-zinc-800"
-          >
-            <MailCheck className="h-3 w-3 mr-1.5" />
-            Send Follow-Up
           </Button>
         )}
       </div>

@@ -42,7 +42,6 @@ interface PrayerTableRowProps {
   onMarkPrayed: () => void;
   onStatusChange: (status: PrayerStatus) => void;
   onAssign: () => void;
-  onSendFollowUp: () => void;
   onDelete: () => void;
 }
 
@@ -53,7 +52,6 @@ function PrayerTableRow({
   onToggle,
   onMarkPrayed,
   onAssign,
-  onSendFollowUp,
   onDelete,
 }: PrayerTableRowProps) {
   return (
@@ -126,7 +124,6 @@ function PrayerTableRow({
                 prayer={prayer}
                 onMarkPrayed={onMarkPrayed}
                 onAssign={onAssign}
-                onSendFollowUp={onSendFollowUp}
                 isPending={isUpdating}
               />
             </div>
@@ -150,7 +147,6 @@ interface PrayerTableProps {
   onMarkPrayed: (p: Prayer) => void;
   onStatusChange: (p: Prayer, s: PrayerStatus) => void;
   onAssign: (p: Prayer) => void;
-  onSendFollowUp: (p: Prayer) => void;
   onDelete: (p: Prayer) => void;
 }
 
@@ -166,7 +162,6 @@ export function PrayerTable({
   onMarkPrayed,
   onStatusChange,
   onAssign,
-  onSendFollowUp,
   onDelete,
 }: PrayerTableProps) {
   return (
@@ -222,7 +217,6 @@ export function PrayerTable({
                 onMarkPrayed={() => onMarkPrayed(prayer)}
                 onStatusChange={(status) => onStatusChange(prayer, status)}
                 onAssign={() => onAssign(prayer)}
-                onSendFollowUp={() => onSendFollowUp(prayer)}
                 onDelete={() => onDelete(prayer)}
               />
             ))}

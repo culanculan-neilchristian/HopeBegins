@@ -40,7 +40,7 @@ export function PrayerCard({
       }`}
     >
       <div
-        className="p-8 cursor-pointer"
+        className="p-6 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-start justify-between gap-6">
@@ -100,8 +100,8 @@ export function PrayerCard({
             transition={{ duration: 0.4, ease: 'circOut' }}
             className="border-t border-zinc-50 dark:border-zinc-800"
           >
-            <div className="p-8 space-y-8 bg-zinc-50/30 dark:bg-zinc-900/30">
-              <div className="p-8 bg-[#b4c392]/5 rounded-[2rem] border border-[#b4c392]/10 text-zinc-700 dark:text-zinc-300 font-medium leading-loose italic relative overflow-hidden">
+            <div className="p-6 space-y-8 bg-zinc-50/30 dark:bg-zinc-900/30">
+              <div className="p-6 bg-[#b4c392]/5 rounded-[2rem] border border-[#b4c392]/10 text-zinc-700 dark:text-zinc-300 font-medium leading-loose italic relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <Heart className="h-20 w-20 text-[#b4c392]" />
                 </div>

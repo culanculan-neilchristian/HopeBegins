@@ -1,5 +1,7 @@
 'use client';
 
+import { useMemo } from 'react';
+
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDashboard, CHART_DATA } from './hooks/useDashboard';
@@ -9,6 +11,21 @@ import { RecentPrayers } from './components/RecentPrayers';
 
 export default function AdminDashboard() {
   const { stats, isLoading, isError, refetch } = useDashboard();
+
+  const chartData = useMemo(() => {
+    if (!stats?.prayer_trend || !stats?.hopecast_trend) {
+      return CHART_DATA;
+    }
+
+    return stats.prayer_trend.map((pt: any, index: number) => {
+      const ht = stats.hopecast_trend?.[index];
+      return {
+        name: pt.day,
+        prayers: pt.count,
+        plays: ht ? ht.count : 0,
+      };
+    });
+  }, [stats]);
 
   if (isError) {
     return (
@@ -50,7 +67,7 @@ export default function AdminDashboard() {
       <StatCards stats={stats} isLoading={isLoading} />
 
       {/* ── Charts ── */}
-      <DashboardCharts data={CHART_DATA} />
+      <DashboardCharts data={chartData} isLoading={isLoading} />
 
       {/* ── Recent Prayers ── */}
       <RecentPrayers prayers={stats?.recent_prayers} />

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { X, UserCheck, Loader2, Search } from 'lucide-react';
+import { Modal } from '@/components/ui/modal';
+import { UserCheck, Loader2, Search } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import type { Prayer, HopeCarrier } from '@/types/admin';
 
@@ -33,37 +34,19 @@ export function AssignCarrierModal({
   }, [carriers, search]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 w-full max-w-lg shadow-2xl shadow-black/20 flex flex-col max-h-[90vh]">
-        <button
-          onClick={onCancel}
-          className="absolute top-5 right-5 h-8 w-8 flex items-center justify-center rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-        >
-          <X className="h-4 w-4 text-zinc-500" />
-        </button>
-
-        <div className="flex items-center justify-center h-14 w-14 rounded-2xl bg-teal-50 dark:bg-teal-900/20 mb-6 shrink-0">
-          <UserCheck className="h-6 w-6 text-teal-600" />
-        </div>
-
-        <h2 className="text-2xl font-black tracking-tight mb-2 shrink-0">
-          Assign to Carrier
-        </h2>
-        <p className="text-zinc-500 font-medium mb-4 shrink-0">
-          Choose a carrier to handle:{' '}
-          <span className="text-zinc-900 dark:text-zinc-100 font-bold ml-1">
-            &ldquo;
-            {prayer.isAnonymous || !prayer.shareFirstName
-              ? 'Anonymous'
-              : prayer.title}
-            &rdquo;
-          </span>
-        </p>
-
+    <Modal
+      isOpen={true}
+      onClose={onCancel}
+      title="Assign to Carrier"
+      icon={<UserCheck className="h-6 w-6 text-teal-600" />}
+      iconClassName="bg-teal-50 dark:bg-teal-900/20"
+      description={`Choose a carrier to handle: "${
+        prayer.isAnonymous || !prayer.shareFirstName
+          ? 'Anonymous'
+          : prayer.title
+      }"`}
+    >
+      <div className="flex flex-col">
         <div className="relative mb-6 shrink-0">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
           <input
@@ -75,7 +58,7 @@ export function AssignCarrierModal({
           />
         </div>
 
-        <div className="flex-1 overflow-y-auto min-h-0 space-y-2 mb-8 pr-2 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto max-h-[40vh] min-h-0 space-y-2 mb-8 pr-2 custom-scrollbar">
           {filteredCarriers.length === 0 ? (
             <div className="py-8 text-center text-zinc-400 text-sm font-medium italic">
               No carriers found...
@@ -171,6 +154,6 @@ export function AssignCarrierModal({
           </Button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
