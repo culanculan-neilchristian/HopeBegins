@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { CustomSelect } from '@/components/ui/custom-select';
 import {
   XAxis,
   YAxis,
@@ -30,10 +31,32 @@ export function RevenueChart({ data }: RevenueChartProps) {
             Monthly donation statistics for the current year.
           </p>
         </div>
-        <select className="bg-zinc-50 dark:bg-zinc-800 border-none rounded-xl px-3 py-1.5 text-xs font-bold text-zinc-600 dark:text-zinc-300 focus:outline-none">
-          <option>Year 2026</option>
-          <option>Year 2025</option>
-        </select>
+        <CustomSelect
+          options={[
+            { label: 'Year 2026', value: '2026' },
+            { label: 'Year 2025', value: '2025' },
+          ]}
+          defaultValue={{ label: 'Year 2026', value: '2026' }}
+          containerClassName="w-32"
+          isSearchable={false}
+          styles={{
+            control: (base) => ({
+              ...base,
+              minHeight: '32px',
+              height: '32px',
+              borderRadius: '10px',
+            }),
+            singleValue: (base) => ({
+              ...base,
+              fontSize: '11px',
+              fontWeight: '700',
+            }),
+            placeholder: (base) => ({
+              ...base,
+              fontSize: '11px',
+            }),
+          }}
+        />
       </CardHeader>
       <div className="h-48 w-full">
         <ResponsiveContainer width="100%" height="100%">

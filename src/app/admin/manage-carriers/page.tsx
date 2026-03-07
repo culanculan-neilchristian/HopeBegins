@@ -1,15 +1,22 @@
 'use client';
 
 import { AnimatePresence } from 'framer-motion';
-import { Search } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useManageCarriers } from './hooks/useManageCarriers';
 import { CarrierCard } from './components/CarrierCard';
 import { CarrierDetailModal } from './components/CarrierDetailModal';
+import { DeleteCarrierModal } from './components/DeleteCarrierModal';
 
 export default function ManageCarriersPage() {
   const {
     filteredCarriers,
+    totalCount,
+    page,
+    setPage,
+    hasNext,
+    hasPrev,
     isLoading,
     searchQuery,
     setSearchQuery,
@@ -21,9 +28,15 @@ export default function ManageCarriersPage() {
     setSelectedCarrier,
     approveMutation,
     handleApprove,
+    deleteMutation,
+    deleteTarget,
+    setDeleteTarget,
   } = useManageCarriers();
 
-  if (isLoading) {
+  const PAGE_SIZE = 10;
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+  if (isLoading && page === 1 && !searchQuery) {
     return (
       <div className="p-8 space-y-4">
         <div className="h-10 w-64 bg-zinc-200 dark:bg-zinc-800 animate-pulse rounded-lg" />
@@ -40,7 +53,16 @@ export default function ManageCarriersPage() {
   }
 
   return (
-    <div className="p-4 sm:p-8 lg:p-12 space-y-6 sm:space-y-10 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-8 lg:p-12 space-y-6 sm:space-y-10 max-w-7xl mx-auto min-h-screen">
+      {deleteTarget && (
+        <DeleteCarrierModal
+          carrier={deleteTarget}
+          onConfirm={() => deleteMutation.mutate(deleteTarget.id)}
+          onCancel={() => setDeleteTarget(null)}
+          isPending={deleteMutation.isPending}
+        />
+      )}
+
       {/* ── Header ── */}
       <header className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <div>
@@ -49,6 +71,11 @@ export default function ManageCarriersPage() {
           </h1>
           <p className="text-zinc-500 font-medium text-sm sm:text-base">
             Review and approve volunteers supporting the community.
+            {totalCount > 0 && (
+              <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
+                {totalCount} Total
+              </span>
+            )}
           </p>
         </div>
 
@@ -98,36 +125,97 @@ export default function ManageCarriersPage() {
 
       {/* ── List ── */}
       <div className="space-y-4">
+        {isLoading && page > 1 && (
+          <div className="flex items-center justify-center py-4">
+            <div className="h-4 bg-zinc-100 dark:bg-zinc-800 w-24 animate-pulse rounded-full" />
+          </div>
+        )}
+
         <AnimatePresence mode="popLayout">
-          {filteredCarriers.length > 0 ? (
-            filteredCarriers.map((carrier) => (
-              <CarrierCard
-                key={carrier.id}
-                carrier={carrier}
-                onSelect={setSelectedCarrier}
-                onApprove={handleApprove}
-                isApproving={
-                  approveMutation.isPending &&
-                  approveMutation.variables === carrier.id
-                }
-              />
-            ))
-          ) : (
-            <div className="py-20 text-center space-y-4">
-              <div className="h-20 w-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Search className="h-10 w-10 text-zinc-300" />
-              </div>
-              <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 italic">
-                No carriers found
-              </h3>
-              <p className="text-zinc-500 max-w-xs mx-auto font-medium">
-                Try adjusting your search or filters to find what you&apos;re
-                looking for.
-              </p>
-            </div>
-          )}
+          {filteredCarriers.length > 0
+            ? filteredCarriers.map((carrier) => (
+                <CarrierCard
+                  key={carrier.id}
+                  carrier={carrier}
+                  onSelect={setSelectedCarrier}
+                  onApprove={handleApprove}
+                  isApproving={
+                    approveMutation.isPending &&
+                    approveMutation.variables === carrier.id
+                  }
+                  onDelete={() => setDeleteTarget(carrier)}
+                  isDeleting={
+                    deleteMutation.isPending &&
+                    deleteMutation.variables === carrier.id
+                  }
+                />
+              ))
+            : !isLoading && (
+                <div className="py-20 text-center space-y-4">
+                  <div className="h-20 w-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Search className="h-10 w-10 text-zinc-300" />
+                  </div>
+                  <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 italic">
+                    No carriers found
+                  </h3>
+                  <p className="text-zinc-500 max-w-xs mx-auto font-medium">
+                    Try adjusting your search or filters to find what
+                    you&apos;re looking for.
+                  </p>
+                </div>
+              )}
         </AnimatePresence>
       </div>
+
+      {/* ── Pagination UI ── */}
+      {!isLoading && totalPages > 1 && (
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-zinc-100 dark:border-zinc-800 shadow-xl shadow-zinc-200/40 dark:shadow-none">
+          <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
+            Showing{' '}
+            <span className="text-zinc-900 dark:text-zinc-100">
+              {(page - 1) * PAGE_SIZE + 1}-
+              {Math.min(page * PAGE_SIZE, totalCount)}
+            </span>{' '}
+            of{' '}
+            <span className="text-zinc-900 dark:text-zinc-100">
+              {totalCount}
+            </span>{' '}
+            carriers
+          </p>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!hasPrev || isLoading}
+              onClick={() => {
+                setPage(page - 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="h-10 rounded-xl font-bold border-zinc-200 dark:border-zinc-700 px-6 shadow-sm disabled:opacity-50"
+            >
+              <ChevronLeft className="h-4 w-4 mr-2" />
+              Prev
+            </Button>
+            <div className="px-4 text-xs font-black text-brand">
+              Page {page}{' '}
+              <span className="text-zinc-400 font-medium">/ {totalPages}</span>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!hasNext || isLoading}
+              onClick={() => {
+                setPage(page + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="h-10 rounded-xl font-bold border-zinc-200 dark:border-zinc-700 px-6 shadow-sm disabled:opacity-50"
+            >
+              Next
+              <ChevronRight className="h-4 w-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* ── Detail Modal ── */}
       {selectedCarrier && (

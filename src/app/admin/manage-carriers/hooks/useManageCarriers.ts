@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
 import { notify } from '@/lib/notifications';
@@ -9,6 +9,7 @@ export type SortOption = 'recent' | 'oldest' | 'name' | 'prayers';
 export function useManageCarriers() {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState<
     'ALL' | 'PENDING' | 'ACTIVE'
   >('ALL');
@@ -16,11 +17,64 @@ export function useManageCarriers() {
   const [selectedCarrier, setSelectedCarrier] = useState<HopeCarrier | null>(
     null
   );
+  const [deleteTarget, setDeleteTarget] = useState<HopeCarrier | null>(null);
 
-  const { data: carriers = [], isLoading } = useQuery({
-    queryKey: ['admin', 'carriers'],
-    queryFn: () => adminService.getCarriers(),
+  // Debounced search
+  const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setPage(1); // Reset page on search
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Custom Setters that also reset page
+  const handleSetFilterStatus = (status: 'ALL' | 'PENDING' | 'ACTIVE') => {
+    setFilterStatus(status);
+    setPage(1);
+  };
+
+  const handleSetSortBy = (sort: SortOption) => {
+    setSortBy(sort);
+    setPage(1);
+  };
+
+  // Map SortOption to Backend Ordering
+  const backendOrdering = useMemo(() => {
+    switch (sortBy) {
+      case 'recent':
+        return '-date_joined';
+      case 'oldest':
+        return 'date_joined';
+      case 'name':
+        return 'first_name,last_name';
+      case 'prayers':
+        return '-prayer_count';
+      default:
+        return '-date_joined';
+    }
+  }, [sortBy]);
+
+  const { data: paginatedData, isLoading } = useQuery({
+    queryKey: [
+      'admin',
+      'carriers',
+      page,
+      debouncedSearch,
+      filterStatus,
+      backendOrdering,
+    ],
+    queryFn: () =>
+      adminService.getCarriers(
+        page,
+        debouncedSearch,
+        filterStatus,
+        backendOrdering
+      ),
   });
+
+  const carriers = useMemo(() => paginatedData?.results ?? [], [paginatedData]);
 
   const approveMutation = useMutation({
     mutationFn: (id: string) => adminService.approveCarrier(id),
@@ -36,39 +90,6 @@ export function useManageCarriers() {
     },
   });
 
-  const filteredCarriers = useMemo(() => {
-    const filtered = carriers.filter((carrier) => {
-      const matchesSearch =
-        carrier.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        carrier.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        carrier.email.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesStatus =
-        filterStatus === 'ALL' ||
-        (filterStatus === 'PENDING' && !carrier.is_approved) ||
-        (filterStatus === 'ACTIVE' && carrier.is_approved);
-
-      return matchesSearch && matchesStatus;
-    });
-
-    return [...filtered].sort((a, b) => {
-      switch (sortBy) {
-        case 'recent':
-          return new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime();
-        case 'oldest':
-          return new Date(a.date_joined).getTime() - new Date(b.date_joined).getTime();
-        case 'name':
-          return `${a.first_name} ${a.last_name}`.localeCompare(
-            `${b.first_name} ${b.last_name}`
-          );
-        case 'prayers':
-          return b.prayer_count - a.prayer_count;
-        default:
-          return 0;
-      }
-    });
-  }, [carriers, searchQuery, filterStatus, sortBy]);
-
   const handleApprove = (
     e: React.MouseEvent | React.FocusEvent,
     id: string
@@ -77,19 +98,41 @@ export function useManageCarriers() {
     approveMutation.mutate(id);
   };
 
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => adminService.deleteCarrier(id),
+    onSuccess: () => {
+      notify.success('Carrier deleted successfully');
+      setDeleteTarget(null);
+      queryClient.invalidateQueries({ queryKey: ['admin', 'carriers'] });
+    },
+    onError: (error: any) => {
+      notify.error(error.message || 'Failed to delete carrier');
+    },
+  });
+
+
+
   return {
     carriers,
-    filteredCarriers,
+    filteredCarriers: carriers, // Now filtered on the backend
+    totalCount: paginatedData?.count ?? 0,
+    hasNext: !!paginatedData?.next,
+    hasPrev: !!paginatedData?.previous,
     isLoading,
     searchQuery,
     setSearchQuery,
+    page,
+    setPage,
     filterStatus,
-    setFilterStatus,
+    setFilterStatus: handleSetFilterStatus,
     sortBy,
-    setSortBy,
+    setSortBy: handleSetSortBy,
     selectedCarrier,
     setSelectedCarrier,
     approveMutation,
     handleApprove,
+    deleteMutation,
+    deleteTarget,
+    setDeleteTarget,
   };
 }

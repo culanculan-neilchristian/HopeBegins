@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -5,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { prayerSchema } from '@/types/prayer';
 import { prayerService } from '@/services/prayerService';
+import { notify } from '@/lib/notifications';
 
 export function usePrayerForm() {
   const queryClient = useQueryClient();
@@ -24,9 +26,18 @@ export function usePrayerForm() {
 
   const mutation = useMutation({
     mutationFn: prayerService.createPrayer,
-    onSuccess: () => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['prayers'] });
+      notify.success(
+        data?.message ||
+        'Your prayer has been submitted. We are praying for you!'
+      );
       form.reset();
+    },
+    onError: (error: any) => {
+      notify.error(
+        error.message || 'Failed to submit prayer. Please try again.'
+      );
     },
   });
 

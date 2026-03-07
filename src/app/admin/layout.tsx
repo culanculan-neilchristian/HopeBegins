@@ -9,6 +9,7 @@ import {
   BarChart3,
   LogOut,
   Heart,
+  Users,
 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
@@ -93,6 +94,11 @@ export default function AdminLayout({
       label: 'Manage Hope Carriers',
       href: '/admin/manage-carriers',
       icon: Heart,
+    },
+    {
+      label: 'Daily Hope',
+      href: '/admin/daily-hope',
+      icon: Users,
     },
     { label: 'Financials', href: '/admin/donations', icon: BarChart3 },
   ];

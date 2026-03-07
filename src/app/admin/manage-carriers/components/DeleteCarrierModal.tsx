@@ -1,27 +1,27 @@
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { Trash2, Loader2 } from 'lucide-react';
-import type { Hopecast } from '@/types/admin';
+import type { HopeCarrier } from '@/types/admin';
 
-interface DeleteModalProps {
-  hopecast: Hopecast;
+interface DeleteCarrierModalProps {
+  carrier: HopeCarrier;
   onConfirm: () => void;
   onCancel: () => void;
   isPending: boolean;
 }
 
-export function DeleteModal({
-  hopecast,
+export function DeleteCarrierModal({
+  carrier,
   onConfirm,
   onCancel,
   isPending,
-}: DeleteModalProps) {
+}: DeleteCarrierModalProps) {
   return (
     <Modal
       isOpen={true}
       onClose={onCancel}
-      title="Delete Hopecast?"
-      description={`You're about to delete "${hopecast.title}". This action cannot be undone.`}
+      title="Delete Carrier?"
+      description={`You're about to delete "${carrier.first_name} ${carrier.last_name}". This action cannot be undone.`}
       icon={<Trash2 className="h-6 w-6 text-red-600" />}
       iconClassName="bg-red-50 dark:bg-red-900/20"
     >

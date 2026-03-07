@@ -40,7 +40,9 @@ export function MobileCard({
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                {prayer.title}
+                {prayer.isAnonymous || !prayer.shareFirstName
+                  ? 'Anonymous'
+                  : prayer.title}
               </span>
               <CategoryBadge category={prayer.category as PrayerCategory} />
             </div>
@@ -49,11 +51,6 @@ export function MobileCard({
               <span className="text-xs text-zinc-400 font-medium">
                 {formatDate(prayer.created_at)}
               </span>
-              {prayer.isAnonymous && (
-                <span className="text-xs text-zinc-400 font-medium">
-                  · Anonymous
-                </span>
-              )}
             </div>
           </div>
           <div className="flex items-center gap-1 shrink-0">

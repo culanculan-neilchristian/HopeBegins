@@ -1,11 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { CheckCircle, UserCheck, MailCheck, Loader2 } from 'lucide-react';
-import type { Prayer, PrayerStatus } from '@/types/admin';
+import type { Prayer } from '@/types/admin';
 
 interface ExpandedDetailProps {
   prayer: Prayer;
   onMarkPrayed: () => void;
-  onStatusChange: (status: PrayerStatus) => void;
   onAssign: () => void;
   onSendFollowUp: () => void;
   isPending: boolean;
@@ -14,13 +13,12 @@ interface ExpandedDetailProps {
 export function ExpandedDetail({
   prayer,
   onMarkPrayed,
-  onStatusChange,
   onAssign,
   onSendFollowUp,
   isPending,
 }: ExpandedDetailProps) {
   return (
-    <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-4">
+    <div className="pt-3">
       <p className="text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed text-sm w-full break-words overflow-hidden">
         {prayer.content}
       </p>
@@ -51,7 +49,7 @@ export function ExpandedDetail({
           </Button>
         )}
 
-        {prayer.status !== 'PRAYED' && prayer.status !== 'COMPLETED' && (
+        {prayer.status !== 'COMPLETED' && (
           <Button
             onClick={onMarkPrayed}
             disabled={isPending}
@@ -68,26 +66,16 @@ export function ExpandedDetail({
           </Button>
         )}
 
-        {prayer.status === 'PRAYED' && (
+        {prayer.wantsFollowUp && (
           <Button
             variant="ghost"
-            onClick={() => onStatusChange('COMPLETED')}
-            disabled={isPending}
-            className="h-8 sm:h-9 px-3 sm:px-5 rounded-xl bg-zinc-700 hover:bg-zinc-800 text-white font-bold text-xs uppercase tracking-widest border-0"
+            onClick={onSendFollowUp}
+            className="h-8 sm:h-9 px-3 sm:px-5 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 font-bold text-xs uppercase tracking-widest hover:bg-zinc-100 dark:hover:bg-zinc-800"
           >
-            <CheckCircle className="h-3 w-3 mr-1.5" />
-            Mark as Completed
+            <MailCheck className="h-3 w-3 mr-1.5" />
+            Send Follow-Up
           </Button>
         )}
-
-        <Button
-          variant="ghost"
-          onClick={onSendFollowUp}
-          className="h-8 sm:h-9 px-3 sm:px-5 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 font-bold text-xs uppercase tracking-widest hover:bg-zinc-100 dark:hover:bg-zinc-800"
-        >
-          <MailCheck className="h-3 w-3 mr-1.5" />
-          Send Follow-Up
-        </Button>
       </div>
     </div>
   );

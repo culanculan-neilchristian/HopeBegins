@@ -5,13 +5,13 @@ export function StatusBadge({ status }: { status: PrayerStatus }) {
   const cfg = STATUS_CONFIG[status];
   return (
     <div
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ${cfg.bg}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ${cfg?.bg}`}
     >
-      <span className={cfg.color}>{cfg.icon}</span>
+      <span className={cfg?.color}>{cfg?.icon}</span>
       <span
-        className={`text-[10px] font-black uppercase tracking-widest ${cfg.color}`}
+        className={`text-[10px] font-black uppercase tracking-widest ${cfg?.color}`}
       >
-        {cfg.label}
+        {cfg?.label}
       </span>
     </div>
   );

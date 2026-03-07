@@ -1,4 +1,4 @@
-import { Clock, CheckCircle, UserCheck } from 'lucide-react';
+import { Clock, CheckCircle, UserCheck, PlayCircle } from 'lucide-react';
 import type { PrayerCategory, PrayerStatus } from '@/types/admin';
 
 export const STATUS_CONFIG: Record<
@@ -17,11 +17,11 @@ export const STATUS_CONFIG: Record<
     color: 'text-blue-600',
     bg: 'bg-blue-50 dark:bg-blue-900/20',
   },
-  PRAYED: {
-    label: 'Prayed',
-    icon: <CheckCircle className="h-3 w-3" />,
-    color: 'text-green-600',
-    bg: 'bg-green-50 dark:bg-green-900/20',
+  ON_PROGRESS: {
+    label: 'On Going',
+    icon: <PlayCircle className="h-3 w-3" />,
+    color: 'text-indigo-600',
+    bg: 'bg-indigo-50 dark:bg-indigo-900/20',
   },
   COMPLETED: {
     label: 'Completed',

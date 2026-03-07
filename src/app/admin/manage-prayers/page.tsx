@@ -3,12 +3,21 @@
 import { Search, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CustomSelect } from '@/components/ui/custom-select';
 import { useManagePrayers } from './hooks/useManagePrayers';
 import { DeleteModal } from './components/DeleteModal';
 import { AssignCarrierModal } from './components/AssignCarrierModal';
 import { MobileCard } from './components/MobileCard';
 import { PrayerTable } from './components/PrayerTable';
 import type { PrayerStatus } from '@/types/admin';
+
+const statusOptions = [
+  { label: 'All Statuses', value: 'ALL' },
+  { label: 'New', value: 'NEW' },
+  { label: 'Assigned', value: 'ASSIGNED' },
+  { label: 'On Going', value: 'ON_PROGRESS' },
+  { label: 'Completed', value: 'COMPLETED' },
+] as const;
 
 export default function ManagePrayersPage() {
   const {
@@ -97,20 +106,19 @@ export default function ManagePrayersPage() {
               )}
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-shrink-0">
-            <select
-              value={statusFilter}
-              onChange={(e) =>
-                setStatusFilter(e.target.value as PrayerStatus | 'ALL')
-              }
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 h-10 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/30 w-full sm:w-auto"
-            >
-              <option value="ALL">All Statuses</option>
-              <option value="NEW">New</option>
-              <option value="ASSIGNED">Assigned</option>
-              <option value="PRAYED">Prayed</option>
-              <option value="COMPLETED">Completed</option>
-            </select>
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto flex-shrink-0">
+            <CustomSelect
+              value={statusOptions.find((opt) => opt.value === statusFilter)}
+              onChange={(newValue) => {
+                if (newValue) {
+                  setStatusFilter(newValue.value as PrayerStatus | 'ALL');
+                }
+              }}
+              options={statusOptions}
+              containerClassName="w-full sm:w-48"
+              placeholder="All Statuses"
+              isSearchable={false}
+            />
             <div className="relative flex-1 sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
               <Input
