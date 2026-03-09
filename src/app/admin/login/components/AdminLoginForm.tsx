@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { useAdminLogin } from '../hooks/useAdminLogin';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,10 +20,11 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { Loader2, Lock, Mail, AlertCircle } from 'lucide-react';
+import { Loader2, Lock, Mail, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 export function AdminLoginForm() {
   const { form, onSubmit, isSubmitting, error } = useAdminLogin();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Card className="w-full max-w-md border-zinc-100 dark:border-zinc-800 shadow-xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm">
@@ -64,7 +67,7 @@ export function AdminLoginForm() {
                     <div className="relative group">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-brand transition-colors" />
                       <Input
-                        placeholder="mauroricardomarfil@gmail.com"
+                        placeholder="Enter your email address"
                         className="pl-11 h-12 bg-zinc-50/50 dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-800 focus:border-brand focus:ring-brand/20 transition-all rounded-xl"
                         {...field}
                       />
@@ -87,11 +90,22 @@ export function AdminLoginForm() {
                     <div className="relative group">
                       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-brand transition-colors" />
                       <Input
-                        type="password"
-                        placeholder="••••••••"
-                        className="pl-11 h-12 bg-zinc-50/50 dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-800 focus:border-brand focus:ring-brand/20 transition-all rounded-xl"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Enter your password"
+                        className="pl-11 pr-11 h-12 bg-zinc-50/50 dark:bg-zinc-950/50 border-zinc-200 dark:border-zinc-800 focus:border-brand focus:ring-brand/20 transition-all rounded-xl"
                         {...field}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-brand transition-colors"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
                     </div>
                   </FormControl>
                   <FormMessage className="text-xs ml-1" />
