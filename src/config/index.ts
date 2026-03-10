@@ -28,6 +28,12 @@ const CONFIG = {
 
 // Selection of config based on environment
 // Defaults to local if environment not found or for local development
-export const config = CONFIG[ENV as keyof typeof CONFIG] || CONFIG.local;
+const baseConfig = CONFIG[ENV as keyof typeof CONFIG] || CONFIG.local;
+
+export const config = {
+  ...baseConfig,
+  API_URL: process.env.NEXT_PUBLIC_API_URL || baseConfig.API_URL,
+  BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || baseConfig.BASE_URL,
+};
 
 export default config;
