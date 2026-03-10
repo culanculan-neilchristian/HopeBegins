@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "dev:backend": "cd ../hopebeginbackend && .\\venv\\Scripts\\python.exe manage.py runserver 3003",
-    "dev:all": "start npm run dev & npm run dev:backend",
+    "dev:redis": "memurai || redis-server || echo 'Ensure Redis is running'",
+    "dev:celery": "cd ../hopebeginbackend && .\\venv\\Scripts\\celery.exe -A config worker --loglevel=info -P solo",
+    "dev:all": "start npm run dev & start npm run dev:backend & start npm run dev:celery & npm run dev:redis",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
