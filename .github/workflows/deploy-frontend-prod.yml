@@ -1,5 +1,5 @@
 name: Deploy Frontend
-#on:
+on:
   push:
     branches:
       - main
