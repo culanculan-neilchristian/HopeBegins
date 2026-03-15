@@ -1,16 +1,33 @@
-name: Deploy Frontend
+name: Build and Deploy Frontend
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  deploy-frontend:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hope-frontend:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -19,7 +36,14 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd /var/www/HopeBegins
+            # Update the .env file on the server
             echo "${{ secrets.FRONTEND_ENV }}" > .env
-            git reset --hard
-            git pull
-            docker compose up -d --build frontend
+            
+            # Pull the pre-built image from Docker Hub
+            docker compose pull frontend
+            
+            # Restart the service (Docker will use the new image we just pulled)
+            docker compose up -d frontend
+            
+            # Optional: Clean up old images to save disk space
+            docker image prune -f
