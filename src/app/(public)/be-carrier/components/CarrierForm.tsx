@@ -3,17 +3,18 @@
 import { useCarrierForm } from '../hooks/useCarrierForm';
 import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormControl,
+  Form,
+  FormField,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
 export function CarrierForm() {
   const { form, onSubmit, isSubmitting } = useCarrierForm();
@@ -164,8 +165,15 @@ export function CarrierForm() {
                         htmlFor="agreedToGuidelines"
                         className="text-sm text-zinc-500 font-medium cursor-pointer"
                       >
-                        I agree to the Hope Carrier guidelines and code of
-                        conduct
+                        I agree to the{' '}
+                        <Link
+                          href="/guidelines"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#6b634d] dark:text-emerald-500 hover:underline font-bold"
+                        >
+                          Hope Carrier guidelines and code of conduct
+                        </Link>
                       </label>
                     </div>
                     <FormMessage />

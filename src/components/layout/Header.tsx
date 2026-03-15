@@ -12,7 +12,7 @@ export function Header() {
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/be-carrier', label: 'I Want to Be a Hope Carrier' },
-    { href: '/give-hope', label: 'I Want to Give Hope' },
+    { href: '/give-hope', label: 'Our Impact' },
     { href: '/our-story', label: 'Our Story' },
   ];
 

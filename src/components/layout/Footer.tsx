@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import headerLogo from '@/assets/images/header-logo.png';
 import { Button } from '@/components/ui/button';
 
 export function Footer() {
@@ -23,8 +25,17 @@ export function Footer() {
         </div>
 
         <div className="text-center space-y-4">
-          <div className="font-poppins font-black text-xl tracking-tighter opacity-90">
-            HopeBegins Today
+          <div className="flex justify-center opacity-90 transition-opacity hover:opacity-100">
+            <Link href="/">
+              <Image
+                src={headerLogo}
+                alt="HopeBegins Logo"
+                width={170}
+                height={62}
+                style={{ height: 'auto' }}
+                className="brightness-0 invert"
+              />
+            </Link>
           </div>
           <div className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60 font-poppins">
             Faith-Driven Mental Health Support

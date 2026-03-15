@@ -13,7 +13,6 @@ import {
   Phone,
   MessageCircle,
   Video,
-  Play,
   Zap,
   Anchor,
 } from 'lucide-react';
@@ -439,34 +438,55 @@ function NextStepsStep() {
       <div className="max-w-md mx-auto mt-12 px-4 sm:px-0">
         <Card className="bg-[#fff9f2] dark:bg-orange-900/10 border-[#ffe4c4] dark:border-orange-900/20">
           <CardContent className="p-6 text-center space-y-4">
-            <p className="font-bold text-[#8b4513] dark:text-orange-300 text-xs md:text-sm">
+            <p className="font-bold text-[#8b4513] dark:text-orange-300 text-sm md:text-base text-center">
               If you&apos;re in crisis, please reach out:
             </p>
-            <div className="space-y-3">
-              <div className="flex items-center justify-center gap-3 text-zinc-600 dark:text-zinc-400 text-sm">
-                <Phone className="w-4 h-4 text-[#a3b18a]" />
-                <span>
-                  <strong className="text-zinc-800 dark:text-zinc-200">
-                    988
-                  </strong>{' '}
-                  Suicide & Crisis Lifeline — Call or text{' '}
-                  <strong className="text-zinc-800 dark:text-zinc-200">
-                    988
-                  </strong>
-                </span>
+            <div className="space-y-5 pt-2">
+              <div className="text-zinc-600 dark:text-zinc-400 text-sm space-y-1 text-left">
+                <div className="flex items-center gap-2 text-zinc-800 dark:text-zinc-200 font-bold mb-2">
+                  <Phone className="w-4 h-4 text-[#a3b18a]" />
+                  <span>
+                    National Center for Mental Health 24/7 Crisis Hotline
+                  </span>
+                </div>
+                <p className="flex gap-3 border-b border-orange-900/10 pb-1">
+                  <span>Landline (nationwide):</span>
+                  <strong>1553</strong>
+                </p>
+                <p className="flex gap-3 pt-1">
+                  <span>Mobile:</span>
+                  <strong>0917-899-8727 / 0966-351-4518</strong>
+                </p>
               </div>
-              <div className="flex items-center justify-center gap-3 text-zinc-600 dark:text-zinc-400 text-sm">
-                <MessageCircle className="w-4 h-4 text-[#a3b18a]" />
-                <span>
-                  Crisis Text Line — Text{' '}
-                  <strong className="text-zinc-800 dark:text-zinc-200">
-                    HELLO
-                  </strong>{' '}
-                  to{' '}
-                  <strong className="text-zinc-800 dark:text-zinc-200">
-                    741741
-                  </strong>
-                </span>
+
+              <div className="text-zinc-600 dark:text-zinc-400 text-sm space-y-1 text-left">
+                <div className="flex items-center gap-2 text-zinc-800 dark:text-zinc-200 font-bold mb-2">
+                  <MessageCircle className="w-4 h-4 text-[#a3b18a]" />
+                  <span>Hopeline Philippines Emotional Crisis Support</span>
+                </div>
+                <p className="flex gap-3 border-b border-orange-900/10 pb-1">
+                  <span>Call:</span>
+                  <strong>(02) 8804-4673</strong>
+                </p>
+                <p className="flex gap-3 pt-1">
+                  <span>Mobile:</span>
+                  <strong>0917-558-4673 / 0918-873-4673</strong>
+                </p>
+              </div>
+
+              <div className="text-zinc-600 dark:text-zinc-400 text-sm space-y-1 text-left">
+                <div className="flex items-center gap-2 text-zinc-800 dark:text-zinc-200 font-bold mb-2">
+                  <Heart className="w-4 h-4 text-[#a3b18a]" />
+                  <span>In Touch Community Services Crisis Line (24/7)</span>
+                </div>
+                <p className="flex gap-3 border-b border-orange-900/10 pb-1">
+                  <span>Call:</span>
+                  <strong>(02) 8893-7603</strong>
+                </p>
+                <p className="flex gap-3 pt-1">
+                  <span>Mobile:</span>
+                  <strong>0917-800-1123</strong>
+                </p>
               </div>
             </div>
           </CardContent>
@@ -565,16 +585,17 @@ function WordStep({
 
       {/* Video Placeholder */}
       <div className="max-w-2xl mx-auto rounded-3xl overflow-hidden shadow-2xl shadow-emerald-900/10 border-4 border-white dark:border-zinc-900">
-        <div className="aspect-video bg-[#7c745d] flex flex-col items-center justify-center text-white space-y-6 relative group cursor-pointer">
-          <div className="w-20 h-20 rounded-full border-2 border-white/50 flex items-center justify-center transition-all group-hover:scale-110 group-hover:border-white">
-            <Play className="w-8 h-8 fill-white" />
-          </div>
-          <div className="text-center">
-            <h3 className="text-xl font-bold font-poppins">
-              You Are Not Alone
-            </h3>
-            <p className="text-white/70 text-sm mt-1">3:42</p>
-          </div>
+        <div className="aspect-video relative">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/zHPaFDRZMUo?rel=0"
+            title="You Are Not Alone"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute top-0 left-0 w-full h-full"
+          ></iframe>
         </div>
       </div>
 

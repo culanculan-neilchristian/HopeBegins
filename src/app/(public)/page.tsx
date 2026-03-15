@@ -10,6 +10,7 @@ import {
   ArrowRight,
   HandHeart,
 } from 'lucide-react';
+import { TestimonialCarousel } from '@/components/ui/testimonial-carousel';
 
 // Import the logo directly to ensure Next.js handles the path correctly
 import headerLogo from '@/assets/images/header-logo.png';
@@ -131,6 +132,24 @@ export default function LandingPage() {
                 </Card>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="px-6 pb-32">
+        <div className="max-w-5xl mx-auto space-y-8 text-center">
+          <div>
+            <h2 className="text-3xl font-bold font-poppins text-zinc-900 dark:text-zinc-100 tracking-tight">
+              Stories of Hope
+            </h2>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 font-medium">
+              See what others are saying about their journey.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <TestimonialCarousel />
           </div>
         </div>
       </section>
