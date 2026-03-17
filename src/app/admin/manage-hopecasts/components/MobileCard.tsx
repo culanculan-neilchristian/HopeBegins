@@ -19,11 +19,9 @@ export function MobileCard({ cast, onEdit, onDelete }: MobileCardProps) {
           <p className="font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
             {cast.title}
           </p>
-          {(cast.name || cast.verse) && (
+          {cast.name && (
             <p className="text-[10px] text-zinc-500 font-medium mt-0.5 italic">
-              {cast.name && <span>{cast.name}</span>}
-              {cast.name && cast.verse && <span className="mx-1">•</span>}
-              {cast.verse && <span>{cast.verse}</span>}
+              <span>{cast.name}</span>
             </p>
           )}
           <p className="text-[10px] text-zinc-400 font-medium mt-1">

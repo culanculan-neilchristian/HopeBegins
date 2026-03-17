@@ -3,6 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Modal } from '@/components/ui/modal';
 import { Loader2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import { categoryStyle } from '../constants';
 import type {
   Hopecast,
@@ -32,6 +36,16 @@ export function HopecastModal({
   const [selectedCats, setSelectedCats] = useState<string[]>(
     initial?.category_details?.map((c) => c.id) ?? []
   );
+
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link'],
+      ['clean'],
+    ],
+  };
 
   const toggleCat = (id: string) =>
     setSelectedCats((prev) =>
@@ -75,27 +89,28 @@ export function HopecastModal({
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1.5 block">
-              Author / speaker Name
-            </label>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. John Doe"
-              className="h-12 rounded-2xl border-zinc-200 dark:border-zinc-700 font-medium focus-visible:ring-brand/30"
-            />
-          </div>
-          <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1.5 block">
-              Scripture Verse
-            </label>
-            <Input
+        <div>
+          <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1.5 block">
+            Author / speaker Name
+          </label>
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. John Doe"
+            className="h-12 rounded-2xl border-zinc-200 dark:border-zinc-700 font-medium focus-visible:ring-brand/30"
+          />
+        </div>
+
+        <div>
+          <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1.5 block">
+            Content/Transcript
+          </label>
+          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 font-medium text-sm focus-within:ring-2 focus-within:ring-brand/30 focus-within:border-transparent [&_.ql-toolbar]:rounded-t-2xl [&_.ql-toolbar]:border-none [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-zinc-200 [&_.ql-container]:rounded-b-2xl [&_.ql-container]:border-none [&_.ql-editor]:min-h-[150px]">
+            <ReactQuill
+              theme="snow"
               value={verse}
-              onChange={(e) => setVerse(e.target.value)}
-              placeholder="e.g. Psalm 23:1"
-              className="h-12 rounded-2xl border-zinc-200 dark:border-zinc-700 font-medium focus-visible:ring-brand/30"
+              onChange={setVerse}
+              modules={quillModules}
             />
           </div>
         </div>

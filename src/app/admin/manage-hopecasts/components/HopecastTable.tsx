@@ -114,13 +114,9 @@ export function HopecastTable({
                           {cast.title}
                         </p>
                         <div className="flex flex-col gap-0.5">
-                          {(cast.name || cast.verse) && (
+                          {cast.name && (
                             <p className="text-[10px] text-zinc-500 font-medium truncate max-w-[240px]">
-                              {cast.name && <span>{cast.name}</span>}
-                              {cast.name && cast.verse && (
-                                <span className="mx-1">•</span>
-                              )}
-                              {cast.verse && <span>{cast.verse}</span>}
+                              <span>{cast.name}</span>
                             </p>
                           )}
                           <a

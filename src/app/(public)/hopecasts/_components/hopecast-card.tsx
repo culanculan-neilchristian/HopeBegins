@@ -1,6 +1,29 @@
+import React from 'react';
+import Link from 'next/link';
 import { Play } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Hopecast } from '@/types/hopecast';
+import 'react-quill-new/dist/quill.snow.css';
+
+const HopecastContent = React.memo(({ verse }: { verse: string }) => {
+  if (!verse) return null;
+
+  // Replace all non-breaking spaces (HTML entities or raw characters) with normal spaces
+  // This prevents weird word breaking (like 'ide a:') when text is pasted from other sources
+  const cleanVerse = verse.replace(/&nbsp;|\u00A0/g, ' ');
+
+  return (
+    <div className="bg-[#f2f6ee] p-6 rounded-2xl border border-[#9dbd7b]/10 ql-snow">
+      <div
+        className="ql-editor !p-0 font-medium text-zinc-700 [&_p:empty]:min-h-[1.42em]"
+        dangerouslySetInnerHTML={{
+          __html: cleanVerse,
+        }}
+      />
+    </div>
+  );
+});
+HopecastContent.displayName = 'HopecastContent';
 
 interface HopecastCardProps {
   hopecast: Hopecast;
@@ -72,14 +95,17 @@ export function HopecastCard({
               />
             </div>
 
-            {/* Quote Box */}
-            {(hopecast.verse || hopecast.quote) && (
-              <div className="bg-[#f2f6ee] p-6 rounded-2xl border border-[#9dbd7b]/10">
-                <p className="text-zinc-600 italic font-medium leading-relaxed">
-                  &quot;{hopecast.verse || hopecast.quote}&quot;
-                </p>
-              </div>
-            )}
+            {/* Content Box */}
+            <HopecastContent verse={hopecast.verse || ''} />
+
+            <div className="pt-2">
+              <Link
+                href="/prayers"
+                className="w-full inline-flex justify-center items-center py-3 px-4 rounded-xl font-bold text-[#9dbd7b] bg-[#ecf4e6] hover:bg-[#9dbd7b] hover:text-white transition-all duration-300 text-sm"
+              >
+                Submit A Prayer Request
+              </Link>
+            </div>
           </div>
         )}
       </CardContent>
