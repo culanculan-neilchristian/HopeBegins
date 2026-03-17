@@ -2,57 +2,45 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+import LyzaImg from '../../assets/images/Testimonial/Lyza.jpg';
+import IsabelleImg from '../../assets/images/Testimonial/Isabelle.jpg';
+import JeremyImg from '../../assets/images/Testimonial/Jeremy.jpg';
 
 export interface Testimonial {
   id: number | string;
   content: string;
   name: string;
-  role: string;
-  avatar: string; // URL for the avatar image
+  role?: string;
+  avatar: string | StaticImageData; // URL for the avatar image
 }
 
 const defaultTestimonials: Testimonial[] = [
   {
     id: 1,
     content:
-      'I felt so alone before finding this community. Now I have a whole network of people who understand and support my journey.',
-    name: 'Emily R.',
-    role: 'Community Member',
-    avatar: 'https://i.pravatar.cc/150?img=1',
+      'Through this program, I learned how to properly audit my thoughts, be more mindful of the lies I convince myself with and replace them with what’s true. Crucially, this time, the truth is not just based on what I know but based on the ultimate truth from what the Word of God says. Coach Hope reminded me of the verse Philippians 2:13, which is now one of my favorite verses: “For God is working in you, giving you the desire and the power to do what pleases Him.” It’s a beautiful reminder that even in our battle with mental health, God works in us, and He not only gives us the desire to change but also the power to change for His glory.',
+    name: 'Lyza Samartino',
+    role: 'HopeBegins Participant',
+    avatar: LyzaImg,
   },
   {
     id: 2,
     content:
-      "The Daily Hope Drops are exactly what I need to start my morning. It's like a warm hug for my soul.",
-    name: 'Marcus T.',
-    role: 'Subscriber',
-    avatar: 'https://i.pravatar.cc/150?img=11',
+      'I remember that I was so confused why was still waking up with so much sadness, confusion, anxiety, and depression everyday. Every. Single. Day. And I didn’t know how to get out of it but I knew that I wanted to get out of it and I also knew that the only way out was advice and guidance that was founded on the Word of God. So, when HopeBegins was offered and was an opportunity that I could join, I remember going straight at it and really taking a chance because God knew that it was what I needed to move forward with my relationship with Him–to move forward with understanding Him and His love for me better. When HopeBegins came, it was the beginning of so much transformation with so much of the darkness that I was carrying to be out of my life at that time.',
+    name: 'Isabelle Prado',
+    role: 'HopeBegins Participant',
+    avatar: IsabelleImg,
   },
   {
     id: 3,
     content:
-      "Talking to Hope AI when it's 3 AM and I can't sleep has been life-changing. It always knows just how to encourage me.",
-    name: 'Jessica Jones',
-    role: 'Web Designer',
-    avatar: 'https://i.pravatar.cc/150?img=5',
-  },
-  {
-    id: 4,
-    content:
-      'Being a Hope Carrier gives me purpose. I love seeing the impact we can make when we come together.',
-    name: 'David Chen',
-    role: 'Hope Carrier',
-    avatar: 'https://i.pravatar.cc/150?img=8',
-  },
-  {
-    id: 5,
-    content:
-      "This platform is a safe harbor. It's so refreshing to find faith-driven mental health support that actually gets it.",
-    name: 'Sarah Williams',
-    role: 'Platform User',
-    avatar: 'https://i.pravatar.cc/150?img=9',
+      "I was overwhelmed with anxiety and so much lies from the enemy. So my friend introduced me to HopeBegins. But before that, I was having a hard time when it comes to my relationship with other people, even in decision making, to the point na nahirapan ako mag-decide. All of the decisions and actions na I was doing was not completely right and I knew na kailangan ko talaga ng help. And I found help and support through HopeBegins. For those people who are interested or unsure sa pag-join ng Hope Begins.. you really have to take the risk, knowing na our problems or struggles in life, it's really hard ‘pag ikaw lang mag-di-deal lang niyan on your own. You know, sometimes we tend to fix things on our own, but we also forget to seek help from other people.",
+    name: 'Jeremy Rebedillo',
+    role: 'HopeBegins Participant',
+    avatar: JeremyImg,
   },
 ];
 
@@ -89,12 +77,12 @@ export function TestimonialCarousel({
 
   return (
     <div
-      className="relative w-full max-w-5xl mx-auto py-16 px-4 flex flex-col items-center justify-center overflow-hidden h-[600px]"
+      className="relative w-full max-w-5xl mx-auto py-16 px-4 flex flex-col items-center justify-center overflow-hidden h-[750px] md:h-[700px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className="absolute top-1/2 left-0 right-0 flex justify-center items-center h-[450px] -translate-y-1/2"
+        className="absolute top-1/2 left-0 right-0 flex justify-center items-center h-[600px] -translate-y-1/2"
         style={{ perspective: '1000px' }}
       >
         {testimonials.map((testimonial, index) => {
@@ -127,7 +115,7 @@ export function TestimonialCarousel({
           return (
             <motion.div
               key={testimonial.id}
-              className={`absolute top-0 w-[280px] md:w-[380px] h-[380px] md:h-[400px] rounded-[2rem] border p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors duration-300 ${cardBg}`}
+              className={`absolute top-0 w-[300px] md:w-[480px] h-[520px] md:h-[500px] rounded-[2rem] border p-6 md:p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors duration-300 ${cardBg}`}
               onClick={() => setCurrentIndex(index)}
               initial={false}
               animate={{
@@ -142,7 +130,7 @@ export function TestimonialCarousel({
                 ease: [0.32, 0.72, 0, 1], // Custom snappy spring-like cubic bezier
               }}
             >
-              <div className="relative w-24 h-24 mb-5 rounded-full border-[3px] border-emerald-100 dark:border-emerald-900/50 overflow-hidden shadow-sm flex-shrink-0">
+              <div className="relative w-30 h-30 mb-5 rounded-full border-[3px] border-emerald-100 dark:border-emerald-900/50 overflow-hidden shadow-sm flex-shrink-0">
                 <Image
                   src={testimonial.avatar}
                   alt={testimonial.name}
@@ -152,17 +140,19 @@ export function TestimonialCarousel({
                 />
               </div>
 
-              <p className="text-zinc-600 dark:text-zinc-300 text-sm md:text-base italic mb-6 line-clamp-5 leading-relaxed font-medium">
+              <p className="text-zinc-600 dark:text-zinc-300 text-xs md:text-sm italic mb-6 overflow-y-auto custom-scrollbar leading-relaxed font-medium">
                 &quot;{testimonial.content}&quot;
               </p>
 
-              <div className="mt-auto">
-                <h4 className="font-bold text-zinc-900 dark:text-white font-poppins text-lg">
+              <div className="mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800 w-full">
+                <h4 className="font-bold text-zinc-900 dark:text-white font-poppins text-base md:text-lg">
                   {testimonial.name}
                 </h4>
-                <p className="text-sm text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest mt-1">
-                  {testimonial.role}
-                </p>
+                {testimonial.role && (
+                  <p className="text-xs md:text-sm text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest mt-1">
+                    {testimonial.role}
+                  </p>
+                )}
               </div>
             </motion.div>
           );
