@@ -72,8 +72,8 @@ export function ImpactStats() {
           Your Impact
         </h2>
         <p className="text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed max-w-md mx-auto">
-          Every Hope Seed you plant helps us reach more people. Here&apos;s what
-          we&apos;ve accomplished together.
+          Every Hope Seed you plant helps us reach more people. Here’s our goal
+          for the remaining of the year
         </p>
       </div>
 
