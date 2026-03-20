@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -13,7 +12,7 @@ import {
 import { TestimonialCarousel } from '@/components/ui/testimonial-carousel';
 
 // Import the logo directly to ensure Next.js handles the path correctly
-import headerLogo from '@/assets/images/header-logo.png';
+// import headerLogo from '@/assets/images/header-logo.png';
 
 export default function LandingPage() {
   const mainActions = [
@@ -68,30 +67,32 @@ export default function LandingPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative pt-24 pb-20 px-6 overflow-hidden">
-        {/* Decorative background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-emerald-950/20 -z-10" />
+      <section className="relative pt-40 pb-56 px-6 overflow-hidden min-h-[90vh] flex items-center justify-center bg-black mb-12">
+        {/* Background Video Container */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            key="hero-video"
+            className="w-full h-full object-cover object-top"
+          >
+            <source
+              src="/assets/video/Hero-video-banner.mp4"
+              type="video/mp4"
+            />
+          </video>
+          {/* Premium Dark Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/70 z-10" />
+        </div>
 
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <div className="absolute inset-0 bg-emerald-200/20 blur-2xl rounded-full" />
-              <Image
-                src={headerLogo}
-                alt="HopeBegins"
-                width={56}
-                height={56}
-                style={{ height: 'auto' }}
-                className="relative opacity-60 grayscale brightness-125 hover:grayscale-0 transition-all duration-500 cursor-pointer w-14"
-              />
-            </div>
-          </div>
-
-          <h1 className="text-5xl md:text-7xl font-bold text-zinc-800 dark:text-zinc-100 leading-[1.1] font-poppins tracking-tight">
-            HopeBegins <span className="text-[#6b634d]">Today.</span>
+        <div className="max-w-5xl mx-auto text-center space-y-8 relative z-20 transition-all duration-700">
+          <h1 className="text-5xl md:text-8xl font-bold text-white leading-[1.1] font-poppins tracking-tight drop-shadow-2xl">
+            HopeBegins <span className="text-emerald-400">Today.</span>
           </h1>
 
-          <p className="text-lg md:text-2xl text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="text-lg md:text-2xl text-zinc-100/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-xl">
             Your journey to overcoming anxiety, depression, and hopelessness
             starts here. You are not alone.
           </p>
