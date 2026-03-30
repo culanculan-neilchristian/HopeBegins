@@ -89,7 +89,7 @@ export default function LandingPage() {
 
         <div className="max-w-5xl mx-auto text-center space-y-8 relative z-20 transition-all duration-700">
           <h1 className="text-5xl md:text-8xl font-bold text-white leading-[1.1] font-poppins tracking-tight drop-shadow-2xl">
-            HopeBegins <span className="text-emerald-400">Today.</span>
+            HopeBegins <span className="text-[#6b634d]">Today.</span>
           </h1>
 
           <p className="text-lg md:text-2xl text-zinc-100/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-xl">

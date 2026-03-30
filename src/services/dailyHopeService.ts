@@ -14,4 +14,13 @@ export const dailyHopeService = {
       body: JSON.stringify(data),
     });
   },
+
+  completeHopefulBeginning: async (): Promise<any> => {
+    return fetchWithAuth(
+      `${config.API_URL}/daily-hope/hopeful-beginning-complete/`,
+      {
+        method: 'POST',
+      }
+    );
+  },
 };

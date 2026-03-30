@@ -138,6 +138,7 @@ export interface AdminStats {
   total_carriers: number;
   hopecast_plays: number;
   total_users: number;
+  journey_completions: number;
   recent_prayers: Prayer[];
   prayer_trend?: TrendData[];
   hopecast_trend?: TrendData[];

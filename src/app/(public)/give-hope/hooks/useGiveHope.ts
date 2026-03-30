@@ -5,21 +5,20 @@ import { useMutation } from '@tanstack/react-query';
 import { userService } from '@/services/userService';
 import { notify } from '@/lib/notifications';
 
-const PRESET_AMOUNTS = [10, 25, 50, 100];
+const PRESET_AMOUNTS = [200, 500, 1000, 5000];
 
 export function useGiveHope() {
-  const [selectedAmount, setSelectedAmount] = useState<number>(100);
-  const [isMonthly, setIsMonthly] = useState(false);
+  const [selectedAmount, setSelectedAmount] = useState<number>(500);
 
   const donationMutation = useMutation({
     mutationFn: () =>
       userService.submitDonation({
         amount: selectedAmount,
-        donation_type: isMonthly ? 'MONTHLY' : 'ONE_TIME',
+        donation_type: 'ONE_TIME',
       }),
     onSuccess: () => {
       notify.success(
-        `Thank you for planting a $${selectedAmount} Hope Seed! Your generosity changes lives.`
+        `Thank you for planting a ₱${selectedAmount} Hope Seed! Your generosity changes lives.`
       );
     },
     onError: (error: any) => {
@@ -30,10 +29,9 @@ export function useGiveHope() {
   return {
     selectedAmount,
     setSelectedAmount,
-    isMonthly,
-    setIsMonthly,
     presetAmounts: PRESET_AMOUNTS,
     handleDonate: donationMutation.mutate,
     isPending: donationMutation.isPending,
+    isSuccess: donationMutation.isSuccess,
   };
 }

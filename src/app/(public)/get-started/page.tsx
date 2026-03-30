@@ -20,6 +20,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { dailyHopeService } from '@/services/dailyHopeService';
 
 type Step = 'welcome' | 'word' | 'prayer' | 'devotional' | 'next-steps';
 
@@ -58,6 +59,8 @@ export default function GetStartedPage() {
       setCurrentStep('devotional');
     } else if (currentStep === 'devotional') {
       setCurrentStep('next-steps');
+      // Record completion (fire and forget)
+      dailyHopeService.completeHopefulBeginning().catch(console.error);
     } else if (currentStep === 'welcome') {
       setCurrentStep('word');
     } else if (currentStep === 'word') {

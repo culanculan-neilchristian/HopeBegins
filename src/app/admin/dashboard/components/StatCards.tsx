@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   Radio,
   TrendingUp,
+  Anchor,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AdminStats } from '@/types/admin';
@@ -56,12 +57,21 @@ export function StatCards({ stats, isLoading }: StatCardsProps) {
       color: 'text-amber-600',
       trend: 'Total play count',
     },
+    {
+      label: 'Journey Finished',
+      value: isLoading
+        ? '—'
+        : (stats?.journey_completions?.toLocaleString() ?? '—'),
+      icon: Anchor,
+      color: 'text-rose-600',
+      trend: 'Hopeful Beginning',
+    },
   ];
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[...Array(4)].map((_, i) => (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {[...Array(5)].map((_, i) => (
           <SkeletonCard key={i} />
         ))}
       </div>
@@ -69,7 +79,7 @@ export function StatCards({ stats, isLoading }: StatCardsProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       {STAT_CONFIG.map((stat, idx) => (
         <motion.div
           key={stat.label}

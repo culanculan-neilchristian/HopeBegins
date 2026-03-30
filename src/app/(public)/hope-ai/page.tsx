@@ -21,7 +21,7 @@ export default function HopeAIPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* ── Hero ── */}
-      <section className="relative pt-20 pb-16 px-6 overflow-hidden shrink-0">
+      <section className="relative pt-20 pb-10 px-6 overflow-hidden shrink-0">
         <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-emerald-950/20 -z-10" />
         <div className="max-w-3xl mx-auto text-center space-y-4">
           <h1 className="text-3xl md:text-4xl font-bold text-zinc-800 dark:text-zinc-100 font-poppins tracking-tight">
@@ -30,6 +30,15 @@ export default function HopeAIPage() {
           <p className="text-lg text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
             A faith-filled conversation, anytime you need it.
           </p>
+          <div className="space-y-1">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#acc487]">
+              Hope AI is currently on BETA Mode
+            </p>
+            <p className="text-[12px] text-zinc-400 font-medium">
+              We are praying for more resources so we can deploy the full
+              capabilities of the AI
+            </p>
+          </div>
         </div>
       </section>
 
