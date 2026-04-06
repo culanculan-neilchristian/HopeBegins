@@ -82,7 +82,7 @@ function DashboardContent() {
 
       {/* ── Tabs Navigation ── */}
       <div className="flex flex-wrap gap-2">
-        {isLoading || isFetching
+        {isLoading
           ? [1, 2, 3].map((i) => (
               <div
                 key={i}
@@ -109,7 +109,7 @@ function DashboardContent() {
 
       {/* ── Prayer List ── */}
       <div className="space-y-6">
-        {isLoading || isFetching ? (
+        {isLoading ? (
           <div className="py-20 flex flex-col items-center justify-center gap-4 text-center">
             <Loader2 className="h-10 w-10 text-[#b4c392] animate-spin" />
             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">

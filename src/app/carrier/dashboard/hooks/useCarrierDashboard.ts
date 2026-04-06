@@ -42,7 +42,8 @@ export function useCarrierDashboard() {
   } = useQuery({
     queryKey: ['carrier', 'dashboard', user?.id],
     queryFn: () => carrierService.getCarrierDashboardData(user?.id),
-    refetchInterval: 30000,
+    refetchInterval: 60000, // 1 minute
+    refetchOnWindowFocus: false,
     enabled: !!user?.id,
   });
 

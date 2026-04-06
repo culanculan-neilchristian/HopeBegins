@@ -83,7 +83,7 @@ export function DonationModal({
           {/* Amount */}
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 ml-1">
-              Seed Amount ($)
+              Seed Amount (₱)
             </label>
             <Input
               required

@@ -56,7 +56,7 @@ export default function DonationsPage() {
   const STAT_CONFIG = [
     {
       label: 'Total Raised',
-      value: `$${stats.totalRaised.toLocaleString()}`,
+      value: `₱${stats.totalRaised.toLocaleString()}`,
       icon: Gift,
       color: 'text-brand',
       bg: 'bg-brand/5',
@@ -72,7 +72,7 @@ export default function DonationsPage() {
     },
     {
       label: 'Monthly',
-      value: `$${stats.monthlyTotal}/mo`,
+      value: `₱${stats.monthlyTotal}/mo`,
       icon: Clock,
       color: 'text-amber-600',
       bg: 'bg-amber-50 dark:bg-amber-900/20',
@@ -80,7 +80,7 @@ export default function DonationsPage() {
     },
     {
       label: 'Avg. Donation',
-      value: `$${stats.avgDonation}`,
+      value: `₱${stats.avgDonation}`,
       icon: TrendingUp,
       color: 'text-emerald-600',
       bg: 'bg-emerald-50 dark:bg-emerald-900/20',

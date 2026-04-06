@@ -182,7 +182,7 @@ export function DonationTable({
                   <TypeBadge type={d.donation_type} />
                 </div>
                 <p className="font-black text-sm text-zinc-900 dark:text-zinc-100 tabular-nums text-right whitespace-nowrap">
-                  ${d.amount}
+                  ₱{d.amount}
                   {d.donation_type === 'MONTHLY' ? '/mo' : ''}
                 </p>
 
