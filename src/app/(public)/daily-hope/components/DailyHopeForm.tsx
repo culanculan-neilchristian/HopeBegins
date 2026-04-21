@@ -122,6 +122,23 @@ export function DailyHopeForm() {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="website"
+                render={({ field }) => (
+                  <FormItem className="hidden">
+                    <FormControl>
+                      <Input
+                        tabIndex={-1}
+                        autoComplete="off"
+                        placeholder="Your website"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
               <Button
                 type="submit"
                 className="w-full h-12 bg-[#b4c392] hover:bg-[#a3b281] text-white font-black uppercase tracking-widest text-xs rounded-xl shadow-lg transition-all duration-300 transform active:scale-[0.98]"

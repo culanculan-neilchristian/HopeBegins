@@ -12,6 +12,7 @@ export const carrierApplicationSchema = z.object({
   agreed_to_guidelines: z.boolean().refine((val) => val === true, {
     message: 'You must agree to the guidelines',
   }),
+  website: z.string().optional(),
 });
 
 export type CarrierApplicationFormData = z.infer<

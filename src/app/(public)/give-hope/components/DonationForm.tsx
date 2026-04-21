@@ -109,6 +109,15 @@ export function DonationForm() {
           </div>
         )}
 
+        {/* Honeypot */}
+        <input
+          type="text"
+          name="website"
+          className="hidden"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+
         {/* Submit Button */}
         <button
           onClick={onDonateClick}

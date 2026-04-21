@@ -5,6 +5,7 @@ export interface HopeJourneySubscription {
   first_name: string;
   last_name: string;
   email: string;
+  website?: string;
 }
 
 export const dailyHopeService = {
