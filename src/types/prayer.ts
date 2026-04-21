@@ -16,6 +16,7 @@ export const prayerSchema = z.object({
   isAnonymous: z.boolean(),
   shareFirstName: z.boolean().default(true),
   wantsFollowUp: z.boolean().default(false),
+  website: z.string().optional(),
   userId: z.string().optional(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),

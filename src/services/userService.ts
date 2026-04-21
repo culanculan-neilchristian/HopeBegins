@@ -7,6 +7,7 @@ export interface DonationPayload {
   amount: number;
   donation_type: 'ONE_TIME' | 'MONTHLY';
   message?: string;
+  website?: string;
 }
 
 export const userService = {

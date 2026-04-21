@@ -21,6 +21,7 @@ export function usePrayerForm() {
       isAnonymous: false,
       shareFirstName: true,
       wantsFollowUp: false,
+      website: '',
     },
   });
 

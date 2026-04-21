@@ -20,6 +20,7 @@ export function useCarrierForm() {
       church_community: '',
       carrier_reason: '',
       agreed_to_guidelines: false,
+      website: '',
     },
   });
 

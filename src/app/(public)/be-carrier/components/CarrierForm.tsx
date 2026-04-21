@@ -182,6 +182,23 @@ export function CarrierForm() {
               />
             </div>
 
+            <FormField
+              control={form.control}
+              name="website"
+              render={({ field }) => (
+                <FormItem className="hidden">
+                  <FormControl>
+                    <Input
+                      tabIndex={-1}
+                      autoComplete="off"
+                      placeholder="Your website"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             <Button
               type="submit"
               className="w-full h-12 bg-[#b4c392] hover:bg-[#a3b281] text-white font-bold text-sm rounded-lg shadow-sm transition-all duration-200"
