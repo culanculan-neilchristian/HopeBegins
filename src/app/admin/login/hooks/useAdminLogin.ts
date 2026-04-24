@@ -35,6 +35,14 @@ export function useAdminLogin() {
       const refreshToken = tokenData.refresh;
       const userData = tokenData.user || tokenData;
 
+      if (userData.role !== 'admin') {
+        notify.error(
+          'Access Denied',
+          'Only administrators can access this portal.'
+        );
+        return;
+      }
+
       if (typeof window !== 'undefined') {
         localStorage.setItem('adminToken', accessToken || 'mock-token');
         localStorage.setItem('adminRefreshToken', refreshToken || '');

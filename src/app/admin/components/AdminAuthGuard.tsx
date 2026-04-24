@@ -25,10 +25,20 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
       if (!token || !savedUser) {
         router.push('/admin/login');
       } else {
+        const parsedUser = JSON.parse(savedUser);
+
+        // Enforce admin role
+        if (parsedUser.role !== 'admin') {
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
+          router.push('/admin/login');
+          return;
+        }
+
         // If user state is empty but we have it in localStorage, restore it
-        if (!user && savedUser) {
+        if (!user) {
           try {
-            setUser(JSON.parse(savedUser));
+            setUser(parsedUser);
           } catch (e) {
             console.error('Failed to parse saved admin user', e);
             router.push('/admin/login');
