@@ -12,6 +12,8 @@ import {
   Users,
   Menu,
   X,
+  Building2,
+  MousePointer2,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -97,11 +99,8 @@ export default function AdminLayout({
 
   const MENU_ITEMS = [
     { label: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
-    {
-      label: 'Manage Prayers',
-      href: '/admin/manage-prayers',
-      icon: ShieldAlert,
-    },
+    { label: 'Manage Prayers', href: '/admin/manage-prayers', icon: ShieldAlert },
+    { label: 'Organizations', href: '/admin/manage-organizations', icon: Building2 },
     { label: 'Manage Hopecasts', href: '/admin/manage-hopecasts', icon: Radio },
     {
       label: 'Manage Hope Carriers',
@@ -113,6 +112,12 @@ export default function AdminLayout({
       href: '/admin/daily-hope',
       icon: Users,
     },
+    {
+      label: 'Hope Stories',
+      href: '/admin/manage-stories',
+      icon: Heart,
+    },
+    { label: 'Pop-outs', href: '/admin/manage-popouts', icon: MousePointer2 },
     { label: 'Financials', href: '/admin/donations', icon: BarChart3 },
   ];
 

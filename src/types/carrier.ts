@@ -13,6 +13,8 @@ export const carrierApplicationSchema = z.object({
     message: 'You must agree to the guidelines',
   }),
   website: z.string().optional(),
+  lastNameHoney: z.string().optional(),
+  startTime: z.number().optional(),
 });
 
 export type CarrierApplicationFormData = z.infer<

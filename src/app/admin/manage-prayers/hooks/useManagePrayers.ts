@@ -18,10 +18,19 @@ export function useManagePrayers() {
   const [deleteTarget, setDeleteTarget] = useState<Prayer | null>(null);
   const [assignTarget, setAssignTarget] = useState<Prayer | null>(null);
   const [statusFilter, setStatusFilter] = useState<PrayerStatus | 'ALL'>('ALL');
+  const [dateRange, setDateRange] = useState({
+    startDate: '',
+    endDate: '',
+  });
 
   // Reset to page 1 when filters change
   const handleStatusFilterChange = (status: PrayerStatus | 'ALL') => {
     setStatusFilter(status);
+    setPage(1);
+  };
+
+  const handleDateChange = (start: string, end: string) => {
+    setDateRange({ startDate: start, endDate: end });
     setPage(1);
   };
 
@@ -31,8 +40,15 @@ export function useManagePrayers() {
   };
 
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
-    queryKey: ['admin', 'prayers', page, search, statusFilter],
-    queryFn: () => adminService.getPrayers(page, search, statusFilter),
+    queryKey: ['admin', 'prayers', page, search, statusFilter, dateRange],
+    queryFn: () =>
+      adminService.getPrayers(
+        page,
+        search,
+        statusFilter,
+        dateRange.startDate,
+        dateRange.endDate
+      ),
     placeholderData: keepPreviousData,
   });
 
@@ -131,6 +147,8 @@ export function useManagePrayers() {
     setAssignTarget,
     statusFilter,
     setStatusFilter: handleStatusFilterChange,
+    dateRange,
+    setDateRange: handleDateChange,
     page,
     setPage,
     totalPages,

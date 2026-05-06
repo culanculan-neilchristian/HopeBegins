@@ -16,6 +16,10 @@ export function useHopeJourneys() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState<HopeJourney | null>(null);
+  const [dateRange, setDateRange] = useState({
+    startDate: '',
+    endDate: '',
+  });
 
   // Debounced search (server-side)
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -27,6 +31,11 @@ export function useHopeJourneys() {
     return () => clearTimeout(timer);
   }, [search]);
 
+  const handleDateChange = (start: string, end: string) => {
+    setDateRange({ startDate: start, endDate: end });
+    setPage(1);
+  };
+
   const {
     data: paginatedData,
     isLoading,
@@ -34,8 +43,20 @@ export function useHopeJourneys() {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ['admin', 'daily-hope-journeys', page, debouncedSearch],
-    queryFn: () => adminService.getJourneys(page, debouncedSearch),
+    queryKey: [
+      'admin',
+      'daily-hope-journeys',
+      page,
+      debouncedSearch,
+      dateRange,
+    ],
+    queryFn: () =>
+      adminService.getJourneys(
+        page,
+        debouncedSearch,
+        dateRange.startDate,
+        dateRange.endDate
+      ),
     placeholderData: keepPreviousData,
   });
 
@@ -68,6 +89,8 @@ export function useHopeJourneys() {
     setSearch,
     page,
     setPage,
+    dateRange,
+    setDateRange: handleDateChange,
     deleteTarget,
     setDeleteTarget,
     deleteMutation,

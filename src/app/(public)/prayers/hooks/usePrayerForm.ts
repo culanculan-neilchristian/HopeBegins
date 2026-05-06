@@ -3,13 +3,19 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { prayerSchema } from '@/types/prayer';
 import { prayerService } from '@/services/prayerService';
+import { organizationService } from '@/services/organizationService';
 import { notify } from '@/lib/notifications';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function usePrayerForm() {
   const queryClient = useQueryClient();
+
+  const { data: organizations = [] } = useQuery({
+    queryKey: ['organizations', 'public'],
+    queryFn: organizationService.getPublicOrganizations,
+  });
 
   const form = useForm<any>({
     resolver: zodResolver(prayerSchema),
@@ -22,6 +28,9 @@ export function usePrayerForm() {
       shareFirstName: true,
       wantsFollowUp: false,
       website: '',
+      lastNameHoney: '',
+      startTime: Date.now(),
+      organizationId: null,
     },
   });
 
@@ -43,12 +52,18 @@ export function usePrayerForm() {
   });
 
   const onSubmit = (data: any) => {
-    mutation.mutate(data);
+    // Handle "none" organization selection
+    const payload = {
+      ...data,
+      organizationId: data.organizationId === 'none' ? null : data.organizationId,
+    };
+    mutation.mutate(payload);
   };
 
   return {
     form,
     onSubmit: form.handleSubmit(onSubmit),
     isSubmitting: mutation.isPending,
+    organizations,
   };
 }

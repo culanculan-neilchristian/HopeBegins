@@ -4,6 +4,7 @@ import { Search, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CustomSelect } from '@/components/ui/custom-select';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { useManagePrayers } from './hooks/useManagePrayers';
 import { DeleteModal } from './components/DeleteModal';
 import { AssignCarrierModal } from './components/AssignCarrierModal';
@@ -36,6 +37,8 @@ export default function ManagePrayersPage() {
     setAssignTarget,
     statusFilter,
     setStatusFilter,
+    dateRange,
+    setDateRange,
     page,
     setPage,
     totalPages,
@@ -112,7 +115,11 @@ export default function ManagePrayersPage() {
               )}
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full md:w-auto flex-shrink-0">
+            <DateRangePicker
+              startDate={dateRange.startDate}
+              endDate={dateRange.endDate}
+              onChange={setDateRange}
+            />
             <CustomSelect
               value={statusOptions.find((opt) => opt.value === statusFilter)}
               onChange={(newValue) => {

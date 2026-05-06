@@ -1,31 +1,23 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useDashboard, CHART_DATA } from './hooks/useDashboard';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
+import { useDashboard } from './hooks/useDashboard';
 import { StatCards } from './components/StatCards';
 import { DashboardCharts } from './components/DashboardCharts';
 import { RecentPrayers } from './components/RecentPrayers';
 
 export default function AdminDashboard() {
-  const { stats, isLoading, isError, refetch } = useDashboard();
-
-  const chartData = useMemo(() => {
-    if (!stats?.prayer_trend || !stats?.hopecast_trend) {
-      return CHART_DATA;
-    }
-
-    return stats.prayer_trend.map((pt: any, index: number) => {
-      const ht = stats.hopecast_trend?.[index];
-      return {
-        name: pt.day,
-        prayers: pt.count,
-        plays: ht ? ht.count : 0,
-      };
-    });
-  }, [stats]);
+  const {
+    stats,
+    analytics,
+    dateRange,
+    handleDateChange,
+    isLoading,
+    isError,
+    refetch,
+  } = useDashboard();
 
   if (isError) {
     return (
@@ -52,22 +44,28 @@ export default function AdminDashboard() {
   return (
     <div className="p-4 sm:p-8 lg:p-12 space-y-6 sm:space-y-10 max-w-7xl mx-auto">
       {/* ── Header ── */}
-      <header className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+      <header className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-black italic tracking-tighter">
+          <h1 className="text-3xl font-black italic tracking-tighter uppercase">
             The Hope Desk
           </h1>
           <p className="mt-2 text-zinc-500 font-medium text-sm">
             System-wide overview and live performance data.
           </p>
         </div>
+
+        <DateRangePicker
+          startDate={dateRange.startDate}
+          endDate={dateRange.endDate}
+          onChange={handleDateChange}
+        />
       </header>
 
       {/* ── Stat Cards ── */}
       <StatCards stats={stats} isLoading={isLoading} />
 
       {/* ── Charts ── */}
-      <DashboardCharts data={chartData} isLoading={isLoading} />
+      <DashboardCharts analytics={analytics} isLoading={isLoading} />
 
       {/* ── Recent Prayers ── */}
       <RecentPrayers prayers={stats?.recent_prayers} />
