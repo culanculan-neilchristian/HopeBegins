@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} ${dmSans.variable}`}>
-       <head>
+      <head>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-FBGY484963"

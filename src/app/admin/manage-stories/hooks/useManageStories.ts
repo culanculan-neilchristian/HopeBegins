@@ -20,8 +20,13 @@ export function useManageStories() {
   });
 
   const updateStatusMutation = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: 'APPROVED' | 'REJECTED' }) =>
-      hopeStoryService.updateStoryStatus(id, status),
+    mutationFn: ({
+      id,
+      status,
+    }: {
+      id: string;
+      status: 'APPROVED' | 'REJECTED';
+    }) => hopeStoryService.updateStoryStatus(id, status),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin-hope-stories'] });
       toast.success(`Story ${variables.status.toLowerCase()} successfully.`);

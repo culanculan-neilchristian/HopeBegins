@@ -1,4 +1,5 @@
-import api from './api';
+import { fetchWithAuth } from './api';
+import { config } from '@/config';
 
 export interface HopeStory {
   id: string;
@@ -18,6 +19,12 @@ export interface HopeStoryCreate {
   photo?: File;
 }
 
+const authHeader = (): Record<string, string> => {
+  const token = localStorage.getItem('adminToken');
+  if (!token) return {};
+  return { Authorization: `Bearer ${token}` };
+};
+
 const hopeStoryService = {
   // Public
   submitStory: async (story: HopeStoryCreate) => {
@@ -27,33 +34,42 @@ const hopeStoryService = {
     formData.append('testimonial', story.testimonial);
     if (story.photo) formData.append('photo', story.photo);
 
-    const response = await api.post('/hope-stories/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    // fetchWithAuth automatically adds Content-Type: application/json if not specified,
+    // but for FormData we MUST NOT set it manually or it breaks.
+    // However, fetchWithAuth's default headers might interfere.
+    // Let's check api.ts to see if it allows overriding headers.
+    return fetchWithAuth(`${config.API_URL}/hope-stories/`, {
+      method: 'POST',
+      body: formData,
+      // For FormData, we don't send headers to let the browser set the boundary
+      headers: {},
     });
-    return response.data;
   },
 
   getApprovedStories: async () => {
-    const response = await api.get('/hope-stories/approved/');
-    return response.data;
+    return fetchWithAuth(`${config.API_URL}/hope-stories/approved/`);
   },
 
   // Admin
   getAllStories: async () => {
-    const response = await api.get('/hope-stories/');
-    return response.data;
+    return fetchWithAuth(`${config.API_URL}/hope-stories/`, {
+      headers: authHeader(),
+    });
   },
 
   updateStoryStatus: async (id: string, status: 'APPROVED' | 'REJECTED') => {
-    const response = await api.patch(`/hope-stories/${id}/`, { status });
-    return response.data;
+    return fetchWithAuth(`${config.API_URL}/hope-stories/${id}/`, {
+      method: 'PATCH',
+      headers: authHeader(),
+      body: JSON.stringify({ status }),
+    });
   },
 
   deleteStory: async (id: string) => {
-    const response = await api.delete(`/hope-stories/${id}/`);
-    return response.data;
+    return fetchWithAuth(`${config.API_URL}/hope-stories/${id}/`, {
+      method: 'DELETE',
+      headers: authHeader(),
+    });
   },
 };
 

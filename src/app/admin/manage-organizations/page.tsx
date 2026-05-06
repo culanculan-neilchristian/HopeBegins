@@ -111,27 +111,39 @@ export default function ManageOrganizationsPage() {
         {/* ── Mobile View (Cards) - Simplified for this task ── */}
         <div className="md:hidden space-y-3">
           {isLoading && (
-             <div className="h-28 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse" />
+            <div className="h-28 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 animate-pulse" />
           )}
           {!isLoading && filtered.length === 0 && (
-             <div className="flex flex-col items-center gap-3 py-16">
-                <Building2 className="h-8 w-8 text-zinc-300" />
-                <p className="font-bold text-zinc-500">No organizations found.</p>
-             </div>
-          )}
-          {!isLoading && filtered.map((org) => (
-            <div key={org.id} className="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm flex items-center justify-between">
-              <div>
-                <p className="font-black text-sm">{org.name}</p>
-                <p className="text-xs text-zinc-500">{org.is_active ? 'Active' : 'Inactive'}</p>
-              </div>
-              <div className="flex gap-1">
-                 <Button variant="ghost" size="icon" onClick={() => setEditTarget(org)} className="h-8 w-8 rounded-lg">
-                    <Plus className="h-4 w-4 rotate-45" /> {/* Edit icon placeholder */}
-                 </Button>
-              </div>
+            <div className="flex flex-col items-center gap-3 py-16">
+              <Building2 className="h-8 w-8 text-zinc-300" />
+              <p className="font-bold text-zinc-500">No organizations found.</p>
             </div>
-          ))}
+          )}
+          {!isLoading &&
+            filtered.map((org) => (
+              <div
+                key={org.id}
+                className="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-black text-sm">{org.name}</p>
+                  <p className="text-xs text-zinc-500">
+                    {org.is_active ? 'Active' : 'Inactive'}
+                  </p>
+                </div>
+                <div className="flex gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setEditTarget(org)}
+                    className="h-8 w-8 rounded-lg"
+                  >
+                    <Plus className="h-4 w-4 rotate-45" />{' '}
+                    {/* Edit icon placeholder */}
+                  </Button>
+                </div>
+              </div>
+            ))}
         </div>
 
         {/* ── Desktop View (Table) ── */}

@@ -1,0 +1,125 @@
+﻿
+C:\RepoOutside\HopeBegins\src\app\(public)\be-carrier\hooks\useCarrierForm.ts
+  25:18  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\RepoOutside\HopeBegins\src\app\(public)\be-carrier\hooks\useCarrierForm.ts:25:18
+  23 |       website: '',
+  24 |       lastNameHoney: '',
+> 25 |       startTime: Date.now(),
+     |                  ^^^^^^^^^^ Cannot call impure function
+  26 |     },
+  27 |   });
+  28 |  react-hooks/purity
+
+C:\RepoOutside\HopeBegins\src\app\(public)\daily-hope\hooks\useDailyHopeForm.ts
+  30:18  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\RepoOutside\HopeBegins\src\app\(public)\daily-hope\hooks\useDailyHopeForm.ts:30:18
+  28 |       website: '',
+  29 |       lastNameHoney: '',
+> 30 |       startTime: Date.now(),
+     |                  ^^^^^^^^^^ Cannot call impure function
+  31 |     },
+  32 |   });
+  33 |  react-hooks/purity
+
+C:\RepoOutside\HopeBegins\src\app\(public)\give-hope\components\DonationForm.tsx
+  231:2  error  Parsing error: Declaration or statement expected
+
+C:\RepoOutside\HopeBegins\src\app\(public)\give-hope\components\ImpactStats.tsx
+   9:3  error  'Globe' is defined but never used    @typescript-eslint/no-unused-vars
+  12:3  error  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\RepoOutside\HopeBegins\src\app\(public)\give-hope\success\page.tsx
+   7:3  error  'Heart' is defined but never used               @typescript-eslint/no-unused-vars
+  19:9  error  'sessionId' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\RepoOutside\HopeBegins\src\app\(public)\prayers\hooks\usePrayerForm.ts
+  32:18  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\RepoOutside\HopeBegins\src\app\(public)\prayers\hooks\usePrayerForm.ts:32:18
+  30 |       website: '',
+  31 |       lastNameHoney: '',
+> 32 |       startTime: Date.now(),
+     |                  ^^^^^^^^^^ Cannot call impure function
+  33 |       organizationId: null,
+  34 |     },
+  35 |   });  react-hooks/purity
+
+C:\RepoOutside\HopeBegins\src\app\admin\daily-hope\journey\page.tsx
+   96:40  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   96:66  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  177:40  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  177:46  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\RepoOutside\HopeBegins\src\app\admin\daily-hope\templates\page.tsx
+   6:3   error    'RefreshCw' is defined but never used                                                                              @typescript-eslint/no-unused-vars
+  10:3   error    'CheckCircle2' is defined but never used                                                                           @typescript-eslint/no-unused-vars
+  12:3   error    'Send' is defined but never used                                                                                   @typescript-eslint/no-unused-vars
+  39:3   error    'DialogTrigger' is defined but never used                                                                          @typescript-eslint/no-unused-vars
+  57:6   warning  React Hook useEffect has a missing dependency: 'fetchTemplates'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  67:14  error    'error' is defined but never used                                                                                  @typescript-eslint/no-unused-vars
+  91:14  error    'error' is defined but never used                                                                                  @typescript-eslint/no-unused-vars
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-organizations\components\DeleteModal.tsx
+  36:15  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  36:26  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-organizations\components\OrganizationModal.tsx
+  117:49  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-popouts\components\DeleteModal.tsx
+  29:17  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  29:32  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-popouts\components\PopoutTable.tsx
+  44:24  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-popouts\page.tsx
+  9:3  error  'MousePointer2' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-prayers\page.tsx
+  101:9  error  Parsing error: JSX element 'header' has no corresponding closing tag
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-stories\components\DeleteModal.tsx
+   7:23  error  'Trash2' is defined but never used                               @typescript-eslint/no-unused-vars
+  37:13  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  37:33  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-stories\components\StoriesTable.tsx
+  21:12  error    'ImageIcon' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  89:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\RepoOutside\HopeBegins\src\app\admin\manage-stories\page.tsx
+  4:42  error  'Heart' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\RepoOutside\HopeBegins\src\components\layout\EngagementPopout.tsx
+  31:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\RepoOutside\HopeBegins\src\components\layout\EngagementPopout.tsx:31:5
+  29 |
+  30 |   useEffect(() => {
+> 31 |     fetchSettings();
+     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  32 |   }, [fetchSettings]);
+  33 |
+  34 |   useEffect(() => {  react-hooks/set-state-in-effect
+
+C:\RepoOutside\HopeBegins\src\components\modals\SubmitHopeStoryModal.tsx
+  191:33  error    'value' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  220:25  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+Γ£û 36 problems (33 errors, 3 warnings)
+

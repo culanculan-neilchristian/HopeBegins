@@ -18,11 +18,17 @@ export function DeleteModal({ item, onConfirm, onCancel, isPending }: Props) {
           <div className="h-16 w-16 rounded-2xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
             <AlertTriangle className="h-8 w-8 text-red-500" />
           </div>
-          
+
           <div className="space-y-2">
-            <h2 className="text-2xl font-black tracking-tight">Delete Pop-out?</h2>
+            <h2 className="text-2xl font-black tracking-tight">
+              Delete Pop-out?
+            </h2>
             <p className="text-zinc-500 font-medium">
-              Are you sure you want to delete <span className="font-bold text-zinc-900 dark:text-zinc-100">"{item.message}"</span>? This action cannot be undone.
+              Are you sure you want to delete{' '}
+              <span className="font-bold text-zinc-900 dark:text-zinc-100">
+                &quot;{item.message}&quot;
+              </span>
+              ? This action cannot be undone.
             </p>
           </div>
 
@@ -40,7 +46,11 @@ export function DeleteModal({ item, onConfirm, onCancel, isPending }: Props) {
               onClick={onConfirm}
               className="flex-1 h-12 rounded-xl bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-widest"
             >
-              {isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Delete'}
+              {isPending ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                'Delete'
+              )}
             </Button>
           </div>
         </div>

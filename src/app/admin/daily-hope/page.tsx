@@ -246,7 +246,9 @@ export default function DailyHopeAdminPage() {
               <span className="text-[10px] font-black uppercase tracking-widest text-brand">
                 Total Database
               </span>
-              <span className="text-3xl font-black italic text-center sm:text-left">{totalCount}</span>
+              <span className="text-3xl font-black italic text-center sm:text-left">
+                {totalCount}
+              </span>
             </div>
             <div className="text-center sm:text-right">
               <p className="text-xs font-medium text-zinc-500 italic max-w-xs">

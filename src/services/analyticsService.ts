@@ -7,6 +7,7 @@ export interface ImpactData {
   journeys: number;
   carriers: number;
   lives_touched: number;
+  prayers?: number;
 }
 
 export const analyticsService = {

@@ -20,6 +20,12 @@ export function DailyHopeNav() {
       icon: Mail,
       active: pathname === '/admin/daily-hope/templates',
     },
+    {
+      name: 'Journey Page',
+      href: '/admin/daily-hope/journey',
+      icon: Layout,
+      active: pathname === '/admin/daily-hope/journey',
+    },
   ];
 
   return (
@@ -34,7 +40,9 @@ export function DailyHopeNav() {
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300'
           }`}
         >
-          <tab.icon className={`h-3.5 w-3.5 ${tab.active ? 'text-brand' : 'text-zinc-400'}`} />
+          <tab.icon
+            className={`h-3.5 w-3.5 ${tab.active ? 'text-brand' : 'text-zinc-400'}`}
+          />
           {tab.name}
         </Link>
       ))}

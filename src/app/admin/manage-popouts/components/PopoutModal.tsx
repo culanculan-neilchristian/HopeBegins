@@ -11,7 +11,7 @@ const schema = z.object({
   message: z.string().min(1, 'Message is required').max(255),
   button_text: z.string().min(1, 'Button text is required').max(50),
   link: z.string().min(1, 'Link is required'),
-  is_active: z.boolean().default(true),
+  is_active: z.boolean().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -45,40 +45,61 @@ export function PopoutModal({ initial, onSave, onClose, isPending }: Props) {
           <h2 className="text-xl font-black italic tracking-tight">
             {initial ? 'Edit Pop-out' : 'New Pop-out'}
           </h2>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors">
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSave)} className="p-6 space-y-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-black uppercase tracking-widest text-zinc-400">Message</label>
+            <label className="text-xs font-black uppercase tracking-widest text-zinc-400">
+              Message
+            </label>
             <Input
               {...register('message')}
               placeholder="e.g., Someone just gave hope"
               className="h-12 rounded-xl border-zinc-200 dark:border-zinc-800 focus:ring-brand shadow-sm"
             />
-            {errors.message && <p className="text-xs font-bold text-red-500">{errors.message.message}</p>}
+            {errors.message && (
+              <p className="text-xs font-bold text-red-500">
+                {errors.message.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-black uppercase tracking-widest text-zinc-400">Button Text</label>
+            <label className="text-xs font-black uppercase tracking-widest text-zinc-400">
+              Button Text
+            </label>
             <Input
               {...register('button_text')}
               placeholder="e.g., JOIN"
               className="h-12 rounded-xl border-zinc-200 dark:border-zinc-800 focus:ring-brand shadow-sm"
             />
-            {errors.button_text && <p className="text-xs font-bold text-red-500">{errors.button_text.message}</p>}
+            {errors.button_text && (
+              <p className="text-xs font-bold text-red-500">
+                {errors.button_text.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-black uppercase tracking-widest text-zinc-400">Link</label>
+            <label className="text-xs font-black uppercase tracking-widest text-zinc-400">
+              Link
+            </label>
             <Input
               {...register('link')}
               placeholder="e.g., /be-carrier"
               className="h-12 rounded-xl border-zinc-200 dark:border-zinc-800 focus:ring-brand shadow-sm"
             />
-            {errors.link && <p className="text-xs font-bold text-red-500">{errors.link.message}</p>}
+            {errors.link && (
+              <p className="text-xs font-bold text-red-500">
+                {errors.link.message}
+              </p>
+            )}
           </div>
 
           <div className="flex items-center gap-3 pt-2">
@@ -88,7 +109,9 @@ export function PopoutModal({ initial, onSave, onClose, isPending }: Props) {
               {...register('is_active')}
               className="h-5 w-5 rounded border-zinc-300 text-brand focus:ring-brand"
             />
-            <label htmlFor="is_active" className="text-sm font-bold">Active</label>
+            <label htmlFor="is_active" className="text-sm font-bold">
+              Active
+            </label>
           </div>
 
           <div className="pt-4 flex gap-3">
@@ -104,7 +127,13 @@ export function PopoutModal({ initial, onSave, onClose, isPending }: Props) {
               disabled={isPending}
               className="flex-1 h-12 rounded-xl bg-brand hover:bg-brand-hover text-brand-foreground font-black uppercase tracking-widest"
             >
-              {isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : initial ? 'Update' : 'Create'}
+              {isPending ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : initial ? (
+                'Update'
+              ) : (
+                'Create'
+              )}
             </Button>
           </div>
         </form>

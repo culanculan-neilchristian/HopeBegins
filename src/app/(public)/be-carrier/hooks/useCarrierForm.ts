@@ -22,7 +22,7 @@ export function useCarrierForm() {
       agreed_to_guidelines: false,
       website: '',
       lastNameHoney: '',
-      startTime: Date.now(),
+      startTime: 0,
     },
   });
 

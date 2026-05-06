@@ -4,7 +4,7 @@ import React from 'react';
 import { Modal } from '@/components/ui/modal';
 import { Button } from '@/components/ui/button';
 import { HopeStory } from '@/services/hopeStoryService';
-import { AlertCircle, Trash2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 interface DeleteModalProps {
   story: HopeStory;
@@ -34,7 +34,7 @@ export function DeleteModal({
             {story.full_name}
           </p>
           <p className="text-xs text-zinc-500 mt-1 line-clamp-2 italic">
-            "{story.testimonial}"
+            &quot;{story.testimonial}&quot;
           </p>
         </div>
 

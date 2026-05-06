@@ -13,14 +13,19 @@ export const organizationService = {
     return fetchWithAuth(`${config.API_URL}/prayers/organizations/`);
   },
 
-  createOrganization: async (data: OrganizationPayload): Promise<Organization> => {
+  createOrganization: async (
+    data: OrganizationPayload
+  ): Promise<Organization> => {
     return fetchWithAuth(`${config.API_URL}/prayers/organizations/`, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
 
-  updateOrganization: async (id: string, data: Partial<OrganizationPayload>): Promise<Organization> => {
+  updateOrganization: async (
+    id: string,
+    data: Partial<OrganizationPayload>
+  ): Promise<Organization> => {
     return fetchWithAuth(`${config.API_URL}/prayers/organizations/${id}/`, {
       method: 'PATCH',
       body: JSON.stringify(data),

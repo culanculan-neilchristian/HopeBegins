@@ -115,6 +115,7 @@ export default function ManagePrayersPage() {
               )}
             </p>
           </div>
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
             <DateRangePicker
               startDate={dateRange.startDate}
               endDate={dateRange.endDate}

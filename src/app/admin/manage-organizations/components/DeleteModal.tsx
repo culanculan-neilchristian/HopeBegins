@@ -31,8 +31,11 @@ export function DeleteModal({ org, onConfirm, onCancel, isPending }: Props) {
             Delete Organization?
           </DialogTitle>
           <DialogDescription className="text-zinc-500 font-medium mt-2">
-            Are you sure you want to delete <span className="text-zinc-900 dark:text-zinc-100 font-bold">"{org.name}"</span>?
-            This action cannot be undone and may affect prayers linked to it.
+            Are you sure you want to delete{' '}
+            <span className="text-zinc-900 dark:text-zinc-100 font-bold">
+              &quot;{org.name}&quot;
+            </span>
+            ? This action cannot be undone and may affect prayers linked to it.
           </DialogDescription>
         </DialogHeader>
 

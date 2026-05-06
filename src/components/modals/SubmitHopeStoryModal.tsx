@@ -18,25 +18,40 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Heart, Upload, X } from 'lucide-react';
+import Image from 'next/image';
 import hopeStoryService from '@/services/hopeStoryService';
 
 const MAX_WORDS = 200;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
 
 const formSchema = z.object({
   full_name: z.string().min(2, 'Name must be at least 2 characters'),
   occupation: z.string().optional(),
-  testimonial: z.string().min(10, 'Testimonial must be at least 10 characters').refine(
-    (val) => val.split(/\s+/).filter(Boolean).length <= MAX_WORDS,
-    { message: `Testimonial must be ${MAX_WORDS} words or less` }
-  ),
+  testimonial: z
+    .string()
+    .min(10, 'Testimonial must be at least 10 characters')
+    .refine((val) => val.split(/\s+/).filter(Boolean).length <= MAX_WORDS, {
+      message: `Testimonial must be ${MAX_WORDS} words or less`,
+    }),
   photo: z
     .any()
-    .refine((files) => !files || files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
     .refine(
-      (files) => !files || files?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
+      (files) =>
+        !files || files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
+      'Max image size is 5MB.'
+    )
+    .refine(
+      (files) =>
+        !files ||
+        files?.length === 0 ||
+        ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      'Only .jpg, .jpeg, .png and .webp formats are supported.'
     )
     .optional(),
 });
@@ -46,7 +61,10 @@ interface SubmitHopeStoryModalProps {
   onClose: () => void;
 }
 
-export function SubmitHopeStoryModal({ isOpen, onClose }: SubmitHopeStoryModalProps) {
+export function SubmitHopeStoryModal({
+  isOpen,
+  onClose,
+}: SubmitHopeStoryModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -73,12 +91,17 @@ export function SubmitHopeStoryModal({ isOpen, onClose }: SubmitHopeStoryModalPr
       };
 
       await hopeStoryService.submitStory(data);
-      toast.success('Hope story submitted successfully! It will be reviewed by our team.');
+      toast.success(
+        'Hope story submitted successfully! It will be reviewed by our team.'
+      );
       form.reset();
       setPreviewUrl(null);
       onClose();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to submit hope story. Please try again.');
+      toast.error(
+        error.response?.data?.message ||
+          'Failed to submit hope story. Please try again.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -145,7 +168,9 @@ export function SubmitHopeStoryModal({ isOpen, onClose }: SubmitHopeStoryModalPr
               <FormItem>
                 <div className="flex justify-between items-center">
                   <FormLabel>Testimonial</FormLabel>
-                  <span className={`text-xs font-medium ${wordCount > MAX_WORDS ? 'text-red-500' : 'text-zinc-400'}`}>
+                  <span
+                    className={`text-xs font-medium ${wordCount > MAX_WORDS ? 'text-red-500' : 'text-zinc-400'}`}
+                  >
                     {wordCount}/{MAX_WORDS} words
                   </span>
                 </div>
@@ -164,7 +189,7 @@ export function SubmitHopeStoryModal({ isOpen, onClose }: SubmitHopeStoryModalPr
           <FormField
             control={form.control}
             name="photo"
-            render={({ field: { value, onChange, ...fieldProps } }) => (
+            render={({ field: { onChange, ...fieldProps } }) => (
               <FormItem>
                 <FormLabel>Upload Photo</FormLabel>
                 <FormControl>
@@ -173,8 +198,12 @@ export function SubmitHopeStoryModal({ isOpen, onClose }: SubmitHopeStoryModalPr
                       <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           <Upload className="w-8 h-8 text-zinc-400 mb-2" />
-                          <p className="text-sm text-zinc-500 font-medium">Click to upload photo</p>
-                          <p className="text-xs text-zinc-400 mt-1">Portrait photos work best (Max 5MB)</p>
+                          <p className="text-sm text-zinc-500 font-medium">
+                            Click to upload photo
+                          </p>
+                          <p className="text-xs text-zinc-400 mt-1">
+                            Portrait photos work best (Max 5MB)
+                          </p>
                         </div>
                         <input
                           type="file"
@@ -189,10 +218,13 @@ export function SubmitHopeStoryModal({ isOpen, onClose }: SubmitHopeStoryModalPr
                       </label>
                     ) : (
                       <div className="relative w-24 h-24 rounded-2xl overflow-hidden group border-2 border-zinc-100 dark:border-zinc-800">
-                        <img
+                        <Image
                           src={previewUrl}
                           alt="Preview"
+                          width={96}
+                          height={96}
                           className="w-full h-full object-cover"
+                          unoptimized
                         />
                         <button
                           type="button"

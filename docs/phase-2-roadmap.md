@@ -105,7 +105,7 @@ This document serves as the central roadmap and tracking point for all features 
   - Setup Bonfire AI chat widget on the frontend.
 
 ### 11. Admin Editable "Hopeful Beginning Journey"
-- **Status:** 🔴 Pending
+- **Status:** ✅ Completed
 - **Detailed Plan:** [task-11-editable-journey-plan.md](./phase-2/task-11-editable-journey-plan.md)
 - **Description:** Provide admin capabilities to edit the content of the "Hopeful Beginning Journey" section.
 - **Requirements:**
@@ -124,3 +124,4 @@ This document serves as the central roadmap and tracking point for all features 
 - [x] **7. Clickable Social Media Icons**
 - [x] **8. Admin Editable 21-Day Email Campaign**
 - [x] **9. Dynamic Impact Tracker ("Our Current Impact")**
+- [x] **11. Admin Editable "Hopeful Beginning Journey"**

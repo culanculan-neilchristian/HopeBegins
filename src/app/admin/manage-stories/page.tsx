@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertCircle, RefreshCw, Search, Heart } from 'lucide-react';
+import { AlertCircle, RefreshCw, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useManageStories } from './hooks/useManageStories';
@@ -91,8 +91,12 @@ export default function ManageStoriesPage() {
         <StoriesTable
           stories={filtered}
           isLoading={isLoading}
-          onApprove={(id) => updateStatusMutation.mutate({ id, status: 'APPROVED' })}
-          onReject={(id) => updateStatusMutation.mutate({ id, status: 'REJECTED' })}
+          onApprove={(id) =>
+            updateStatusMutation.mutate({ id, status: 'APPROVED' })
+          }
+          onReject={(id) =>
+            updateStatusMutation.mutate({ id, status: 'REJECTED' })
+          }
           onDelete={(story) => setDeleteTarget(story)}
         />
       </div>

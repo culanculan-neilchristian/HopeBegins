@@ -11,7 +11,13 @@ interface Props {
   onCreateFirst: () => void;
 }
 
-export function PopoutTable({ filtered, isLoading, onEdit, onDelete, onCreateFirst }: Props) {
+export function PopoutTable({
+  filtered,
+  isLoading,
+  onEdit,
+  onDelete,
+  onCreateFirst,
+}: Props) {
   if (isLoading) {
     return (
       <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-100 dark:border-zinc-800 shadow-xl overflow-hidden">
@@ -31,9 +37,11 @@ export function PopoutTable({ filtered, isLoading, onEdit, onDelete, onCreateFir
             <MousePointer2 className="h-10 w-10 text-zinc-300" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-2xl font-black tracking-tight">No pop-outs found</h3>
+            <h3 className="text-2xl font-black tracking-tight">
+              No pop-outs found
+            </h3>
             <p className="text-zinc-500 font-medium max-w-xs mx-auto">
-              You haven't created any engagement pop-outs yet.
+              You haven&apos;t created any engagement pop-outs yet.
             </p>
           </div>
           <Button
@@ -53,38 +61,60 @@ export function PopoutTable({ filtered, isLoading, onEdit, onDelete, onCreateFir
         <table className="w-full border-collapse text-left">
           <thead>
             <tr className="border-b border-zinc-100 dark:border-zinc-800">
-              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400">Message</th>
-              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400">Button</th>
-              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400">Link</th>
-              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400 text-center">Status</th>
-              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400 text-right">Actions</th>
+              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400">
+                Message
+              </th>
+              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400">
+                Button
+              </th>
+              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400">
+                Link
+              </th>
+              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400 text-center">
+                Status
+              </th>
+              <th className="px-6 py-5 text-xs font-black uppercase tracking-widest text-zinc-400 text-right">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-50 dark:divide-zinc-800/50">
             {filtered.map((item) => (
-              <tr key={item.id} className="group hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+              <tr
+                key={item.id}
+                className="group hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors"
+              >
                 <td className="px-6 py-5">
-                  <span className="font-black text-sm tracking-tight">{item.message}</span>
+                  <span className="font-black text-sm tracking-tight">
+                    {item.message}
+                  </span>
                 </td>
                 <td className="px-6 py-5 text-sm">
-                   <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-lg font-bold text-xs">
-                     {item.button_text}
-                   </span>
+                  <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-lg font-bold text-xs">
+                    {item.button_text}
+                  </span>
                 </td>
                 <td className="px-6 py-5 text-sm text-zinc-500 font-medium">
                   <div className="flex items-center gap-2">
                     <span className="truncate max-w-[200px]">{item.link}</span>
-                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
                       <ExternalLink className="h-3 w-3" />
                     </a>
                   </div>
                 </td>
                 <td className="px-6 py-5 text-center">
-                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                    item.is_active 
-                      ? 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400' 
-                      : 'bg-zinc-50 text-zinc-400 dark:bg-zinc-800/50'
-                  }`}>
+                  <span
+                    className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                      item.is_active
+                        ? 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400'
+                        : 'bg-zinc-50 text-zinc-400 dark:bg-zinc-800/50'
+                    }`}
+                  >
                     {item.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </td>

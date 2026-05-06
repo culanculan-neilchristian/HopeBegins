@@ -10,7 +10,9 @@ export function useManageOrganizations() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<Organization | null>(null);
-  const [editTarget, setEditTarget] = useState<Organization | null | undefined>(undefined);
+  const [editTarget, setEditTarget] = useState<Organization | null | undefined>(
+    undefined
+  );
 
   const {
     data: organizations = [],
@@ -24,9 +26,10 @@ export function useManageOrganizations() {
   });
 
   const filtered = useMemo(() => {
-    return organizations.filter((org) =>
-      org.name.toLowerCase().includes(search.toLowerCase()) ||
-      org.description?.toLowerCase().includes(search.toLowerCase())
+    return organizations.filter(
+      (org) =>
+        org.name.toLowerCase().includes(search.toLowerCase()) ||
+        org.description?.toLowerCase().includes(search.toLowerCase())
     );
   }, [organizations, search]);
 
@@ -39,7 +42,9 @@ export function useManageOrganizations() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['organizations'] });
-      notify.success(`Organization ${editTarget?.id ? 'updated' : 'created'} successfully.`);
+      notify.success(
+        `Organization ${editTarget?.id ? 'updated' : 'created'} successfully.`
+      );
       setEditTarget(undefined);
     },
     onError: (error: any) => {

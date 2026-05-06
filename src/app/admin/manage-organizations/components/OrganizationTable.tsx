@@ -1,6 +1,13 @@
 'use client';
 
-import { Edit2, Trash2, Building2, Calendar, CheckCircle2, XCircle } from 'lucide-react';
+import {
+  Edit2,
+  Trash2,
+  Building2,
+  Calendar,
+  CheckCircle2,
+  XCircle,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Organization } from '@/types/admin';
@@ -30,7 +37,9 @@ export function OrganizationTable({
           <div className="h-12 w-12 rounded-2xl bg-brand/10 flex items-center justify-center">
             <div className="h-6 w-6 border-4 border-brand border-t-transparent rounded-full animate-spin" />
           </div>
-          <p className="text-zinc-400 font-bold animate-pulse">Loading organizations...</p>
+          <p className="text-zinc-400 font-bold animate-pulse">
+            Loading organizations...
+          </p>
         </div>
       </div>
     );
@@ -48,9 +57,9 @@ export function OrganizationTable({
               {search ? 'No matches found' : 'No organizations yet'}
             </h3>
             <p className="text-zinc-500 font-medium text-sm mt-1">
-              {search 
-                ? "Try a different search term or clear the filter." 
-                : "Get started by adding your first partner organization."}
+              {search
+                ? 'Try a different search term or clear the filter.'
+                : 'Get started by adding your first partner organization.'}
             </p>
           </div>
           {!search && (

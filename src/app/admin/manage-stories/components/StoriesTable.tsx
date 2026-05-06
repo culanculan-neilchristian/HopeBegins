@@ -12,7 +12,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HopeStory } from '@/services/hopeStoryService';
-import { Check, X, Trash2, User, Clock, Image as ImageIcon } from 'lucide-react';
+import { Check, X, Trash2, User, Clock } from 'lucide-react';
+import Image from 'next/image';
 import { format } from 'date-fns';
 
 interface StoriesTableProps {
@@ -52,29 +53,53 @@ export function StoriesTable({
       <Table>
         <TableHeader className="bg-zinc-50/50 dark:bg-zinc-800/50">
           <TableRow className="hover:bg-transparent border-zinc-100 dark:border-zinc-800">
-            <TableHead className="w-[200px] font-black uppercase tracking-widest text-[10px]">Author</TableHead>
-            <TableHead className="font-black uppercase tracking-widest text-[10px]">Testimonial</TableHead>
-            <TableHead className="w-[120px] font-black uppercase tracking-widest text-[10px]">Status</TableHead>
-            <TableHead className="w-[150px] font-black uppercase tracking-widest text-[10px]">Date</TableHead>
-            <TableHead className="w-[180px] text-right font-black uppercase tracking-widest text-[10px]">Actions</TableHead>
+            <TableHead className="w-[200px] font-black uppercase tracking-widest text-[10px]">
+              Author
+            </TableHead>
+            <TableHead className="font-black uppercase tracking-widest text-[10px]">
+              Testimonial
+            </TableHead>
+            <TableHead className="w-[120px] font-black uppercase tracking-widest text-[10px]">
+              Status
+            </TableHead>
+            <TableHead className="w-[150px] font-black uppercase tracking-widest text-[10px]">
+              Date
+            </TableHead>
+            <TableHead className="w-[180px] text-right font-black uppercase tracking-widest text-[10px]">
+              Actions
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {stories.map((story) => (
-            <TableRow key={story.id} className="border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/20 transition-colors">
+            <TableRow
+              key={story.id}
+              className="border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/20 transition-colors"
+            >
               <TableCell>
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden flex-shrink-0">
                     {story.photo ? (
-                      <img src={story.photo} alt={story.full_name} className="h-full w-full object-cover" />
+                      <Image
+                        src={story.photo}
+                        alt={story.full_name}
+                        width={40}
+                        height={40}
+                        className="h-full w-full object-cover"
+                        unoptimized
+                      />
                     ) : (
                       <User className="h-5 w-5 text-zinc-400" />
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-bold text-sm truncate">{story.full_name}</p>
+                    <p className="font-bold text-sm truncate">
+                      {story.full_name}
+                    </p>
                     {story.occupation && (
-                      <p className="text-xs text-zinc-500 truncate">{story.occupation}</p>
+                      <p className="text-xs text-zinc-500 truncate">
+                        {story.occupation}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -85,7 +110,7 @@ export function StoriesTable({
                 </p>
               </TableCell>
               <TableCell>
-                <Badge 
+                <Badge
                   className={`
                     rounded-lg px-2 py-0.5 text-[10px] font-black uppercase tracking-wider border-none
                     ${story.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' : ''}

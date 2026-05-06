@@ -6,10 +6,8 @@ import {
   Shield,
   Headphones,
   Mail,
-  Globe,
   MessageSquare,
   Users,
-  Loader2,
 } from 'lucide-react';
 import { analyticsService, ImpactData } from '@/services/analyticsService';
 

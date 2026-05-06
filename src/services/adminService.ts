@@ -23,7 +23,7 @@ import type {
 /**
  * Reads the admin JWT from localStorage and returns an Authorization header.
  */
-const authHeader = (): { Authorization: string } => {
+const authHeader = (): Record<string, string> => {
   const token = localStorage.getItem('adminToken');
   if (!token) throw new Error('Admin token not found. Please log in again.');
   return { Authorization: `Bearer ${token}` };

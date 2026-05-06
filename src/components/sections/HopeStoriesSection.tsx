@@ -2,7 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { TestimonialCarousel, Testimonial } from '@/components/ui/testimonial-carousel';
+import {
+  TestimonialCarousel,
+  Testimonial,
+} from '@/components/ui/testimonial-carousel';
 import { SubmitHopeStoryModal } from '@/components/modals/SubmitHopeStoryModal';
 import { Heart, Plus } from 'lucide-react';
 import hopeStoryService from '@/services/hopeStoryService';
@@ -48,11 +51,12 @@ export function HopeStoriesSection() {
               Stories of Hope
             </h2>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 font-medium max-w-lg mx-auto leading-relaxed">
-              Real testimonies of how HopeBegins is transforming lives. See what others are saying about their journey with God.
+              Real testimonies of how HopeBegins is transforming lives. See what
+              others are saying about their journey with God.
             </p>
           </div>
-          
-          <Button 
+
+          <Button
             onClick={() => setIsModalOpen(true)}
             className="mt-2 rounded-2xl px-6 h-12 font-bold shadow-lg shadow-rose-500/20"
           >
@@ -70,15 +74,17 @@ export function HopeStoriesSection() {
             <TestimonialCarousel testimonials={stories} />
           ) : (
             <div className="py-20 bg-zinc-50 dark:bg-zinc-900/50 rounded-[2rem] border border-zinc-100 dark:border-zinc-800">
-               <p className="text-zinc-500 dark:text-zinc-400 font-medium">No hope stories shared yet. Be the first to share yours!</p>
+              <p className="text-zinc-500 dark:text-zinc-400 font-medium">
+                No hope stories shared yet. Be the first to share yours!
+              </p>
             </div>
           )}
         </div>
       </div>
 
-      <SubmitHopeStoryModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <SubmitHopeStoryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
     </section>
   );

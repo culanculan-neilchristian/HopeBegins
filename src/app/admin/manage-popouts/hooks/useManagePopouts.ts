@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { siteSettingsService, PopoutItem } from '@/services/siteSettingsService';
+import {
+  siteSettingsService,
+  PopoutItem,
+} from '@/services/siteSettingsService';
 import { toast } from 'sonner';
 
 export function useManagePopouts() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<PopoutItem | null>(null);
-  const [editTarget, setEditTarget] = useState<PopoutItem | null | undefined>(undefined);
+  const [editTarget, setEditTarget] = useState<PopoutItem | null | undefined>(
+    undefined
+  );
 
   // Queries
   const { data: settings, isLoading: isSettingsLoading } = useQuery({
@@ -15,14 +20,21 @@ export function useManagePopouts() {
     queryFn: () => siteSettingsService.getSettings(),
   });
 
-  const { data: items = [], isLoading: isItemsLoading, isFetching, isError, refetch } = useQuery({
+  const {
+    data: items = [],
+    isLoading: isItemsLoading,
+    isFetching,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ['popout-items'],
     queryFn: () => siteSettingsService.getItems(),
   });
 
   // Mutations
   const updateSettingsMutation = useMutation({
-    mutationFn: (data: any) => siteSettingsService.updateSettings(settings.id, data),
+    mutationFn: (data: any) =>
+      siteSettingsService.updateSettings(settings.id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['popout-settings'] });
       queryClient.invalidateQueries({ queryKey: ['popout-public'] });

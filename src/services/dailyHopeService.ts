@@ -41,7 +41,10 @@ export const dailyHopeService = {
     return fetchWithAuth(`${config.API_URL}/daily-hope/templates/`);
   },
 
-  updateEmailTemplate: async (id: number, data: Partial<EmailTemplate>): Promise<EmailTemplate> => {
+  updateEmailTemplate: async (
+    id: number,
+    data: Partial<EmailTemplate>
+  ): Promise<EmailTemplate> => {
     return fetchWithAuth(`${config.API_URL}/daily-hope/templates/${id}/`, {
       method: 'PATCH',
       body: JSON.stringify(data),

@@ -1,15 +1,14 @@
 'use client';
 
 import React from 'react';
-import { 
-  AlertCircle, 
-  RefreshCw, 
-  Search, 
-  Plus, 
-  MousePointer2, 
-  Settings2, 
-  Clock, 
-  Power 
+import {
+  AlertCircle,
+  RefreshCw,
+  Search,
+  Plus,
+  Settings2,
+  Clock,
+  Power,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -89,7 +88,8 @@ export default function ManagePopoutsPage() {
               Engagement Pop-outs
             </h1>
             <p className="mt-2 text-zinc-500 font-medium text-sm sm:text-base">
-              Manage randomized notifications that appear in the lower-left corner.
+              Manage randomized notifications that appear in the lower-left
+              corner.
               {!isLoading && (
                 <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
                   {filtered.length} Active Items
@@ -124,59 +124,81 @@ export default function ManagePopoutsPage() {
         {/* ── Global Settings Section ── */}
         {!isSettingsLoading && settings && (
           <section className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-100 dark:border-zinc-800 p-6 sm:p-8 shadow-xl">
-             <div className="flex items-center gap-3 mb-6">
-                <Settings2 className="h-5 w-5 text-brand" />
-                <h2 className="text-xl font-black tracking-tight italic">Global Settings</h2>
-             </div>
+            <div className="flex items-center gap-3 mb-6">
+              <Settings2 className="h-5 w-5 text-brand" />
+              <h2 className="text-xl font-black tracking-tight italic">
+                Global Settings
+              </h2>
+            </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
-                {/* Master Toggle */}
-                <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl">
-                   <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl ${settings.is_enabled ? 'bg-green-100 text-green-600' : 'bg-zinc-200 text-zinc-500'}`}>
-                         <Power className="h-5 w-5" />
-                      </div>
-                      <div>
-                         <p className="font-black text-sm uppercase tracking-wider">Status</p>
-                         <p className="text-xs text-zinc-500 font-medium">{settings.is_enabled ? 'Enabled' : 'Disabled'}</p>
-                      </div>
-                   </div>
-                   <button 
-                      onClick={() => updateSettingsMutation.mutate({ is_enabled: !settings.is_enabled })}
-                      disabled={updateSettingsMutation.isPending}
-                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.is_enabled ? 'bg-brand' : 'bg-zinc-300'}`}
-                   >
-                      <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.is_enabled ? 'translate-x-6' : ''}`} />
-                   </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+              {/* Master Toggle */}
+              <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`p-2 rounded-xl ${settings.is_enabled ? 'bg-green-100 text-green-600' : 'bg-zinc-200 text-zinc-500'}`}
+                  >
+                    <Power className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-black text-sm uppercase tracking-wider">
+                      Status
+                    </p>
+                    <p className="text-xs text-zinc-500 font-medium">
+                      {settings.is_enabled ? 'Enabled' : 'Disabled'}
+                    </p>
+                  </div>
                 </div>
+                <button
+                  onClick={() =>
+                    updateSettingsMutation.mutate({
+                      is_enabled: !settings.is_enabled,
+                    })
+                  }
+                  disabled={updateSettingsMutation.isPending}
+                  className={`w-12 h-6 rounded-full transition-colors relative ${settings.is_enabled ? 'bg-brand' : 'bg-zinc-300'}`}
+                >
+                  <div
+                    className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.is_enabled ? 'translate-x-6' : ''}`}
+                  />
+                </button>
+              </div>
 
-                {/* Interval Setting */}
-                <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl">
-                   <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-xl bg-blue-100 text-blue-600">
-                         <Clock className="h-5 w-5" />
-                      </div>
-                      <div>
-                         <p className="font-black text-sm uppercase tracking-wider">Interval</p>
-                         <p className="text-xs text-zinc-500 font-medium">Every {settings.interval_seconds} seconds</p>
-                      </div>
-                   </div>
-                   <div className="flex items-center gap-2">
-                      <Input 
-                        type="number"
-                        className="w-20 h-9 rounded-lg text-center font-bold"
-                        defaultValue={settings.interval_seconds}
-                        onBlur={(e) => {
-                           const val = parseInt(e.target.value);
-                           if (val !== settings.interval_seconds) {
-                              updateSettingsMutation.mutate({ interval_seconds: val });
-                           }
-                        }}
-                      />
-                      <span className="text-xs font-black text-zinc-400 uppercase">Sec</span>
-                   </div>
+              {/* Interval Setting */}
+              <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-blue-100 text-blue-600">
+                    <Clock className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-black text-sm uppercase tracking-wider">
+                      Interval
+                    </p>
+                    <p className="text-xs text-zinc-500 font-medium">
+                      Every {settings.interval_seconds} seconds
+                    </p>
+                  </div>
                 </div>
-             </div>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    className="w-20 h-9 rounded-lg text-center font-bold"
+                    defaultValue={settings.interval_seconds}
+                    onBlur={(e) => {
+                      const val = parseInt(e.target.value);
+                      if (val !== settings.interval_seconds) {
+                        updateSettingsMutation.mutate({
+                          interval_seconds: val,
+                        });
+                      }
+                    }}
+                  />
+                  <span className="text-xs font-black text-zinc-400 uppercase">
+                    Sec
+                  </span>
+                </div>
+              </div>
+            </div>
           </section>
         )}
 
@@ -191,19 +213,33 @@ export default function ManagePopoutsPage() {
 
         {/* ── Mobile List View ── */}
         <div className="md:hidden space-y-3">
-           {!isLoading && filtered.length > 0 && filtered.map((item) => (
-              <div key={item.id} className="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm flex items-center justify-between">
+          {!isLoading &&
+            filtered.length > 0 &&
+            filtered.map((item) => (
+              <div
+                key={item.id}
+                className="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm flex items-center justify-between"
+              >
                 <div>
-                   <p className="font-black text-sm tracking-tight">{item.message}</p>
-                   <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Button: {item.button_text}</p>
+                  <p className="font-black text-sm tracking-tight">
+                    {item.message}
+                  </p>
+                  <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
+                    Button: {item.button_text}
+                  </p>
                 </div>
                 <div className="flex gap-2">
-                   <Button variant="ghost" size="icon" onClick={() => setEditTarget(item)} className="h-8 w-8 rounded-lg">
-                      <Plus className="h-4 w-4 rotate-45" />
-                   </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setEditTarget(item)}
+                    className="h-8 w-8 rounded-lg"
+                  >
+                    <Plus className="h-4 w-4 rotate-45" />
+                  </Button>
                 </div>
               </div>
-           ))}
+            ))}
         </div>
       </div>
     </>

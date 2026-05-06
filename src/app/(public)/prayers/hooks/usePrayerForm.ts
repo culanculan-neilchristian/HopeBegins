@@ -29,7 +29,7 @@ export function usePrayerForm() {
       wantsFollowUp: false,
       website: '',
       lastNameHoney: '',
-      startTime: Date.now(),
+      startTime: 0,
       organizationId: null,
     },
   });

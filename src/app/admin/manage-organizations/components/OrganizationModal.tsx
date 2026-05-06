@@ -28,7 +28,7 @@ import { Organization, OrganizationPayload } from '@/types/admin';
 const schema = z.object({
   name: z.string().min(2, 'Name is required'),
   description: z.string().optional(),
-  is_active: z.boolean().default(true),
+  is_active: z.boolean().optional(),
 });
 
 interface Props {
@@ -38,8 +38,13 @@ interface Props {
   isPending: boolean;
 }
 
-export function OrganizationModal({ initial, onSave, onClose, isPending }: Props) {
-  const form = useForm<z.infer<typeof schema>>({
+export function OrganizationModal({
+  initial,
+  onSave,
+  onClose,
+  isPending,
+}: Props) {
+  const form = useForm<OrganizationPayload>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: initial?.name || '',
@@ -109,7 +114,8 @@ export function OrganizationModal({ initial, onSave, onClose, isPending }: Props
                       Active Status
                     </FormLabel>
                     <p className="text-xs text-zinc-500 font-medium">
-                      Inactive organizations won't show in the public dropdown.
+                      Inactive organizations won&apos;t show in the public
+                      dropdown.
                     </p>
                   </div>
                   <FormControl>
@@ -138,8 +144,10 @@ export function OrganizationModal({ initial, onSave, onClose, isPending }: Props
               >
                 {isPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
+                ) : initial ? (
+                  'Save Changes'
                 ) : (
-                  initial ? 'Save Changes' : 'Create Organization'
+                  'Create Organization'
                 )}
               </Button>
             </DialogFooter>

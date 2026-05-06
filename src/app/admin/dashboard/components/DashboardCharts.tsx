@@ -23,7 +23,14 @@ interface DashboardChartsProps {
   isLoading?: boolean;
 }
 
-const COLORS = ['#6b8f5e', '#a4c3b2', '#cce3de', '#eaf4f4', '#f6fff8', '#d0e1d4'];
+const COLORS = [
+  '#6b8f5e',
+  '#a4c3b2',
+  '#cce3de',
+  '#eaf4f4',
+  '#f6fff8',
+  '#d0e1d4',
+];
 
 const PRAYER_CATEGORY_LABELS: Record<string, string> = {
   GENERAL: 'General',
@@ -34,7 +41,10 @@ const PRAYER_CATEGORY_LABELS: Record<string, string> = {
   OTHER: 'Other',
 };
 
-export function DashboardCharts({ analytics, isLoading }: DashboardChartsProps) {
+export function DashboardCharts({
+  analytics,
+  isLoading,
+}: DashboardChartsProps) {
   if (isLoading || !analytics) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -153,7 +163,7 @@ export function DashboardCharts({ analytics, isLoading }: DashboardChartsProps) 
                 paddingAngle={5}
                 dataKey="value"
               >
-                {prayersByCategory.map((entry, index) => (
+                {prayersByCategory.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}

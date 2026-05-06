@@ -1,35 +1,29 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { siteSettingsService, PopoutItem } from "@/services/siteSettingsService";
-import Link from "next/link";
-import { X } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  siteSettingsService,
+  PopoutItem,
+} from '@/services/siteSettingsService';
+import Link from 'next/link';
+import { X } from 'lucide-react';
+
+import { useQuery } from '@tanstack/react-query';
 
 const EngagementPopout = () => {
-  const [settings, setSettings] = useState<{
-    is_enabled: boolean;
-    interval_seconds: number;
-    items: PopoutItem[];
-  } | null>(null);
   const [currentItem, setCurrentItem] = useState<PopoutItem | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const fetchSettings = useCallback(async () => {
-    try {
-      const data = await siteSettingsService.getPublicPopouts();
-      setSettings(data);
-    } catch (error) {
-      console.error("Failed to fetch popout settings:", error);
-    }
-  }, []);
+  const { data: settings } = useQuery({
+    queryKey: ['popout-public'],
+    queryFn: () => siteSettingsService.getPublicPopouts(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
   useEffect(() => {
-    fetchSettings();
-  }, [fetchSettings]);
-
-  useEffect(() => {
-    if (!settings || !settings.is_enabled || settings.items.length === 0) return;
+    if (!settings || !settings.is_enabled || settings.items.length === 0)
+      return;
 
     const showRandomPopout = () => {
       const randomIndex = Math.floor(Math.random() * settings.items.length);
@@ -45,7 +39,10 @@ const EngagementPopout = () => {
     // Initial delay before first popout
     const initialDelay = setTimeout(showRandomPopout, 5000);
 
-    const interval = setInterval(showRandomPopout, settings.interval_seconds * 1000);
+    const interval = setInterval(
+      showRandomPopout,
+      settings.interval_seconds * 1000
+    );
 
     return () => {
       clearInterval(interval);
@@ -62,13 +59,13 @@ const EngagementPopout = () => {
           initial={{ opacity: 0, y: 50, x: -20 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
           exit={{ opacity: 0, y: 50, scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           className="fixed bottom-6 left-6 z-[9999] max-w-[320px] w-full"
         >
           <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 p-4 flex items-center gap-4 relative overflow-hidden group">
             {/* Background Decoration */}
             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-12 -mt-12 blur-2xl" />
-            
+
             <div className="flex-1">
               <p className="text-zinc-600 dark:text-zinc-400 text-sm font-medium mb-2 leading-tight">
                 {currentItem.message}

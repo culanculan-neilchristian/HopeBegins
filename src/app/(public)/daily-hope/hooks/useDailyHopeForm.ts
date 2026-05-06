@@ -27,7 +27,7 @@ export function useDailyHopeForm() {
       email: '',
       website: '',
       lastNameHoney: '',
-      startTime: Date.now(),
+      startTime: 0,
     },
   });
 
