@@ -70,14 +70,10 @@ export function HopeStoriesSection() {
             <div className="h-[500px] flex items-center justify-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div>
             </div>
-          ) : stories.length > 0 ? (
-            <TestimonialCarousel testimonials={stories} />
           ) : (
-            <div className="py-20 bg-zinc-50 dark:bg-zinc-900/50 rounded-[2rem] border border-zinc-100 dark:border-zinc-800">
-              <p className="text-zinc-500 dark:text-zinc-400 font-medium">
-                No hope stories shared yet. Be the first to share yours!
-              </p>
-            </div>
+            <TestimonialCarousel
+              testimonials={stories.length > 0 ? stories : undefined}
+            />
           )}
         </div>
       </div>

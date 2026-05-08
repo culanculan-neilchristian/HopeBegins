@@ -20,6 +20,12 @@ export interface EmailTemplate {
   updated_at: string;
 }
 
+const authHeader = (): Record<string, string> => {
+  const token = localStorage.getItem('adminToken');
+  if (!token) return {};
+  return { Authorization: `Bearer ${token}` };
+};
+
 export const dailyHopeService = {
   subscribe: async (data: HopeJourneySubscription): Promise<any> => {
     return fetchWithAuth(`${config.API_URL}/daily-hope/journeys/`, {
@@ -38,7 +44,9 @@ export const dailyHopeService = {
   },
 
   getEmailTemplates: async (): Promise<EmailTemplate[]> => {
-    return fetchWithAuth(`${config.API_URL}/daily-hope/templates/`);
+    return fetchWithAuth(`${config.API_URL}/daily-hope/templates/`, {
+      headers: authHeader(),
+    });
   },
 
   updateEmailTemplate: async (
@@ -47,6 +55,7 @@ export const dailyHopeService = {
   ): Promise<EmailTemplate> => {
     return fetchWithAuth(`${config.API_URL}/daily-hope/templates/${id}/`, {
       method: 'PATCH',
+      headers: authHeader(),
       body: JSON.stringify(data),
     });
   },
