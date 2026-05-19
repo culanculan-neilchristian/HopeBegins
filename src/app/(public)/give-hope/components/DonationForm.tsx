@@ -12,7 +12,7 @@ export function DonationForm() {
         <iframe
           src="https://donorbox.org/embed/hope-begins-plant-a-hope-seed"
           name="donorbox"
-          allowpaymentrequest="true"
+          {...{ allowpaymentrequest: 'true' }}
           seamless
           frameBorder="0"
           scrolling="no"
