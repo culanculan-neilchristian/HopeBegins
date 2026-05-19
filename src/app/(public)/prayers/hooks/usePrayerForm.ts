@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { prayerSchema } from '@/types/prayer';
@@ -33,6 +34,10 @@ export function usePrayerForm() {
       organizationId: null,
     },
   });
+
+  useEffect(() => {
+    form.setValue('startTime', Date.now());
+  }, [form]);
 
   const mutation = useMutation({
     mutationFn: prayerService.createPrayer,

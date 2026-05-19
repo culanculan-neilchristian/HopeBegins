@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -25,6 +26,10 @@ export function useCarrierForm() {
       startTime: 0,
     },
   });
+
+  useEffect(() => {
+    form.setValue('startTime', Date.now());
+  }, [form]);
 
   const mutation = useMutation({
     mutationFn: userService.applyAsCarrier,
