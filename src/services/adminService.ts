@@ -13,6 +13,7 @@ import type {
   PaginatedResponse,
   Donation,
   DonationStats,
+  AnalyticsData,
 } from '@/types/admin';
 
 // ─────────────────────────────────────────────
@@ -22,7 +23,7 @@ import type {
 /**
  * Reads the admin JWT from localStorage and returns an Authorization header.
  */
-const authHeader = (): { Authorization: string } => {
+const authHeader = (): Record<string, string> => {
   const token = localStorage.getItem('adminToken');
   if (!token) throw new Error('Admin token not found. Please log in again.');
   return { Authorization: `Bearer ${token}` };
@@ -64,11 +65,15 @@ export const adminService = {
   getPrayers: async (
     page = 1,
     search = '',
-    status: PrayerStatus | 'ALL' = 'ALL'
+    status: PrayerStatus | 'ALL' = 'ALL',
+    startDate?: string,
+    endDate?: string
   ): Promise<PaginatedResponse<Prayer>> => {
     let url = `${config.API_URL}/prayers/requests/?page=${page}`;
     if (search) url += `&search=${search}`;
     if (status !== 'ALL') url += `&status=${status}`;
+    if (startDate) url += `&created_at__gte=${startDate}`;
+    if (endDate) url += `&created_at__lte=${endDate}`;
 
     return fetchWithAuth(url, {
       headers: authHeader(),
@@ -320,10 +325,14 @@ export const adminService = {
    */
   getJourneys: async (
     page = 1,
-    search = ''
+    search = '',
+    startDate?: string,
+    endDate?: string
   ): Promise<PaginatedResponse<HopeJourney>> => {
     let url = `${config.API_URL}/daily-hope/journeys/?page=${page}`;
     if (search) url += `&search=${search}`;
+    if (startDate) url += `&created_at__gte=${startDate}`;
+    if (endDate) url += `&created_at__lte=${endDate}`;
     return fetchWithAuth(url, {
       headers: authHeader(),
     });
@@ -348,6 +357,24 @@ export const adminService = {
    */
   getStats: async (): Promise<AdminStats> => {
     return fetchWithAuth(`${config.API_URL}/users/overview/`, {
+      headers: authHeader(),
+    });
+  },
+
+  /**
+   * Fetch granular analytics with date filtering.
+   */
+  getAnalytics: async (
+    startDate?: string,
+    endDate?: string
+  ): Promise<AnalyticsData> => {
+    let url = `${config.API_URL}/analytics/`;
+    const params = new URLSearchParams();
+    if (startDate) params.append('start_date', startDate);
+    if (endDate) params.append('end_date', endDate);
+    if (params.toString()) url += `?${params.toString()}`;
+
+    return fetchWithAuth(url, {
       headers: authHeader(),
     });
   },

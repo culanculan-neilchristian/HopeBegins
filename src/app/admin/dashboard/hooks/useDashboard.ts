@@ -1,32 +1,49 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { adminService } from '@/services/adminService';
-
-// Static chart data (prayer/donation trend — replace when backend has time-series endpoint)
-export const CHART_DATA = [
-  { name: 'Mon', prayers: 40, plays: 2400 },
-  { name: 'Tue', prayers: 30, plays: 1398 },
-  { name: 'Wed', prayers: 200, plays: 9800 },
-  { name: 'Thu', prayers: 278, plays: 3908 },
-  { name: 'Fri', prayers: 189, plays: 4800 },
-  { name: 'Sat', prayers: 239, plays: 3800 },
-  { name: 'Sun', prayers: 349, plays: 4300 },
-];
+import { subDays, format } from 'date-fns';
 
 export function useDashboard() {
+  const [dateRange, setDateRange] = useState({
+    startDate: format(subDays(new Date(), 30), 'yyyy-MM-dd'),
+    endDate: format(new Date(), 'yyyy-MM-dd'),
+  });
+
   const {
     data: stats,
-    isLoading,
-    isError,
-    refetch,
+    isLoading: isStatsLoading,
+    isError: isStatsError,
+    refetch: refetchStats,
   } = useQuery({
     queryKey: ['admin', 'stats'],
     queryFn: () => adminService.getStats(),
   });
 
+  const {
+    data: analytics,
+    isLoading: isAnalyticsLoading,
+    isError: isAnalyticsError,
+    refetch: refetchAnalytics,
+  } = useQuery({
+    queryKey: ['admin', 'analytics', dateRange],
+    queryFn: () =>
+      adminService.getAnalytics(dateRange.startDate, dateRange.endDate),
+  });
+
+  const handleDateChange = (start: string, end: string) => {
+    setDateRange({ startDate: start, endDate: end });
+  };
+
   return {
     stats,
-    isLoading,
-    isError,
-    refetch,
+    analytics,
+    dateRange,
+    handleDateChange,
+    isLoading: isStatsLoading || isAnalyticsLoading,
+    isError: isStatsError || isAnalyticsError,
+    refetch: () => {
+      refetchStats();
+      refetchAnalytics();
+    },
   };
 }

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import headerLogo from '@/assets/images/header-logo.png';
 import { Button } from '@/components/ui/button';
+import { Facebook, Instagram, Linkedin } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -37,10 +38,38 @@ export function Footer() {
               />
             </Link>
           </div>
+
+          <div className="flex justify-center gap-6 py-2">
+            <Link
+              href="https://www.facebook.com/hopebeginstoday"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-60 hover:opacity-100 transition-all transform hover:scale-110"
+            >
+              <Facebook size={18} />
+            </Link>
+            <Link
+              href="https://www.instagram.com/hopebeginstoday"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-60 hover:opacity-100 transition-all transform hover:scale-110"
+            >
+              <Instagram size={18} />
+            </Link>
+            <Link
+              href="https://www.linkedin.com/company/hopebeginstoday/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-60 hover:opacity-100 transition-all transform hover:scale-110"
+            >
+              <Linkedin size={18} />
+            </Link>
+          </div>
+
           <div className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60 font-poppins">
             Faith-Driven Mental Health Support
           </div>
-          <div className="pt-8 text-[10px] opacity-40">
+          <div className="pt-6 text-[10px] opacity-40">
             © 2026 HOPEBEGINS. ALL RIGHTS RESERVED.
           </div>
         </div>

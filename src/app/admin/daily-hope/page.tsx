@@ -14,9 +14,11 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { useHopeJourneys } from './hooks/useHopeJourneys';
 import { JourneyTable } from './components/JourneyTable';
 import { DeleteJourneyModal } from './components/DeleteJourneyModal';
+import { DailyHopeNav } from './components/DailyHopeNav';
 
 export default function DailyHopeAdminPage() {
   const {
@@ -32,6 +34,8 @@ export default function DailyHopeAdminPage() {
     setSearch,
     page,
     setPage,
+    dateRange,
+    setDateRange,
     deleteTarget,
     setDeleteTarget,
     deleteMutation,
@@ -80,6 +84,9 @@ export default function DailyHopeAdminPage() {
             <h1 className="text-3xl font-black italic tracking-tighter">
               Hope Subscribers
             </h1>
+            <div className="mt-6">
+              <DailyHopeNav />
+            </div>
             <p className="mt-2 text-zinc-500 font-medium text-sm sm:text-base">
               Managing everyone in the 30-day &quot;Daily Hope&quot; journey.
               {!isLoading && (
@@ -94,6 +101,11 @@ export default function DailyHopeAdminPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-shrink-0">
+            <DateRangePicker
+              startDate={dateRange.startDate}
+              endDate={dateRange.endDate}
+              onChange={setDateRange}
+            />
             <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
               <Input
@@ -234,7 +246,9 @@ export default function DailyHopeAdminPage() {
               <span className="text-[10px] font-black uppercase tracking-widest text-brand">
                 Total Database
               </span>
-              <span className="text-3xl font-black italic text-center sm:text-left">{totalCount}</span>
+              <span className="text-3xl font-black italic text-center sm:text-left">
+                {totalCount}
+              </span>
             </div>
             <div className="text-center sm:text-right">
               <p className="text-xs font-medium text-zinc-500 italic max-w-xs">

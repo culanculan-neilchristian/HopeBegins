@@ -56,6 +56,8 @@ export interface Prayer {
   created_at: string;
   updated_at: string;
   responses: PrayerResponse[];
+  organization_id: string | null;
+  organization_name: string | null;
 }
 
 /** Payload for assigning a prayer to a carrier */
@@ -178,4 +180,54 @@ export interface HopeJourney {
   finished_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+// ─────────────────────────────────────────────
+// Organization Management Types
+// ─────────────────────────────────────────────
+
+export interface Organization {
+  id: string;
+  name: string;
+  description: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrganizationPayload {
+  name: string;
+  description?: string;
+  is_active?: boolean;
+}
+
+// ─────────────────────────────────────────────
+// Analytics Types
+// ─────────────────────────────────────────────
+
+export interface CategoryCount {
+  category?: string;
+  name?: string;
+  count: number;
+}
+
+export interface DateCount {
+  date: string;
+  count: number;
+}
+
+export interface AnalyticsData {
+  summary: {
+    total_prayers: number;
+    total_plays: number;
+    total_new_subscribers: number;
+    total_completions: number;
+  };
+  prayers_by_category: CategoryCount[];
+  plays_by_category: CategoryCount[];
+  subscribers_trend: DateCount[];
+  date_range: {
+    start_date: string;
+    end_date: string;
+  };
 }

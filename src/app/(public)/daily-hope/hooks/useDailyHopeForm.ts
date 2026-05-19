@@ -12,6 +12,8 @@ const dailyHopeSchema = z.object({
   lastName: z.string().min(1, { message: 'Last name is required' }),
   email: z.string().email({ message: 'Please enter a valid email address' }),
   website: z.string().optional(),
+  lastNameHoney: z.string().optional(),
+  startTime: z.number().optional(),
 });
 
 type DailyHopeFormValues = z.infer<typeof dailyHopeSchema>;
@@ -24,6 +26,8 @@ export function useDailyHopeForm() {
       lastName: '',
       email: '',
       website: '',
+      lastNameHoney: '',
+      startTime: 0,
     },
   });
 
@@ -34,6 +38,8 @@ export function useDailyHopeForm() {
         last_name: data.lastName,
         email: data.email,
         website: data.website,
+        last_name_honey: data.lastNameHoney,
+        start_time: data.startTime,
       }),
     onSuccess: (response) => {
       const message =

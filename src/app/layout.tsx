@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   description: 'A platform for hope and prayer.',
 };
 
+import EngagementPopout from '@/components/layout/EngagementPopout';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} ${dmSans.variable}`}>
-       <head>
+      <head>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-FBGY484963"
@@ -45,7 +47,10 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={dmSans.className} suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <EngagementPopout />
+        </Providers>
       </body>
     </html>
   );

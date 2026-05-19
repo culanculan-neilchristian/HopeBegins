@@ -1,133 +1,59 @@
 'use client';
 
-import { useState } from 'react';
-
-import Image from 'next/image';
-import gcashQrCode from '@/assets/images/gcash_qrcode.jpg';
-import { useGiveHope } from '../hooks/useGiveHope';
+import { Building2 } from 'lucide-react';
+import Script from 'next/script';
 
 export function DonationForm() {
-  const {
-    selectedAmount,
-    setSelectedAmount,
-    isCustom,
-    setIsCustom,
-    presetAmounts,
-  } = useGiveHope();
-
-  // Reset QR view if someone changes the amount
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-
-  const onAmountClick = (amount: number) => {
-    setSelectedAmount(amount);
-    setIsCustom(false);
-    setHasSubmitted(false);
-  };
-
-  const onCustomClick = () => {
-    setIsCustom(true);
-    setSelectedAmount(0); // Empty the field initially
-    setHasSubmitted(false);
-  };
-
-  const onCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    setSelectedAmount(value);
-  };
-
-  const onDonateClick = () => {
-    setHasSubmitted(true);
-  };
-
   return (
     <section className="px-6 pb-16 max-w-2xl mx-auto">
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-2xl p-8 shadow-sm">
-        <h2 className="text-xl font-bold text-zinc-800 dark:text-zinc-100 font-poppins text-center mb-6">
-          Plant a Hope Seed
-        </h2>
-
-        {/* Amount Selector */}
-        <div className="grid grid-cols-4 gap-3 mb-6">
-          {presetAmounts.map((amount) => {
-            const isSelected = !isCustom && selectedAmount === amount;
-            return (
-              <button
-                key={amount}
-                onClick={() => onAmountClick(amount)}
-                className="h-14 rounded-xl border-2 text-sm font-bold transition-all duration-200"
-                style={{
-                  backgroundColor: isSelected ? '#acc487' : 'white',
-                  borderColor: isSelected ? '#acc487' : '#e4e4e7',
-                  color: isSelected ? 'white' : '#3f3f46',
-                }}
-              >
-                ₱{amount}
-              </button>
-            );
-          })}
-          <button
-            onClick={onCustomClick}
-            className="h-14 rounded-xl border-2 text-sm font-bold transition-all duration-200"
-            style={{
-              backgroundColor: isCustom ? '#acc487' : 'white',
-              borderColor: isCustom ? '#acc487' : '#e4e4e7',
-              color: isCustom ? 'white' : '#3f3f46',
-            }}
-          >
-            Custom
-          </button>
-        </div>
-
-        {/* Custom Amount Input */}
-        {isCustom && (
-          <div className="mb-6 animate-in fade-in slide-in-from-top-1 duration-200">
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 font-bold">
-                ₱
-              </span>
-              <input
-                type="number"
-                value={selectedAmount || ''}
-                onChange={onCustomAmountChange}
-                placeholder="Enter amount"
-                className="w-full h-14 pl-10 pr-4 rounded-xl border-2 border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:border-[#acc487] outline-none font-bold text-zinc-800 dark:text-zinc-100 transition-colors"
-                autoFocus
-              />
-            </div>
-          </div>
-        )}
-
-        {/* GCash QR Code (Conditional) */}
-        {hasSubmitted && (
-          <div className="mb-8 w-full max-w-md mx-auto overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
-            <Image
-              src={gcashQrCode}
-              alt="GCash QR Code"
-              className="w-full h-auto object-contain"
-              priority
-            />
-          </div>
-        )}
-
-        {/* Honeypot */}
-        <input
-          type="text"
-          name="website"
-          className="hidden"
-          tabIndex={-1}
-          autoComplete="off"
+      {/* Donorbox Embed */}
+      <div className="flex justify-center w-full mb-12">
+        <Script src="https://donorbox.org/widget.js" strategy="lazyOnload" />
+        <iframe
+          src="https://donorbox.org/embed/hope-begins-plant-a-hope-seed"
+          name="donorbox"
+          allowpaymentrequest="true"
+          seamless
+          frameBorder="0"
+          scrolling="no"
+          height="900px"
+          width="100%"
+          style={{ maxWidth: '500px', minWidth: '250px', maxHeight: 'none' }}
+          allow="payment"
         />
-
-        {/* Submit Button */}
-        <button
-          onClick={onDonateClick}
-          disabled={selectedAmount <= 0}
-          className="w-full h-14 rounded-xl font-bold text-white text-base transition-opacity duration-200 flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50"
-          style={{ backgroundColor: '#a3b281' }}
-        >
-          Plant a Hope Seed — ₱{selectedAmount}
-        </button>
       </div>
+
+      {/* Alternative Method */}
+      {/* <div className="mt-12 text-center">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-6 flex items-center justify-center gap-4">
+          <span className="h-px w-12 bg-zinc-100 dark:bg-zinc-800" />
+          Or Bank Transfer
+          <span className="h-px w-12 bg-zinc-100 dark:bg-zinc-800" />
+        </p>
+
+        <div className="p-6 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm space-y-4">
+          <div className="flex items-center justify-center gap-3 text-zinc-400 mb-2">
+            <Building2 className="h-5 w-5" />
+            <span className="text-sm font-black italic tracking-tighter text-zinc-500">
+              UnionBank of the Philippines
+            </span>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs font-black text-zinc-800 dark:text-zinc-200 uppercase tracking-widest">
+              HopeBegins Inc.
+            </p>
+            <p className="text-lg font-black text-brand italic tracking-tighter">
+              1012 3456 7890
+            </p>
+          </div>
+          <p className="text-[10px] text-zinc-400 font-medium italic">
+            Please email your deposit slip to{' '}
+            <span className="text-[#a3b281] font-bold">
+              give@hopebegins.today
+            </span>
+          </p>
+        </div>
+      </div> */}
     </section>
   );
 }

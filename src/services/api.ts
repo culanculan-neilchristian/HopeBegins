@@ -1,10 +1,16 @@
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string>),
+  };
+
+  // Only set Content-Type to JSON if it's not FormData
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
+
   const response = await fetch(url, {
     ...options,
-    headers: {
-      ...options.headers,
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
 
   // Handle empty responses (204 No Content, 205 Reset Content)

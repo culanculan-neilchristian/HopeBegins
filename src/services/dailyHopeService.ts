@@ -6,7 +6,25 @@ export interface HopeJourneySubscription {
   last_name: string;
   email: string;
   website?: string;
+  last_name_honey?: string;
+  start_time?: number;
 }
+
+export interface EmailTemplate {
+  id: number;
+  day_number: number;
+  subject: string;
+  html_content: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+const authHeader = (): Record<string, string> => {
+  const token = localStorage.getItem('adminToken');
+  if (!token) return {};
+  return { Authorization: `Bearer ${token}` };
+};
 
 export const dailyHopeService = {
   subscribe: async (data: HopeJourneySubscription): Promise<any> => {
@@ -23,5 +41,22 @@ export const dailyHopeService = {
         method: 'POST',
       }
     );
+  },
+
+  getEmailTemplates: async (): Promise<EmailTemplate[]> => {
+    return fetchWithAuth(`${config.API_URL}/daily-hope/templates/`, {
+      headers: authHeader(),
+    });
+  },
+
+  updateEmailTemplate: async (
+    id: number,
+    data: Partial<EmailTemplate>
+  ): Promise<EmailTemplate> => {
+    return fetchWithAuth(`${config.API_URL}/daily-hope/templates/${id}/`, {
+      method: 'PATCH',
+      headers: authHeader(),
+      body: JSON.stringify(data),
+    });
   },
 };

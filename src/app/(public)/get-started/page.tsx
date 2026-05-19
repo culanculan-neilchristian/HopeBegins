@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Heart,
@@ -21,12 +21,31 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { dailyHopeService } from '@/services/dailyHopeService';
+import {
+  siteSettingsService,
+  JourneyContent,
+} from '@/services/siteSettingsService';
 
 type Step = 'welcome' | 'word' | 'prayer' | 'devotional' | 'next-steps';
 
 export default function GetStartedPage() {
   const [currentStep, setCurrentStep] = useState<Step>('welcome');
   const [prayerSubStep, setPrayerSubStep] = useState(1);
+  const [journeyContent, setJourneyContent] = useState<JourneyContent | null>(
+    null
+  );
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const data = await siteSettingsService.getJourneyContent();
+        setJourneyContent(data);
+      } catch (error) {
+        console.error('Failed to fetch journey content:', error);
+      }
+    };
+    fetchContent();
+  }, []);
 
   const steps: { id: Step; label: string; icon: any }[] = [
     { id: 'welcome', label: 'Welcome', icon: Heart },
@@ -173,7 +192,11 @@ export default function GetStartedPage() {
               {currentStep === 'next-steps' && <NextStepsStep />}
               {currentStep === 'welcome' && <WelcomeStep onNext={handleNext} />}
               {currentStep === 'word' && (
-                <WordStep onNext={handleNext} onBack={handlePrevious} />
+                <WordStep
+                  onNext={handleNext}
+                  onBack={handlePrevious}
+                  content={journeyContent}
+                />
               )}
             </motion.div>
           </AnimatePresence>
@@ -571,18 +594,21 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
 function WordStep({
   onNext,
   onBack,
+  content,
 }: {
   onNext: () => void;
   onBack: () => void;
+  content: JourneyContent | null;
 }) {
   return (
     <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="text-center space-y-3 md:space-y-4 px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-[#6b634d] dark:text-zinc-200 font-poppins">
-          A Word for You
+          {content?.title || 'A Word for You'}
         </h2>
         <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg">
-          Before anything else, we want you to hear this.
+          {content?.description ||
+            'Before anything else, we want you to hear this.'}
         </p>
       </div>
 
@@ -592,7 +618,10 @@ function WordStep({
           <iframe
             width="100%"
             height="100%"
-            src="https://www.youtube.com/embed/zHPaFDRZMUo?rel=0"
+            src={
+              content?.video_embed_url ||
+              'https://www.youtube.com/embed/zHPaFDRZMUo?rel=0'
+            }
             title="You Are Not Alone"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
