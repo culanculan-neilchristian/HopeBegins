@@ -1,13 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import headerLogo from '@/assets/images/header-logo.png';
 import { Home, Menu, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function Header() {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 12);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
@@ -16,13 +31,32 @@ export function Header() {
     { href: '/our-story', label: 'Our Story' },
   ];
 
+  const handleHomeClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname !== '/') return;
+
+    event.preventDefault();
+    setIsMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <header className="sticky top-0 z-50">
       {/* Navigation */}
-      <nav className="bg-white/70 dark:bg-black/70 backdrop-blur-md border-b border-zinc-100 dark:border-zinc-900">
+      <nav
+        className={cn(
+          'transition-all duration-300 border-b',
+          hasScrolled || isMenuOpen
+            ? 'bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-md shadow-zinc-900/5'
+            : 'bg-white/80 dark:bg-black/80 backdrop-blur-md border-white/40 dark:border-zinc-900/40'
+        )}
+      >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2">
+            <Link
+              href="/"
+              className="flex items-center gap-2"
+              onClick={handleHomeClick}
+            >
               <Image
                 src={headerLogo}
                 alt="HopeBegins Logo"
@@ -40,6 +74,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className="flex items-center gap-2 text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-poppins uppercase tracking-wider"
+                onClick={link.href === '/' ? handleHomeClick : undefined}
               >
                 {link.icon && <link.icon className="w-4 h-4" />}
                 {link.label}
@@ -70,7 +105,11 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   className="flex items-center gap-3 text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-poppins uppercase tracking-wider py-2"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={
+                    link.href === '/'
+                      ? handleHomeClick
+                      : () => setIsMenuOpen(false)
+                  }
                 >
                   {link.icon && <link.icon className="w-5 h-5" />}
                   {link.label}

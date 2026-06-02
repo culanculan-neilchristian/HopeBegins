@@ -1,17 +1,128 @@
+import { config } from '@/config';
+
+class ApiError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
+type AuthContext = 'admin' | 'carrier';
+
+let refreshPromise: Promise<string | null> | null = null;
+
+function getAuthContext(headers: Record<string, string>): AuthContext | null {
+  const authorization = headers.Authorization || headers.authorization;
+  if (!authorization?.startsWith('Bearer ')) return null;
+
+  const token = authorization.replace('Bearer ', '');
+
+  if (token === localStorage.getItem('adminToken')) return 'admin';
+  if (token === localStorage.getItem('carrierToken')) return 'carrier';
+
+  return null;
+}
+
+function clearStoredAuth(context: AuthContext) {
+  if (context === 'admin') {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminRefreshToken');
+    localStorage.removeItem('adminUser');
+    return;
+  }
+
+  localStorage.removeItem('carrierToken');
+  localStorage.removeItem('carrierRefreshToken');
+  localStorage.removeItem('carrierUser');
+}
+
+function getRefreshToken(context: AuthContext) {
+  return localStorage.getItem(
+    context === 'admin' ? 'adminRefreshToken' : 'carrierRefreshToken'
+  );
+}
+
+function saveAccessToken(context: AuthContext, accessToken: string) {
+  localStorage.setItem(
+    context === 'admin' ? 'adminToken' : 'carrierToken',
+    accessToken
+  );
+}
+
+function redirectToLogin(context: AuthContext) {
+  if (typeof window === 'undefined') return;
+
+  const loginPath = context === 'admin' ? '/admin/login' : '/login/carrier';
+  if (window.location.pathname !== loginPath) {
+    window.location.assign(loginPath);
+  }
+}
+
+async function refreshAccessToken(context: AuthContext) {
+  const refreshToken = getRefreshToken(context);
+  if (!refreshToken) return null;
+
+  refreshPromise ??= fetch(`${config.API_URL}/users/token/refresh/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refresh: refreshToken }),
+  })
+    .then(async (response) => {
+      if (!response.ok) return null;
+
+      const data = await response.json();
+      const accessToken = data?.access;
+
+      if (!accessToken) return null;
+
+      saveAccessToken(context, accessToken);
+      return accessToken;
+    })
+    .finally(() => {
+      refreshPromise = null;
+    });
+
+  return refreshPromise;
+}
+
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const headers: Record<string, string> = {
     ...(options.headers as Record<string, string>),
   };
+  const authContext =
+    typeof window === 'undefined' ? null : getAuthContext(headers);
 
   // Only set Content-Type to JSON if it's not FormData
   if (!(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
 
-  const response = await fetch(url, {
+  let response = await fetch(url, {
     ...options,
     headers,
   });
+
+  if (
+    response.status === 401 &&
+    authContext &&
+    !url.includes('/token/refresh/')
+  ) {
+    const newAccessToken = await refreshAccessToken(authContext);
+
+    if (newAccessToken) {
+      headers.Authorization = `Bearer ${newAccessToken}`;
+      response = await fetch(url, {
+        ...options,
+        headers,
+      });
+    } else {
+      clearStoredAuth(authContext);
+      redirectToLogin(authContext);
+    }
+  }
 
   // Handle empty responses (204 No Content, 205 Reset Content)
   if (response.status === 204 || response.status === 205) {
@@ -54,7 +165,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
       }
     }
 
-    throw new Error(errorMessage);
+    throw new ApiError(errorMessage, response.status);
   }
 
   // If the response follows the standardized format, extract the data payload

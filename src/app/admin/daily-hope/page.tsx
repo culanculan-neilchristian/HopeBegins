@@ -19,6 +19,7 @@ import { useHopeJourneys } from './hooks/useHopeJourneys';
 import { JourneyTable } from './components/JourneyTable';
 import { DeleteJourneyModal } from './components/DeleteJourneyModal';
 import { DailyHopeNav } from './components/DailyHopeNav';
+import { getCompletedHopeDays } from './utils';
 
 export default function DailyHopeAdminPage() {
   const {
@@ -88,7 +89,7 @@ export default function DailyHopeAdminPage() {
               <DailyHopeNav />
             </div>
             <p className="mt-2 text-zinc-500 font-medium text-sm sm:text-base">
-              Managing everyone in the 30-day &quot;Daily Hope&quot; journey.
+              Managing everyone in the 21-day &quot;Daily Hope&quot; journey.
               {!isLoading && (
                 <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
                   {totalCount} Total
@@ -157,7 +158,7 @@ export default function DailyHopeAdminPage() {
                       </h3>
                       <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest flex items-center gap-1.5">
                         <Clock className="h-3 w-3" />
-                        Day {Math.max(1, journey.current_day - 1)} completed
+                        Day {getCompletedHopeDays(journey)} completed
                       </p>
                     </div>
                   </div>

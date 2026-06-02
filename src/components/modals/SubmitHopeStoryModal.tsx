@@ -99,7 +99,8 @@ export function SubmitHopeStoryModal({
       onClose();
     } catch (error: any) {
       toast.error(
-        error.response?.data?.message ||
+        error?.response?.data?.message ||
+          error?.message ||
           'Failed to submit hope story. Please try again.'
       );
     } finally {
@@ -109,13 +110,16 @@ export function SubmitHopeStoryModal({
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) {
+      setPreviewUrl(null);
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeImage = () => {
@@ -189,7 +193,7 @@ export function SubmitHopeStoryModal({
           <FormField
             control={form.control}
             name="photo"
-            render={({ field: { onChange, ...fieldProps } }) => (
+            render={({ field: { onChange, onBlur, name, ref } }) => (
               <FormItem>
                 <FormLabel>Upload Photo</FormLabel>
                 <FormControl>
@@ -208,12 +212,14 @@ export function SubmitHopeStoryModal({
                         <input
                           type="file"
                           className="hidden"
+                          name={name}
+                          ref={ref}
+                          onBlur={onBlur}
                           accept={ACCEPTED_IMAGE_TYPES.join(',')}
                           onChange={(e) => {
                             handleImageChange(e);
                             onChange(e.target.files);
                           }}
-                          {...fieldProps}
                         />
                       </label>
                     ) : (

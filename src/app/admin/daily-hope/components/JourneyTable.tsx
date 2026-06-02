@@ -22,6 +22,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import type { HopeJourney } from '@/types/admin';
+import { getCompletedHopeDays } from '../utils';
 
 function formatDate(dateStr: string) {
   if (!dateStr) return '-';
@@ -138,7 +139,7 @@ export function JourneyTable({
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <span className="font-black text-lg text-brand">
-                        Day {Math.max(1, journey.current_day - 1)}
+                        Day {getCompletedHopeDays(journey)}
                       </span>
                       <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter">
                         completed

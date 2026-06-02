@@ -30,11 +30,11 @@ interface StatCardsProps {
 export function StatCards({ stats, isLoading }: StatCardsProps) {
   const STAT_CONFIG = [
     {
-      label: 'Total Users',
+      label: 'Total Carriers',
       value: isLoading ? '—' : (stats?.total_users?.toLocaleString() ?? '—'),
       icon: Users,
       color: 'text-blue-600',
-      trend: 'Registered accounts',
+      trend: 'Carrier accounts',
     },
     {
       label: 'Prayer Requests',
