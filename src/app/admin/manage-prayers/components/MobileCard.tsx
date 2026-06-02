@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronRight, Trash2 } from 'lucide-react';
-import { StatusBadge, CategoryBadge } from './PrayerBadges';
+import { StatusBadge, CategoryBadge, OrganizationBadge } from './PrayerBadges';
 import { ExpandedDetail } from './ExpandedDetail';
 import { formatDate } from '../constants';
 import type { Prayer, PrayerCategory, PrayerStatus } from '@/types/admin';
@@ -42,6 +42,7 @@ export function MobileCard({
                   : prayer.title}
               </span>
               <CategoryBadge category={prayer.category as PrayerCategory} />
+              <OrganizationBadge organizationName={prayer.organization_name} />
             </div>
             <div className="flex items-center gap-2 flex-wrap mt-1">
               <StatusBadge status={prayer.status} />

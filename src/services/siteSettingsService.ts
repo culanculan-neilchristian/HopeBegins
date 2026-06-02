@@ -1,5 +1,11 @@
 import { fetchWithAuth } from './api';
 import { config } from '@/config';
+import {
+  JourneyPageContent,
+  LegacyJourneyContent,
+  legacyToJourneyPageContent,
+  normalizeJourneyPageContent,
+} from '@/lib/journeyPageContent';
 
 export interface PopoutItem {
   id: number;
@@ -15,13 +21,8 @@ export interface PopoutSettings {
   items: PopoutItem[];
 }
 
-export interface JourneyContent {
-  id: number;
-  title: string;
-  description: string;
-  video_embed_url: string;
-  updated_at: string;
-}
+export type JourneyContent = LegacyJourneyContent;
+export type { JourneyPageContent };
 
 const authHeader = (): Record<string, string> => {
   const token = localStorage.getItem('adminToken');
@@ -96,5 +97,32 @@ export const siteSettingsService = {
       headers: authHeader(),
       body: JSON.stringify(data),
     });
+  },
+
+  getJourneyPageContent: async (): Promise<JourneyPageContent> => {
+    try {
+      const data = await fetchWithAuth(
+        `${config.API_URL}/popouts/journey-page-content/`
+      );
+      return normalizeJourneyPageContent(data);
+    } catch {
+      const legacy = await siteSettingsService.getJourneyContent();
+      return legacyToJourneyPageContent(legacy);
+    }
+  },
+
+  updateJourneyPageContent: async (
+    data: JourneyPageContent
+  ): Promise<JourneyPageContent> => {
+    const response = await fetchWithAuth(
+      `${config.API_URL}/popouts/journey-page-content/`,
+      {
+        method: 'PATCH',
+        headers: authHeader(),
+        body: JSON.stringify(data),
+      }
+    );
+
+    return normalizeJourneyPageContent(response);
   },
 };

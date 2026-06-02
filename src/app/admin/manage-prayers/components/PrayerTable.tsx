@@ -15,7 +15,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { StatusBadge, CategoryBadge } from './PrayerBadges';
+import { StatusBadge, CategoryBadge, OrganizationBadge } from './PrayerBadges';
 import { ExpandedDetail } from './ExpandedDetail';
 import { formatDate } from '../constants';
 import type { Prayer, PrayerCategory, PrayerStatus } from '@/types/admin';
@@ -24,7 +24,7 @@ import type { Prayer, PrayerCategory, PrayerStatus } from '@/types/admin';
 function SkeletonRow() {
   return (
     <TableRow className="h-20 border-zinc-100 dark:border-zinc-800">
-      {[...Array(6)].map((_, i) => (
+      {[...Array(7)].map((_, i) => (
         <TableCell key={i} className={i === 1 ? 'pl-8' : ''}>
           <div className="h-4 bg-zinc-100 dark:bg-zinc-800 rounded-full animate-pulse w-3/4" />
         </TableCell>
@@ -71,15 +71,15 @@ function PrayerTableRow({
             <ChevronRight className="h-4 w-4 text-zinc-400" />
           )}
         </TableCell>
-        <TableCell>
+        <TableCell className="min-w-[280px] max-w-[420px] whitespace-normal">
           <p
-            className={`font-bold ${isExpanded ? 'text-brand' : 'text-zinc-900 dark:text-zinc-100'}`}
+            className={`font-bold break-words ${isExpanded ? 'text-brand' : 'text-zinc-900 dark:text-zinc-100'}`}
           >
             {prayer.isAnonymous || !prayer.shareFirstName
               ? 'Anonymous'
               : prayer.title}
           </p>
-          <p className="text-xs text-zinc-400 font-medium mt-0.5">
+          <p className="text-xs text-zinc-400 font-medium mt-0.5 whitespace-normal break-words">
             {prayer.isAnonymous ? 'Anonymous' : prayer.email}
             {prayer.assigned_to_email && (
               <span className="ml-1 text-blue-500">
@@ -87,18 +87,24 @@ function PrayerTableRow({
               </span>
             )}
           </p>
+          <p className="text-[11px] text-sky-600 dark:text-sky-300 font-bold mt-1 whitespace-normal break-words">
+            Organization: {prayer.organization_name || 'No organization'}
+          </p>
         </TableCell>
-        <TableCell>
+        <TableCell className="w-[130px]">
           <CategoryBadge category={prayer.category as PrayerCategory} />
         </TableCell>
-        <TableCell>
+        <TableCell className="min-w-[160px] max-w-[240px] whitespace-normal">
+          <OrganizationBadge organizationName={prayer.organization_name} />
+        </TableCell>
+        <TableCell className="w-[150px]">
           {isUpdating ? (
             <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
           ) : (
             <StatusBadge status={prayer.status} />
           )}
         </TableCell>
-        <TableCell className="text-zinc-500 font-medium text-sm">
+        <TableCell className="w-[120px] text-zinc-500 font-medium text-sm">
           {formatDate(prayer.created_at)}
         </TableCell>
         <TableCell className="pr-6 text-right">
@@ -118,8 +124,11 @@ function PrayerTableRow({
 
       {isExpanded && (
         <TableRow className="border-l-4 border-l-brand bg-white dark:bg-zinc-900 hover:bg-white dark:hover:bg-zinc-900 border-zinc-100 dark:border-zinc-800">
-          <TableCell colSpan={6} className="pl-6 pr-6 pb-6 pt-0">
-            <div className="border-2 border-brand/30 dark:border-brand/20 rounded-2xl p-5 bg-brand-muted/20 dark:bg-brand/5">
+          <TableCell
+            colSpan={7}
+            className="pl-6 pr-6 pb-6 pt-0 whitespace-normal"
+          >
+            <div className="min-w-0 whitespace-normal border-2 border-brand/30 dark:border-brand/20 rounded-2xl p-5 bg-brand-muted/20 dark:bg-brand/5">
               <ExpandedDetail
                 prayer={prayer}
                 onMarkPrayed={onMarkPrayed}
@@ -170,16 +179,21 @@ export function PrayerTable({
         <TableHeader className="bg-zinc-50 dark:bg-zinc-800/50">
           <TableRow className="hover:bg-transparent border-zinc-100 dark:border-zinc-800">
             <TableHead className="w-8 pl-6" />
-            {['Prayer Request', 'Category', 'Status', 'Date', 'Actions'].map(
-              (h, i) => (
-                <TableHead
-                  key={h}
-                  className={`font-black uppercase tracking-widest text-[10px] py-6 ${i === 4 ? 'pr-6 text-right' : ''}`}
-                >
-                  {h}
-                </TableHead>
-              )
-            )}
+            {[
+              'Prayer Request',
+              'Category',
+              'Organization',
+              'Status',
+              'Date',
+              'Actions',
+            ].map((h, i) => (
+              <TableHead
+                key={h}
+                className={`font-black uppercase tracking-widest text-[10px] py-6 ${i === 5 ? 'pr-6 text-right' : ''}`}
+              >
+                {h}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
 
@@ -188,7 +202,7 @@ export function PrayerTable({
 
           {!isLoading && filtered.length === 0 && (
             <TableRow>
-              <TableCell colSpan={6} className="py-20 text-center">
+              <TableCell colSpan={7} className="py-20 text-center">
                 <div className="flex flex-col items-center gap-3">
                   <div className="h-12 w-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                     <AlertCircle className="h-5 w-5 text-zinc-400" />

@@ -104,13 +104,14 @@ This document serves as the central roadmap and tracking point for all features 
 - **Requirements:**
   - Setup Bonfire AI chat widget on the frontend.
 
-### 11. Admin Editable "Hopeful Beginning Journey"
+### 11. Admin Editable Full "Hopeful Beginning" Page
 - **Status:** ✅ Completed
 - **Detailed Plan:** [task-11-editable-journey-plan.md](./phase-2/task-11-editable-journey-plan.md)
-- **Description:** Provide admin capabilities to edit the content of the "Hopeful Beginning Journey" section.
+- **Description:** Provide admin capabilities to edit the full `/get-started` Hopeful Beginning page, not only the "A Word for You" journey step.
 - **Requirements:**
-  - Allow admin to update text content from the dashboard.
+  - Allow admin to update all visible text content from the dashboard.
   - Allow admin to update or change the embedded video link directly from the dashboard.
+  - Allow admin to update prayer steps, devotional cards, next-step links, and crisis contact content.
 
 ---
 
@@ -124,4 +125,4 @@ This document serves as the central roadmap and tracking point for all features 
 - [x] **7. Clickable Social Media Icons**
 - [x] **8. Admin Editable 21-Day Email Campaign**
 - [x] **9. Dynamic Impact Tracker ("Our Current Impact")**
-- [x] **11. Admin Editable "Hopeful Beginning Journey"**
+- [x] **11. Admin Editable Full "Hopeful Beginning" Page** (expanded scope)
