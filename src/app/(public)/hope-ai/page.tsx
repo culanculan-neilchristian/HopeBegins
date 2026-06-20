@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Send } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { BonfireBubbleChat } from '@/components/bonfire/BonfireBubbleChat';
 import { useHopeAI } from './hooks/useHopeAI';
 import { ChatBubble } from './components/ChatBubble';
 import { TypingIndicator } from './components/TypingIndicator';
@@ -111,6 +112,8 @@ export default function HopeAIPage() {
           I&apos;d rather talk to a real person — submit a prayer request
         </Link>
       </div>
+
+      <BonfireBubbleChat />
     </div>
   );
 }
