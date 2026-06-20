@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins, DM_Sans } from 'next/font/google';
 import './globals.css';
 import Providers from '@/components/Providers';
+import { BonfireBubbleChat } from '@/components/bonfire/BonfireBubbleChat';
 import Script from 'next/script';
 
 const poppins = Poppins({
@@ -50,6 +51,7 @@ export default function RootLayout({
         <Providers>
           {children}
           <EngagementPopout />
+          <BonfireBubbleChat />
         </Providers>
       </body>
     </html>
